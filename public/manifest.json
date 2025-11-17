@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Jack Blundell",
+  "name": "Jack Blundell | React & React Native Developer",
+  "description": "Full-stack developer specializing in cross-platform mobile and web applications",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +21,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#ff6b35",
+  "background_color": "#0a0a0a"
 }

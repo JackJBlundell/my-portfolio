@@ -1,0 +1,446 @@
+{
+  "projects": [
+    {
+      "id": "routebuddies",
+      "slug": "routebuddies",
+      "name": "RouteBuddies",
+      "description_short": "A multi-platform personal safety ecosystem featuring mobile apps, an Apple Watch companion, community modes, crime mapping and AI-powered content protection.",
+      "description_long": "RouteBuddies is a safety-focused mobile and wearable ecosystem designed to give users a trusted way to buddy up, stay aware, and navigate their environments securely. Originally started as a personal learning project in 2020, the platform has grown into a full suite of applications including a consumer app, an Apple Watch companion app, a web-based admin panel, and enterprise/education-specific versions with custom UI themes and permission models.\n\nThe platform helps users connect with verified local communities, plan and track activities, view crime data from the UK Police API, share live locations, use automated and manual SOS functions, and receive personalised safety reminders. Community-specific modes such as Festival Mode, Education Mode, and Enterprise Mode provide private, branded spaces for organisations to run their own instance of the RouteBuddies experience. AI-powered content moderation ensures user-uploaded images remain safe and appropriate across the entire network.",
+      "tech": [
+        "Swift",
+        "Kotlin",
+        "React Native",
+        "React.js",
+        "Node.js",
+        "Firebase",
+        "AWS Amplify"
+      ],
+      "categories": [
+        "App",
+        "Apple Watch",
+        "Web Application",
+        "Backend Functions",
+        "Navigation",
+        "Device Notifications",
+        "AI"
+      ],
+      "media": {
+        "thumbnail": "/img/routebuddies/screen1.png",
+        "images": [
+          "/img/routebuddies/screen1.png",
+          "/img/routebuddies/screen2.png",
+          "/img/routebuddies/screen3.png",
+          "/img/routebuddies/screen4.png",
+          "/img/routebuddies/screen5.png",
+          "/img/routebuddies/screen6.png",
+          "/img/routebuddies/screen7.png"
+        ]
+      },
+      "featureGroups": [
+        {
+          "title": "Mobile App Core",
+          "category": "App",
+          "features": [
+            "ID Verification",
+            "Local Community Discovery",
+            "Community Feeds",
+            "Live User Messaging",
+            "Activity Planning",
+            "Event Calendar",
+            "Route Builder & Saved Routes",
+            "User Activity History",
+            "Automatic SOS Trigger",
+            "Manual SOS Button",
+            "999 Emergency Services Button",
+            "Live Location Sharing",
+            "Emergency Contact Integration",
+            "Medical Condition Integration"
+          ]
+        },
+        {
+          "title": "Community Modes",
+          "category": "App",
+          "features": [
+            "Festival Mode with tailored UI and safety workflows",
+            "Education Mode with student-focused community spaces",
+            "Enterprise Mode with private organisational safety hubs"
+          ]
+        },
+        {
+          "title": "Apple Watch Companion",
+          "category": "Apple Watch",
+          "features": [
+            "Quick SOS Activation",
+            "Live Location Broadcasting",
+            "Emergency Contacts Quick Access",
+            "Activity Tracking Sync",
+            "Real-Time Safety Alerts",
+            "Haptic Safety Notifications"
+          ]
+        },
+        {
+          "title": "Admin Web Dashboard",
+          "category": "Web Application",
+          "features": [
+            "User Management & Verification",
+            "Community Moderation Tools",
+            "Content Review Dashboard",
+            "Analytics & Usage Reports",
+            "Mode Configuration (Festival/Education/Enterprise)",
+            "Safety Incident Monitoring"
+          ]
+        },
+        {
+          "title": "Backend Services",
+          "category": "Backend Functions",
+          "features": [
+            "User Authentication & Verification",
+            "Real-Time Messaging Infrastructure",
+            "Location Tracking Services",
+            "SOS Alert Processing",
+            "UK Police API Integration",
+            "Community Data Management",
+            "Event & Calendar Sync"
+          ]
+        },
+        {
+          "title": "Map & Navigation",
+          "category": "Navigation",
+          "features": [
+            "Crime Map Using the UK Police API",
+            "Live Map Navigation",
+            "Location-Based Alerts",
+            "Route Planning & Optimization",
+            "Saved Routes Management",
+            "Real-Time Location Tracking"
+          ]
+        },
+        {
+          "title": "Push Notifications",
+          "category": "Device Notifications",
+          "features": [
+            "In-App Reminders & Notifications",
+            "Emergency SOS Alerts",
+            "Activity & Event Reminders",
+            "Community Update Notifications",
+            "Location-Based Safety Alerts",
+            "Message Notifications"
+          ]
+        },
+        {
+          "title": "AI & Content Moderation",
+          "category": "AI",
+          "features": [
+            "AI-Powered Image Moderation",
+            "Inappropriate Content Detection",
+            "Automated Content Flagging",
+            "Safe Community Environment Protection"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "geogo",
+      "slug": "geo-go",
+      "name": "Geo Go | Go Executive Out",
+      "description_short": "A complete cross-platform rideshare solution combining driver, customer, and admin systems with payments, navigation, chat and real-time dispatch logic.",
+      "description_long": "Geo Go is a full end-to-end rideshare ecosystem built to support customers, drivers, and operational staff through a single unified platform. The project includes a combined driver and passenger app, an administrative web panel, a secure backend dispatch engine, automated payment flows, and real-time communication features.\n\nDrivers receive live trip requests, in-app turn-by-turn navigation powered by Mapbox, trip history tracking, manual payout tools, chat, and customer rating flows. Customers can request rides, track drivers in real time, view full trip details, apply vouchers, and manage future bookings. The administrative web panel includes user management, vehicle & pricing controls, payment history, voucher management, and operational oversight tools.\n\nA custom backend handles dispatch logic, trip assignment, location updates, payment processing, and system-wide security protections.",
+      "tech": [
+        "Swift",
+        "Kotlin",
+        "React Native",
+        "React.js",
+        "Node.js",
+        "Firebase",
+        "AWS Amplify",
+        "Stripe.js",
+        "Mapbox"
+      ],
+      "categories": [
+        "Cross-Platform App",
+        "Web Application",
+        "Backend Functions",
+        "Payments",
+        "Navigation",
+        "Device Notifications"
+      ],
+      "media": {
+        "thumbnail": "/img/geogo/screen1.png",
+        "images": [
+          "/img/geogo/screen1.png",
+          "/img/geogo/screen2.png",
+          "/img/geogo/screen3.png",
+          "/img/geogo/screen4.png"
+        ]
+      },
+      "featureGroups": [
+        {
+          "title": "Driver App Features",
+          "category": "Cross-Platform App",
+          "features": [
+            "Live Trip Requests",
+            "Driver Trip History",
+            "Future Trip Reminders",
+            "Multiple Vehicle Type Support",
+            "Customer Rating System",
+            "Live Customer Chat"
+          ]
+        },
+        {
+          "title": "Customer App Features",
+          "category": "Cross-Platform App",
+          "features": [
+            "Request a Ride",
+            "View Driver Location in Real Time",
+            "Full Trip Information",
+            "Live Driver Chat",
+            "Future Trip Bookings",
+            "Voucher Claiming",
+            "Driver Rating Flow"
+          ]
+        },
+        {
+          "title": "Admin Dashboard",
+          "category": "Web Application",
+          "features": [
+            "User Management",
+            "Ride History Dashboard",
+            "Vehicle & Pricing Management",
+            "Voucher & Discounts Control",
+            "Operational Monitoring",
+            "Payment History & Financial Insights"
+          ]
+        },
+        {
+          "title": "Backend Services",
+          "category": "Backend Functions",
+          "features": [
+            "Secure Dispatch Engine",
+            "Location Tracking Logic",
+            "Data Security Controls",
+            "Real-Time Trip Assignment",
+            "System-Wide Monitoring"
+          ]
+        },
+        {
+          "title": "Payment Processing",
+          "category": "Payments",
+          "features": [
+            "Stripe.js Integration",
+            "Driver Payout System",
+            "Manual Payout Options",
+            "Payment History Tracking",
+            "Voucher & Discount Application",
+            "Secure Transaction Processing"
+          ]
+        },
+        {
+          "title": "Map & Navigation",
+          "category": "Navigation",
+          "features": [
+            "Turn-By-Turn Mapbox Navigation",
+            "Real-Time Driver Location Tracking",
+            "Route Optimization",
+            "Live Location Updates",
+            "Distance & ETA Calculations"
+          ]
+        },
+        {
+          "title": "Push Notifications",
+          "category": "Device Notifications",
+          "features": [
+            "Trip Request Alerts",
+            "Trip Status Updates",
+            "Future Trip Reminders",
+            "Driver Arrival Notifications",
+            "In-App Message Notifications",
+            "Payment Confirmation Alerts"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "betblock",
+      "slug": "betblock",
+      "name": "BetBlock",
+      "description_short": "A cross-platform wellbeing app supporting gambling recovery through subscriptions, progress tracking, financial awareness tools, and community resources.",
+      "description_long": "BetBlock is a subscription-based wellbeing and support app designed to assist individuals in gambling recovery. The app provides guided onboarding, personalised financial insights, motivational tracking, SOS emergency support, interactive games for healthy cognitive engagement, and community-driven resources.\n\nUsers can authenticate via Apple or Google, subscribe monthly or annually, track their savings, monitor spending risk patterns, access community feeds, and receive financial warnings or behavioural nudges to encourage better habits. The dashboard offers a clean, supportive interface designed to encourage long-term engagement and accountability.",
+      "tech": ["React Native", "Swift", "Kotlin", "Firebase", "RevenueCat"],
+      "categories": [
+        "Cross-Platform App",
+        "Subscription Platform",
+        "Wellbeing",
+        "Notifications"
+      ],
+      "media": {
+        "thumbnail": "/img/betblock/screen1.png",
+        "images": [
+          "/img/betblock/screen1.png",
+          "/img/betblock/screen2.png",
+          "/img/betblock/screen3.png",
+          "/img/betblock/screen4.png"
+        ]
+      },
+      "featureGroups": [
+        {
+          "title": "Mobile App Features",
+          "category": "Cross-Platform App",
+          "features": [
+            "Apple & Google Authentication",
+            "Interactive Onboarding Quiz",
+            "Savings Dashboard",
+            "Financial Analytics & Warnings",
+            "Wellbeing Resources",
+            "Supportive Community Feeds",
+            "Interactive Games",
+            "Progress Tracking",
+            "Behavioural Nudges",
+            "SOS Support Button",
+            "Crisis Guidance"
+          ]
+        },
+        {
+          "title": "Subscription Management",
+          "category": "Subscription Platform",
+          "features": [
+            "RevenueCat Integration",
+            "Monthly Subscription Plans",
+            "Annual Subscription Plans",
+            "Subscription Status Tracking",
+            "Payment Processing",
+            "Auto-Renewal Management"
+          ]
+        },
+        {
+          "title": "Wellbeing Tools",
+          "category": "Wellbeing",
+          "features": [
+            "Savings Progress Tracking",
+            "Financial Risk Analysis",
+            "Spending Pattern Monitoring",
+            "Motivational Milestones",
+            "Recovery Journey Insights",
+            "Community Support Access",
+            "Behavioural Health Resources"
+          ]
+        },
+        {
+          "title": "Push Notifications",
+          "category": "Notifications",
+          "features": [
+            "Daily Motivation Reminders",
+            "Progress Milestone Alerts",
+            "Financial Warning Notifications",
+            "Community Update Alerts",
+            "Wellbeing Check-In Reminders",
+            "Achievement Notifications"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alzheimers-smart-speaker",
+      "slug": "alzheimers-smart-speaker",
+      "name": "Alzheimers Smart Speaker",
+      "description_short": "A research-driven smart speaker prototype using Python, voice AI, and a companion mobile app to support dementia and Alzheimer’s patients with reminders, wellbeing checks, and SOS alerts.",
+      "description_long": "The Alzheimer's Smart Speaker project was developed at Cardiff University as part of a research initiative exploring conversational AI for dementia support. As project lead, I developed both the hardware prototype and the cross-platform companion app.\n\nThe physical device, built using a Raspberry Pi, included motion sensors to trigger wellbeing check-ins, natural voice conversations, radio playback, news reading, and medication reminders. Custom Python scripts and Mycroft AI handled voice recognition, conversation flows, and automated behaviours.\n\nThe companion mobile app enables caregivers to configure medical information, schedule events, receive SOS alerts, and send direct messages to the smart speaker. Both systems communicate bi-directionally in real time using Firebase, enabling seamless integration between hardware and mobile.",
+      "tech": [
+        "Raspberry Pi",
+        "Python",
+        "React Native",
+        "Firebase",
+        "Mycroft AI",
+        "Hardware Sensors"
+      ],
+      "categories": [
+        "Hardware",
+        "AI",
+        "Cross-Platform App",
+        "Python",
+        "Voice Interaction",
+        "Prototype"
+      ],
+      "media": {
+        "thumbnail": "/img/alzspeaker/screen1.png",
+        "images": ["/img/alzspeaker/screen1.png"]
+      },
+      "featureGroups": [
+        {
+          "title": "Hardware Device",
+          "category": "Hardware",
+          "features": [
+            "Motion Detection for Automatic Check-Ins",
+            "Conversational Voice Flows",
+            "Medication Reminders",
+            "Upcoming Event Notifications",
+            "SOS Trigger to Connected App",
+            "Radio Playback",
+            "News Reading",
+            "Raspberry Pi Hardware Integration",
+            "Physical Sensor Array"
+          ]
+        },
+        {
+          "title": "AI Voice Processing",
+          "category": "AI",
+          "features": [
+            "Mycroft AI Integration",
+            "Natural Language Understanding",
+            "Voice Command Recognition",
+            "Conversational Context Awareness",
+            "AI-Driven Check-In Conversations",
+            "Automated Response Generation"
+          ]
+        },
+        {
+          "title": "Companion Mobile App",
+          "category": "Cross-Platform App",
+          "features": [
+            "Medical Data & Event Management",
+            "Send Messages to Smart Speaker",
+            "Receive SOS Alerts",
+            "User Setup & Remote Controls",
+            "Caregiver Dashboard",
+            "Real-Time Device Status Monitoring"
+          ]
+        },
+        {
+          "title": "Python Backend",
+          "category": "Python",
+          "features": [
+            "Python Voice Processing Scripts",
+            "Firebase Real-Time Communication",
+            "Sensor Data Processing",
+            "Event Scheduling Logic",
+            "Custom Voice Flow Management",
+            "Hardware Control Scripts"
+          ]
+        },
+        {
+          "title": "Voice Interaction",
+          "category": "Voice Interaction",
+          "features": [
+            "Two-Way Voice Communication",
+            "Natural Conversation Flows",
+            "Voice-Activated Commands",
+            "Medication Reminder Alerts",
+            "News & Radio Voice Playback",
+            "SOS Voice Activation"
+          ]
+        },
+        {
+          "title": "Prototype Features",
+          "category": "Prototype",
+          "features": [
+            "Research Prototype Development",
+            "University Research Integration",
+            "Proof-of-Concept Hardware Build",
+            "Mobile-Hardware Synchronization",
+            "Dementia Support Research Features",
+            "Academic Testing & Validation"
+          ]
+        }
+      ]
+    }
+  ]
+}

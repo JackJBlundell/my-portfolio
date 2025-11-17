@@ -1,0 +1,30 @@
+.custom-cursor,
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+}
+
+.custom-cursor {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #FF6B35;
+  border-radius: 50%;
+}
+
+.custom-cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: #FF6B35;
+  border-radius: 50%;
+}
+
+@media (hover: none) {
+  .custom-cursor,
+  .custom-cursor-dot {
+    display: none;
+  }
+}

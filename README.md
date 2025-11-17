@@ -1,46 +1,61 @@
-# Getting Started with Create React App
+# Jack Blundell - Portfolio Website
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> **Note to Clients:** This portfolio website serves as a demonstration of my technical capabilities and design sensibilities. It showcases the type of modern, interactive web applications I can build for your business.
 
-## Available Scripts
+## About This Project
 
-In the project directory, you can run:
+This is my personal portfolio website, built to demonstrate my expertise in creating high-performance, visually stunning web applications. The site features:
 
-### `npm start`
+- **Interactive 3D Graphics** - Real-time particle systems and animations using Three.js
+- **Modern UI/UX** - Sleek design with smooth animations and intuitive navigation
+- **Performance Optimized** - Adaptive rendering based on device capabilities
+- **Fully Responsive** - Seamless experience across desktop, tablet, and mobile devices
+- **Production Ready** - Professional-grade code architecture and best practices
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Technologies Demonstrated
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+This portfolio showcases my proficiency in:
 
-### `npm test`
+- **React & TypeScript** - Modern front-end development with type safety
+- **Three.js / React Three Fiber** - Advanced 3D graphics and animations
+- **Framer Motion** - Professional animation library integration
+- **Responsive Design** - Mobile-first approach with CSS3
+- **Performance Optimization** - Frame-rate independence, adaptive quality, and efficient rendering
+- **Modern Web Standards** - Progressive enhancement and accessibility
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## What This Demonstrates
 
-### `npm run build`
+**For Potential Clients:**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+This website is an example of what I can build for you. Whether you need:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- A stunning landing page that captures attention
+- An interactive web application with complex features
+- A mobile-responsive platform that works flawlessly on any device
+- High-performance graphics and animations
+- A professional MVP to validate your business idea
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+I bring the same level of craftsmanship, attention to detail, and technical expertise to every client project.
 
-### `npm run eject`
+## Development
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Built with Create React App and modern web technologies:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+# Install dependencies
+npm install
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+# Run development server
+npm start
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+# Build for production
+npm run build
+```
 
-## Learn More
+## Contact
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Interested in working together? Get in touch through the contact form on the website or reach out directly.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
+
+**This is a live demonstration of my capabilities.** Every interaction, animation, and feature you see here represents the quality and expertise I bring to client projects.
