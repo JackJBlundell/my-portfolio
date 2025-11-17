@@ -54,7 +54,7 @@
   box-shadow: 0 10px 40px rgba(255, 107, 53, 0.2);
 }
 
-.feature-icon {
+.mvp-feature-card .feature-icon {
   font-size: 3rem;
 }
 
@@ -158,11 +158,10 @@
   line-height: 1.6;
 }
 
-.feature-check {
-  color: var(--accent-orange);
-  font-weight: bold;
-  font-size: 1.2rem;
+.pricing-feature .feature-icon {
+  font-size: 1.3rem;
   flex-shrink: 0;
+  min-width: 1.5rem;
 }
 
 .pricing-cta {

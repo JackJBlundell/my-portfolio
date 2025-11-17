@@ -1,6 +1,6 @@
 import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Points, PointMaterial, OrbitControls } from '@react-three/drei';
+import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
 interface ParticleFieldProps {
@@ -10,7 +10,7 @@ interface ParticleFieldProps {
   speed: number;
 }
 
-function ParticleField({ count = 5000, mousePosition, color, speed }: ParticleFieldProps) {
+function ParticleField({ count = 3000, mousePosition, color, speed }: ParticleFieldProps) {
   const points = useRef<THREE.Points>(null);
   const originalPositions = useRef<Float32Array | null>(null);
   const frameCount = useRef(0);
@@ -77,7 +77,7 @@ function ParticleField({ count = 5000, mousePosition, color, speed }: ParticleFi
   });
 
   return (
-    <Points ref={points} positions={particlesPosition} stride={3} frustumCulled={false}>
+    <Points ref={points} positions={particlesPosition} stride={3} frustumCulled={true}>
       <PointMaterial
         transparent
         color={color}
@@ -295,7 +295,7 @@ function FloatingTorus({ position, mousePosition, speed, index, radius }: Floati
 
   return (
     <mesh ref={mesh} position={position}>
-      <torusGeometry args={[0.4, 0.15, 16, 50]} />
+      <torusGeometry args={[0.4, 0.15, 12, 32]} />
       <meshStandardMaterial
         color="#764ba2"
         wireframe
@@ -627,10 +627,10 @@ interface ThreeBackgroundProps {
   isLowPerformance: boolean;
 }
 
-function Scene({ mousePosition, particleColor, showParticles, showShapes, physicsSpeed, showRocket, isFiring, isLowPerformance }: ThreeBackgroundProps) {
+const Scene = React.memo(function Scene({ mousePosition, particleColor, showParticles, showShapes, physicsSpeed, showRocket, isFiring, isLowPerformance }: ThreeBackgroundProps) {
   const [brokenShapes, setBrokenShapes] = React.useState<Set<number>>(new Set());
 
-  const handleBreakShape = (index: number) => {
+  const handleBreakShape = React.useCallback((index: number) => {
     setBrokenShapes(prev => new Set(prev).add(index));
     // Reset the shape after 2 seconds
     setTimeout(() => {
@@ -640,7 +640,7 @@ function Scene({ mousePosition, particleColor, showParticles, showShapes, physic
         return newSet;
       });
     }, 2000);
-  };
+  }, []);
 
   return (
     <>
@@ -665,7 +665,7 @@ function Scene({ mousePosition, particleColor, showParticles, showShapes, physic
       {showRocket && <Rocket mousePosition={mousePosition} speed={physicsSpeed} isFiring={isFiring} onBreakShape={handleBreakShape} />}
     </>
   );
-}
+});
 
 interface ThreeBackgroundPropsMain {
   particleColor: string;

@@ -31,21 +31,23 @@ const MVPSection: React.FC = () => {
       range: '$900 - $3,000',
       title: 'Simple MVP',
       features: [
-        'Single platform (iOS, Android, or Web)',
-        'Core features only',
-        'Basic backend integration',
-        'Standard UI components',
+        { icon: '📱', text: 'Cross-platform app (iOS + Android)' },
+        { icon: '🎨', text: 'Following client provided designs' },
+        { icon: '🎯', text: 'Core features & functionality' },
+        { icon: '💾', text: 'Basic backend integration' },
+        { icon: '🔐', text: 'User authentication' },
       ],
     },
     {
       range: '$3,000 - $6,500',
       title: 'Standard MVP',
       features: [
-        'Cross-platform (iOS + Android or Web)',
-        'Multiple core features',
-        'Advanced backend & database',
-        'Custom UI/UX design',
-        'Authentication & user management',
+        { icon: '📱', text: 'Cross-platform app (iOS + Android)' },
+        { icon: '⚡', text: 'Custom backend functions' },
+        { icon: '🔔', text: 'Automatic notifications' },
+        { icon: '🌐', text: 'OR Connected website' },
+        { icon: '✨', text: 'Custom UI/UX design' },
+        { icon: '👥', text: 'Advanced user management' },
       ],
       highlighted: true,
     },
@@ -53,12 +55,13 @@ const MVPSection: React.FC = () => {
       range: '$6,500 - $10,000+',
       title: 'Premium MVP',
       features: [
-        'Full cross-platform (iOS + Android + Web)',
-        'Complex feature sets',
-        'Advanced backend architecture',
-        'Custom animations & interactions',
-        'Third-party integrations',
-        'Analytics & monitoring',
+        { icon: '📱', text: 'Cross-platform app (iOS + Android)' },
+        { icon: '⚡', text: 'Custom backend functions' },
+        { icon: '🔔', text: 'Automatic notifications' },
+        { icon: '🌐', text: 'Connected website' },
+        { icon: '🔗', text: 'Advanced integrations' },
+        { icon: '📊', text: 'Analytics & monitoring' },
+        { icon: '🎬', text: 'Custom animations' },
       ],
     },
   ];
@@ -126,8 +129,8 @@ const MVPSection: React.FC = () => {
               <ul className="pricing-features">
                 {tier.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="pricing-feature">
-                    <span className="feature-check">✓</span>
-                    {feature}
+                    <span className="feature-icon">{feature.icon}</span>
+                    {feature.text}
                   </li>
                 ))}
               </ul>
