@@ -10,7 +10,7 @@ interface ParticleFieldProps {
   speed: number;
 }
 
-function ParticleField({ count = 3000, mousePosition, color, speed }: ParticleFieldProps) {
+function ParticleField({ count = 1500, mousePosition, color, speed }: ParticleFieldProps) {
   const points = useRef<THREE.Points>(null);
   const originalPositions = useRef<Float32Array | null>(null);
   const frameCount = useRef(0);
@@ -35,9 +35,9 @@ function ParticleField({ count = 3000, mousePosition, color, speed }: ParticleFi
   useFrame((state) => {
     if (!points.current || !originalPositions.current) return;
 
-    // Skip frames for performance (update every 2 frames)
+    // Skip frames for performance (update every 3 frames)
     frameCount.current++;
-    if (frameCount.current % 2 !== 0) return;
+    if (frameCount.current % 3 !== 0) return;
 
     const time = state.clock.getElapsedTime();
     const positions = points.current.geometry.attributes.position.array as Float32Array;
@@ -48,7 +48,7 @@ function ParticleField({ count = 3000, mousePosition, color, speed }: ParticleFi
     const timeSpeed = time * speed;
 
     // Simplified particle displacement (update only subset for performance)
-    const step = count > 2000 ? 2 : 1; // Update every other particle if count is high
+    const step = count > 1000 ? 3 : 2; // Update every 3rd or 2nd particle
     for (let i = 0; i < count; i += step) {
       const i3 = i * 3;
 
@@ -144,32 +144,7 @@ function FloatingIcosahedron({ position, mousePosition, speed, index, radius }: 
       velocity.current.y -= (dy / distance) * force;
     }
 
-    // Collision detection with other shapes (only every 2nd frame)
-    if (frameCount.current % 2 === 0) {
-      shapePositions.forEach((other, otherIndex) => {
-        if (otherIndex === index || !other) return;
-
-        const dx = mesh.current!.position.x - other.position.x;
-        const dy = mesh.current!.position.y - other.position.y;
-        const distSq = dx * dx + dy * dy;
-        const minDistance = radius + other.radius;
-        const minDistSq = minDistance * minDistance;
-
-        if (distSq < minDistSq && distSq > 0.01) {
-          // Collision detected - push shapes apart
-          const distance = Math.sqrt(distSq);
-          const overlap = minDistance - distance;
-          const pushForce = overlap * 0.5;
-
-          velocity.current.x += (dx / distance) * pushForce;
-          velocity.current.y += (dy / distance) * pushForce;
-
-          // Add some bounce
-          velocity.current.x += (dx / distance) * 0.02;
-          velocity.current.y += (dy / distance) * 0.02;
-        }
-      });
-    }
+    // Collision detection removed for performance
 
     // Apply velocity
     mesh.current.position.x += velocity.current.x * speed;
@@ -200,13 +175,11 @@ function FloatingIcosahedron({ position, mousePosition, speed, index, radius }: 
   return (
     <mesh ref={mesh} position={position}>
       <icosahedronGeometry args={[0.5, 0]} />
-      <meshStandardMaterial
+      <meshBasicMaterial
         color="#FF6B35"
         wireframe
         transparent
-        opacity={0.3}
-        emissive="#FF6B35"
-        emissiveIntensity={0.5}
+        opacity={0.4}
       />
     </mesh>
   );
@@ -248,30 +221,7 @@ function FloatingTorus({ position, mousePosition, speed, index, radius }: Floati
       velocity.current.y -= (dy / distance) * force;
     }
 
-    // Collision detection (every 2nd frame)
-    if (frameCount.current % 2 === 0) {
-      shapePositions.forEach((other, otherIndex) => {
-        if (otherIndex === index || !other) return;
-
-        const dx = mesh.current!.position.x - other.position.x;
-        const dy = mesh.current!.position.y - other.position.y;
-        const distSq = dx * dx + dy * dy;
-        const minDistance = radius + other.radius;
-        const minDistSq = minDistance * minDistance;
-
-        if (distSq < minDistSq && distSq > 0.01) {
-          const distance = Math.sqrt(distSq);
-          const overlap = minDistance - distance;
-          const pushForce = overlap * 0.5;
-
-          velocity.current.x += (dx / distance) * pushForce;
-          velocity.current.y += (dy / distance) * pushForce;
-
-          velocity.current.x += (dx / distance) * 0.02;
-          velocity.current.y += (dx / distance) * 0.02;
-        }
-      });
-    }
+    // Collision detection removed for performance
 
     mesh.current.position.x += velocity.current.x * speed;
     mesh.current.position.y += velocity.current.y * speed;
@@ -295,14 +245,12 @@ function FloatingTorus({ position, mousePosition, speed, index, radius }: Floati
 
   return (
     <mesh ref={mesh} position={position}>
-      <torusGeometry args={[0.4, 0.15, 12, 32]} />
-      <meshStandardMaterial
+      <torusGeometry args={[0.4, 0.15, 8, 24]} />
+      <meshBasicMaterial
         color="#764ba2"
         wireframe
         transparent
-        opacity={0.25}
-        emissive="#764ba2"
-        emissiveIntensity={0.4}
+        opacity={0.3}
       />
     </mesh>
   );
@@ -343,30 +291,7 @@ function FloatingOctahedron({ position, mousePosition, speed, index, radius }: F
       velocity.current.y -= (dy / distance) * force;
     }
 
-    // Collision detection (every 2nd frame)
-    if (frameCount.current % 2 === 0) {
-      shapePositions.forEach((other, otherIndex) => {
-        if (otherIndex === index || !other) return;
-
-        const dx = mesh.current!.position.x - other.position.x;
-        const dy = mesh.current!.position.y - other.position.y;
-        const distSq = dx * dx + dy * dy;
-        const minDistance = radius + other.radius;
-        const minDistSq = minDistance * minDistance;
-
-        if (distSq < minDistSq && distSq > 0.01) {
-          const distance = Math.sqrt(distSq);
-          const overlap = minDistance - distance;
-          const pushForce = overlap * 0.5;
-
-          velocity.current.x += (dx / distance) * pushForce;
-          velocity.current.y += (dy / distance) * pushForce;
-
-          velocity.current.x += (dx / distance) * 0.02;
-          velocity.current.y += (dy / distance) * 0.02;
-        }
-      });
-    }
+    // Collision detection removed for performance
 
     mesh.current.position.x += velocity.current.x * speed;
     mesh.current.position.y += velocity.current.y * speed;
@@ -391,13 +316,11 @@ function FloatingOctahedron({ position, mousePosition, speed, index, radius }: F
   return (
     <mesh ref={mesh} position={position}>
       <octahedronGeometry args={[0.45, 0]} />
-      <meshStandardMaterial
+      <meshBasicMaterial
         color="#667eea"
         wireframe
         transparent
-        opacity={0.3}
-        emissive="#667eea"
-        emissiveIntensity={0.45}
+        opacity={0.35}
       />
     </mesh>
   );
@@ -512,7 +435,7 @@ function Rocket({ mousePosition, speed, isFiring, onBreakShape }: {
     <group ref={group}>
       {/* Rocket body - metallic cone */}
       <mesh position={[0, 0, 0]}>
-        <coneGeometry args={[0.2, 0.7, 12]} />
+        <coneGeometry args={[0.2, 0.7, 8]} />
         <meshStandardMaterial
           color="#FF6B35"
           emissive="#FF6B35"
@@ -522,21 +445,13 @@ function Rocket({ mousePosition, speed, isFiring, onBreakShape }: {
         />
       </mesh>
 
-      {/* Body stripes */}
-      <mesh position={[0, -0.1, 0]}>
-        <cylinderGeometry args={[0.21, 0.21, 0.1, 12]} />
-        <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={0.3} />
-      </mesh>
-
-      {/* Rocket fins - 3 fins for stability */}
+      {/* Rocket fins - simplified to 2 */}
       <mesh position={[0.18, -0.25, 0]} rotation={[0, 0, Math.PI / 6]}>
         <boxGeometry args={[0.2, 0.06, 0.02]} />
         <meshStandardMaterial
           color="#764ba2"
           emissive="#764ba2"
           emissiveIntensity={0.5}
-          metalness={0.7}
-          roughness={0.3}
         />
       </mesh>
       <mesh position={[-0.18, -0.25, 0]} rotation={[0, 0, -Math.PI / 6]}>
@@ -545,24 +460,12 @@ function Rocket({ mousePosition, speed, isFiring, onBreakShape }: {
           color="#764ba2"
           emissive="#764ba2"
           emissiveIntensity={0.5}
-          metalness={0.7}
-          roughness={0.3}
-        />
-      </mesh>
-      <mesh position={[0, -0.25, -0.18]} rotation={[Math.PI / 6, 0, 0]}>
-        <boxGeometry args={[0.2, 0.06, 0.02]} />
-        <meshStandardMaterial
-          color="#764ba2"
-          emissive="#764ba2"
-          emissiveIntensity={0.5}
-          metalness={0.7}
-          roughness={0.3}
         />
       </mesh>
 
-      {/* Rocket flame - animated */}
+      {/* Rocket flame - simplified */}
       <mesh position={[0, -0.45, 0]} scale={[1, flameScale, 1]}>
-        <coneGeometry args={[0.1, 0.4, 8]} />
+        <coneGeometry args={[0.1, 0.4, 6]} />
         <meshStandardMaterial
           color="#FFD700"
           emissive="#FF6B35"
@@ -572,46 +475,10 @@ function Rocket({ mousePosition, speed, isFiring, onBreakShape }: {
         />
       </mesh>
 
-      {/* Inner flame core */}
-      <mesh position={[0, -0.45, 0]} scale={[0.5, flameScale * 0.8, 0.5]}>
-        <coneGeometry args={[0.1, 0.4, 8]} />
-        <meshStandardMaterial
-          color="#ffffff"
-          emissive="#FFD700"
-          emissiveIntensity={flameIntensity * 1.5}
-          transparent
-          opacity={0.8}
-        />
-      </mesh>
-
       {/* Exhaust glow when firing */}
       {isFiring && (
         <pointLight position={[0, -0.5, 0]} intensity={3} distance={2} color="#FF6B35" />
       )}
-
-      {/* Window - glowing cockpit */}
-      <mesh position={[0, 0.2, 0.11]}>
-        <circleGeometry args={[0.1, 16]} />
-        <meshStandardMaterial
-          color="#667eea"
-          emissive="#667eea"
-          emissiveIntensity={1.2}
-          transparent
-          opacity={0.9}
-        />
-      </mesh>
-
-      {/* Nose cone tip */}
-      <mesh position={[0, 0.35, 0]}>
-        <sphereGeometry args={[0.05, 12, 12]} />
-        <meshStandardMaterial
-          color="#FFD700"
-          emissive="#FFD700"
-          emissiveIntensity={0.8}
-          metalness={1}
-          roughness={0.1}
-        />
-      </mesh>
     </group>
   );
 }
@@ -644,9 +511,8 @@ const Scene = React.memo(function Scene({ mousePosition, particleColor, showPart
 
   return (
     <>
-      <ambientLight intensity={0.5} />
-      <pointLight position={[10, 10, 10]} intensity={1} />
-      <pointLight position={[-10, -10, -10]} intensity={0.5} color={particleColor} />
+      <ambientLight intensity={0.6} />
+      <pointLight position={[10, 10, 10]} intensity={0.8} />
 
       {showParticles && (
         <ParticleField mousePosition={mousePosition} color={particleColor} speed={physicsSpeed} />
@@ -657,8 +523,6 @@ const Scene = React.memo(function Scene({ mousePosition, particleColor, showPart
           {!brokenShapes.has(0) && <FloatingIcosahedron position={[-3, 0, -2]} mousePosition={mousePosition} speed={physicsSpeed} index={0} radius={0.6} />}
           {!brokenShapes.has(1) && <FloatingTorus position={[3, -1, -3]} mousePosition={mousePosition} speed={physicsSpeed} index={1} radius={0.55} />}
           {!brokenShapes.has(2) && <FloatingOctahedron position={[0, 2, -2.5]} mousePosition={mousePosition} speed={physicsSpeed} index={2} radius={0.55} />}
-          {!isLowPerformance && !brokenShapes.has(3) && <FloatingIcosahedron position={[4, 1, -4]} mousePosition={mousePosition} speed={physicsSpeed} index={3} radius={0.6} />}
-          {!isLowPerformance && !brokenShapes.has(4) && <FloatingTorus position={[-4, -2, -3.5]} mousePosition={mousePosition} speed={physicsSpeed} index={4} radius={0.55} />}
         </>
       )}
 
@@ -763,7 +627,7 @@ export default function ThreeBackground({
   }, [showRocket]);
 
   // Adaptive particle count based on device performance
-  const particleCount = isMobile ? 500 : isLowPerformance ? 1500 : 3000;
+  const particleCount = isMobile ? 300 : isLowPerformance ? 800 : 1500;
 
   return (
     <div style={{
@@ -778,9 +642,9 @@ export default function ThreeBackground({
       <Canvas
         camera={{ position: [0, 0, 5], fov: 75 }}
         style={{ background: 'transparent' }}
-        dpr={isMobile ? [0.5, 1] : isLowPerformance ? [0.75, 1.25] : [1, 1.5]}
+        dpr={isMobile ? [0.5, 0.75] : isLowPerformance ? [0.75, 1] : [1, 1.25]}
         gl={{
-          antialias: !isLowPerformance,
+          antialias: false,
           alpha: true,
           powerPreference: 'high-performance',
           stencil: false,
