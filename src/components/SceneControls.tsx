@@ -18,8 +18,6 @@ interface SceneControlsProps {
   onParticlesToggle: () => void;
   showShapes: boolean;
   onShapesToggle: () => void;
-  showRocket: boolean;
-  onRocketToggle: () => void;
   physicsSpeed: number;
   onSpeedChange: (speed: number) => void;
   onPresetChange: (preset: ScenePreset) => void;
@@ -34,8 +32,6 @@ const SceneControls: React.FC<SceneControlsProps> = ({
   onParticlesToggle,
   showShapes,
   onShapesToggle,
-  showRocket,
-  onRocketToggle,
   physicsSpeed,
   onSpeedChange,
   onPresetChange,
@@ -128,16 +124,6 @@ const SceneControls: React.FC<SceneControlsProps> = ({
                 whileTap={{ scale: 0.9 }}
               >
                 🔷
-              </motion.button>
-
-              <motion.button
-                className={`icon-btn ${showRocket ? 'active' : ''}`}
-                onClick={onRocketToggle}
-                title="Rocket"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                🚀
               </motion.button>
             </div>
 

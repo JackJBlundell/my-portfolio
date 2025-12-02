@@ -11,7 +11,6 @@ const Hero: React.FC = () => {
   const [particleColor, setParticleColor] = useState('#FF6B35');
   const [showParticles, setShowParticles] = useState(true);
   const [showShapes, setShowShapes] = useState(true);
-  const [showRocket, setShowRocket] = useState(false);
   const [physicsSpeed, setPhysicsSpeed] = useState(1);
   const [backgroundGradient, setBackgroundGradient] = useState('');
 
@@ -70,7 +69,6 @@ const Hero: React.FC = () => {
         particleColor={particleColor}
         showParticles={showParticles}
         showShapes={showShapes}
-        showRocket={showRocket}
         physicsSpeed={physicsSpeed}
       />
 
@@ -83,8 +81,6 @@ const Hero: React.FC = () => {
         onParticlesToggle={() => setShowParticles(!showParticles)}
         showShapes={showShapes}
         onShapesToggle={() => setShowShapes(!showShapes)}
-        showRocket={showRocket}
-        onRocketToggle={() => setShowRocket(!showRocket)}
         physicsSpeed={physicsSpeed}
         onSpeedChange={setPhysicsSpeed}
         onPresetChange={handlePresetChange}
