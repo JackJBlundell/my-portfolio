@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Grid } from 'lucide-react';
 import projectsData from '../data/projects.json';
 import ImageCarousel from '../components/ImageCarousel';
+import SEO from '../components/SEO';
 import { getFeatureIcon, getTechIcon } from '../utils/iconMapping';
 import './ProjectDetail.css';
 
@@ -76,6 +77,14 @@ const ProjectDetail: React.FC = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
     >
+      <SEO
+        title={project.name}
+        description={project.description_short}
+        image={project.media.thumbnail}
+        url={`/projects/${project.slug}`}
+        type="article"
+      />
+
       {/* Corner Navigation */}
       <div className="corner-nav">
         {previousProject && (

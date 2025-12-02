@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import projectsData from '../data/projects.json';
+import SEO from '../components/SEO';
 import './ProjectsIndex.css';
 
 interface Project {
@@ -44,6 +45,11 @@ const ProjectsIndex: React.FC = () => {
 
   return (
     <div className="projects-index">
+      <SEO
+        title="Projects"
+        description="Explore my portfolio of cross-platform applications, backend systems, and innovative solutions built with React, React Native, and modern technologies."
+        url="/projects"
+      />
       <motion.div
         className="projects-index-header"
         initial={{ opacity: 0, y: -20 }}

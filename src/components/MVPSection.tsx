@@ -1,13 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useCurrency } from '../context/CurrencyContext';
+import { formatPrice, formatPriceRange, convertPrice } from '../utils/currency';
+import CurrencySelector from './CurrencySelector';
 import './MVPSection.css';
 
 const MVPSection: React.FC = () => {
+  const { currency } = useCurrency();
+
   const features = [
     {
       icon: '💰',
       title: 'Budget-Friendly',
-      description: 'MVPs starting from $900 without compromising on quality',
+      description: `MVPs starting from ${formatPrice(convertPrice(900, currency), currency)} without compromising on quality`,
     },
     {
       icon: '🎯',
@@ -28,7 +33,7 @@ const MVPSection: React.FC = () => {
 
   const priceRanges = [
     {
-      range: '$900 - $3,000',
+      range: formatPriceRange(900, 3000, currency),
       title: 'Simple MVP',
       features: [
         { icon: '📱', text: 'Cross-platform app (iOS + Android)' },
@@ -39,7 +44,7 @@ const MVPSection: React.FC = () => {
       ],
     },
     {
-      range: '$3,000 - $6,500',
+      range: formatPriceRange(3000, 6500, currency),
       title: 'Standard MVP',
       features: [
         { icon: '📱', text: 'Cross-platform app (iOS + Android)' },
@@ -52,7 +57,7 @@ const MVPSection: React.FC = () => {
       highlighted: true,
     },
     {
-      range: '$6,500 - $10,000+',
+      range: formatPriceRange(6500, 10000, currency, true),
       title: 'Premium MVP',
       features: [
         { icon: '📱', text: 'Cross-platform app (iOS + Android)' },
@@ -76,9 +81,12 @@ const MVPSection: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="section-title">
-            MVP Without <span className="highlight">Breaking the Bank</span>
-          </h2>
+          <div className="mvp-header-top">
+            <h2 className="section-title">
+              MVP Without <span className="highlight">Breaking the Bank</span>
+            </h2>
+            <CurrencySelector />
+          </div>
           <p className="section-subtitle">
             Transform your idea into reality with flexible, client-focused solutions
           </p>

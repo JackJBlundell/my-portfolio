@@ -1,0 +1,129 @@
+.currency-selector {
+  position: relative;
+  z-index: 100;
+}
+
+.currency-selector-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.currency-selector-trigger:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 107, 53, 0.3);
+  color: var(--text-primary);
+}
+
+.currency-flag {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.currency-code {
+  font-weight: 500;
+}
+
+.currency-chevron {
+  display: flex;
+  align-items: center;
+  color: var(--text-muted);
+}
+
+.currency-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 220px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--bg-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  padding: 0.5rem;
+}
+
+.currency-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.currency-dropdown::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.currency-dropdown::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.currency-dropdown::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.currency-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.currency-option:hover {
+  color: var(--text-primary);
+}
+
+.currency-option.selected {
+  background: rgba(255, 107, 53, 0.1);
+  color: var(--accent-primary);
+}
+
+.currency-option .currency-flag {
+  font-size: 1.25rem;
+}
+
+.currency-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.currency-option .currency-code {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: inherit;
+}
+
+.currency-name {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.currency-check {
+  color: var(--accent-primary);
+  font-weight: bold;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .currency-dropdown {
+    left: 0;
+    right: auto;
+    min-width: 200px;
+  }
+}
