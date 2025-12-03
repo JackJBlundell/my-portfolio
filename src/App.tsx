@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import HomePage from './pages/HomePage';
 import ProjectsIndex from './pages/ProjectsIndex';
 import ProjectDetail from './pages/ProjectDetail';
+import About from './pages/About';
 import CustomCursor from './components/CustomCursor';
 import { scrollToHash } from './utils/scrollToSection';
 import './App.css';
@@ -64,11 +65,12 @@ function AppContent() {
       >
         <div className="navbar-container">
           <Link to="/" className="logo">
-            JB<span className="logo-dot">.</span>
+            BL<span className="logo-dot">.</span>
           </Link>
           <div className="nav-links">
             {isHomePage ? (
               <>
+                <Link to="/about" className="nav-link">About</Link>
                 <a href="#skills" className="nav-link">Skills</a>
                 <Link to="/projects" className="nav-link">Projects</Link>
                 <a href="#pricing" className="nav-link">Pricing</a>
@@ -76,6 +78,7 @@ function AppContent() {
               </>
             ) : (
               <>
+                <Link to="/about" className="nav-link">About</Link>
                 <Link to="/#skills" className="nav-link">Skills</Link>
                 <Link to="/projects" className="nav-link">Projects</Link>
                 <Link to="/#pricing" className="nav-link">Pricing</Link>
@@ -90,6 +93,7 @@ function AppContent() {
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<About />} />
           <Route path="/projects" element={<ProjectsIndex />} />
           <Route path="/projects/:slug" element={<ProjectDetail />} />
         </Routes>

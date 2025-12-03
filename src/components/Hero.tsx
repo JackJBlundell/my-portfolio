@@ -128,7 +128,7 @@ const Hero: React.FC = () => {
           className="hero-title"
           variants={itemVariants}
         >
-          Jack Blundell
+          Blundell Labs
         </motion.h1>
 
         <motion.div className="hero-subtitle" variants={itemVariants}>
@@ -136,27 +136,26 @@ const Hero: React.FC = () => {
           <span className="separator">|</span>
           <span className="gradient-text">React Native</span>
           <span className="separator">|</span>
-          <span className="gradient-text">App Developer</span>
+          <span className="gradient-text">MVP Specialists</span>
         </motion.div>
 
         <motion.p className="hero-tagline" variants={itemVariants}>
-          Passionate about making{' '}
-          <span className="emphasis">f*cking amazing technology</span>
+          Building{' '}
+          <span className="emphasis">enterprise-quality MVPs at startup speed</span>
         </motion.p>
 
         <motion.p className="hero-description" variants={itemVariants}>
-          Your go-to developer for turning MVP ideas into reality.
+          AI-powered development meets battle-tested expertise.
           <br />
-          From concept to launch, I build cross-platform experiences that users
-          love.
+          From concept to launch, we build scalable apps that don't break the bank.
         </motion.p>
 
         <motion.div className="hero-cta" variants={itemVariants}>
           <MagneticButton href="#contact" className="cta-button primary">
-            Let's Build Something
+            Start Your Project
           </MagneticButton>
           <MagneticButton href="#projects" className="cta-button secondary">
-            View My Work
+            View Our Work
           </MagneticButton>
         </motion.div>
 

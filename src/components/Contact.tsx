@@ -130,9 +130,9 @@ const Contact: React.FC = () => {
           >
             <h3 className="contact-info-title">Get in Touch</h3>
             <p className="contact-info-text">
-              I'm always excited to hear about new projects and opportunities.
+              We're always excited to hear about new projects and opportunities.
               Whether you're a startup looking to build your MVP or an
-              established business needing a mobile solution, I'm here to help.
+              established business needing a mobile solution, we're here to help.
             </p>
 
             <div className="contact-details">
@@ -164,7 +164,7 @@ const Contact: React.FC = () => {
             </div>
 
             <div className="social-links">
-              <h4>Connect with me</h4>
+              <h4>Connect with us</h4>
               <div className="social-icons">
                 <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="LinkedIn">
                   💼
@@ -418,7 +418,7 @@ const Contact: React.FC = () => {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                 >
-                  Thanks for reaching out! I'll get back to you soon.
+                  Thanks for reaching out! We'll get back to you soon.
                 </motion.p>
               )}
 
@@ -438,8 +438,7 @@ const Contact: React.FC = () => {
 
       <footer className="footer">
         <p>
-          &copy; 2025 Jack Blundell. Built with React & passion for amazing
-          technology.
+          &copy; 2025 Blundell Labs. Built with React & AI-powered precision.
         </p>
       </footer>
     </section>

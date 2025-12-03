@@ -6,9 +6,9 @@ interface SEOProps {
   type?: 'website' | 'article';
 }
 
-const BASE_URL = 'https://jackblundell.dev';
-const DEFAULT_TITLE = 'Jack Blundell | React & React Native Developer | MVP Specialist';
-const DEFAULT_DESCRIPTION = 'Full-stack developer specializing in cross-platform mobile and web applications. Expert in React.js, React Native, Firebase, and AWS. Building MVPs from $900 to $10,000.';
+const BASE_URL = 'https://blundell-labs.com';
+const DEFAULT_TITLE = 'Blundell Labs | AI-Powered MVP Development';
+const DEFAULT_DESCRIPTION = 'Enterprise-quality MVPs at startup speed. We combine AI-powered development with battle-tested expertise to build scalable React and React Native apps that don\'t break the bank.';
 const DEFAULT_IMAGE = `${BASE_URL}/og-image.jpg`;
 
 const SEO: React.FC<SEOProps> = ({
@@ -18,7 +18,7 @@ const SEO: React.FC<SEOProps> = ({
   url,
   type = 'website',
 }) => {
-  const fullTitle = title ? `${title} | Jack Blundell` : DEFAULT_TITLE;
+  const fullTitle = title ? `${title} | Blundell Labs` : DEFAULT_TITLE;
   const fullUrl = url ? `${BASE_URL}${url}` : BASE_URL;
   const fullImage = image ? (image.startsWith('http') ? image : `${BASE_URL}${image}`) : DEFAULT_IMAGE;
 
@@ -35,7 +35,7 @@ const SEO: React.FC<SEOProps> = ({
       <meta property="og:image" content={fullImage} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
-      <meta property="og:site_name" content="Jack Blundell Portfolio" />
+      <meta property="og:site_name" content="Blundell Labs" />
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:url" content={fullUrl} />
