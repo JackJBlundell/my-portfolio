@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { HelmetProvider } from 'react-helmet-async';
 import { CurrencyProvider } from './context/CurrencyContext';
 import './index.css';
 import App from './App';
@@ -11,11 +10,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <HelmetProvider>
-      <CurrencyProvider>
-        <App />
-      </CurrencyProvider>
-    </HelmetProvider>
+    <CurrencyProvider>
+      <App />
+    </CurrencyProvider>
   </React.StrictMode>
 );
 

@@ -1,5 +1,3 @@
-import { Helmet } from 'react-helmet-async';
-
 interface SEOProps {
   title?: string;
   description?: string;
@@ -25,13 +23,11 @@ const SEO: React.FC<SEOProps> = ({
   const fullImage = image ? (image.startsWith('http') ? image : `${BASE_URL}${image}`) : DEFAULT_IMAGE;
 
   return (
-    <Helmet>
-      {/* Primary Meta Tags */}
+    <>
       <title>{fullTitle}</title>
       <meta name="title" content={fullTitle} />
       <meta name="description" content={description} />
 
-      {/* Open Graph / Facebook */}
       <meta property="og:type" content={type} />
       <meta property="og:url" content={fullUrl} />
       <meta property="og:title" content={fullTitle} />
@@ -41,16 +37,14 @@ const SEO: React.FC<SEOProps> = ({
       <meta property="og:image:height" content="630" />
       <meta property="og:site_name" content="Jack Blundell Portfolio" />
 
-      {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:url" content={fullUrl} />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={fullImage} />
 
-      {/* Canonical URL */}
       <link rel="canonical" href={fullUrl} />
-    </Helmet>
+    </>
   );
 };
 
