@@ -7,8 +7,8 @@ interface SEOProps {
 }
 
 const BASE_URL = 'https://blundell-labs.com';
-const DEFAULT_TITLE = 'Blundell Labs | AI-Powered MVP Development';
-const DEFAULT_DESCRIPTION = 'Enterprise-quality MVPs at startup speed. We combine AI-powered development with battle-tested expertise to build scalable React and React Native apps that don\'t break the bank.';
+const DEFAULT_TITLE = 'Blundell Labs | MVP Development Experts';
+const DEFAULT_DESCRIPTION = 'Enterprise-quality MVPs at startup speed. We combine modern development practices with battle-tested expertise to build scalable React and React Native apps that don\'t break the bank.';
 const DEFAULT_IMAGE = `${BASE_URL}/og-image.jpg`;
 
 const SEO: React.FC<SEOProps> = ({

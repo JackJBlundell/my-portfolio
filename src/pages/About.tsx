@@ -30,7 +30,7 @@ const About: React.FC = () => {
     <div className="about-page">
       <SEO
         title="About"
-        description="Blundell Labs was born from years of experience building MVPs the hard way. Now we combine AI-powered development with battle-tested expertise to deliver enterprise-quality apps at startup speed."
+        description="Blundell Labs was born from years of experience building MVPs the hard way. Now we combine modern development practices with battle-tested expertise to deliver enterprise-quality apps at startup speed."
         url="/about"
       />
 
@@ -63,15 +63,15 @@ const About: React.FC = () => {
           <div className="story-section">
             <h2>Then Everything Changed</h2>
             <p>
-              AI arrived. As someone who went to university and trained as a software
-              engineer, it was scary. The landscape was shifting beneath everyone's feet.
+              We embraced modern tooling and streamlined workflows. As the development
+              landscape evolved, we adapted—finding smarter ways to build without
+              sacrificing quality.
             </p>
             <p>
-              But instead of seeing it as a threat, we saw an opportunity. What if we
-              could combine AI-powered development with years of real-world experience
-              building and scaling applications? What if we could use these new tools
-              alongside our battle-tested processes to create high-quality, scalable
-              apps at an incredible pace—and at an even better rate?
+              What if we could combine cutting-edge development practices with years
+              of real-world experience building and scaling applications? What if we
+              could use modern tools alongside our battle-tested processes to create
+              high-quality, scalable apps at an incredible pace—and at an even better rate?
             </p>
           </div>
 
@@ -81,7 +81,7 @@ const About: React.FC = () => {
               Since then, we've helped countless startups build amazing MVPs and
               enterprise-ready solutions at prices that actually make sense. We bring
               the expertise of a senior development team with the efficiency that
-              modern AI tools provide.
+              modern tooling provides.
             </p>
             <p>
               The result? You get production-ready applications that are built to
@@ -97,7 +97,7 @@ const About: React.FC = () => {
               <div className="value-icon">⚡</div>
               <h3>Speed Without Compromise</h3>
               <p>
-                AI-powered workflows let us move fast, but our engineering
+                Streamlined workflows let us move fast, but our engineering
                 background ensures we never cut corners on quality.
               </p>
             </div>

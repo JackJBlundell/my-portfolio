@@ -145,7 +145,7 @@ const Hero: React.FC = () => {
         </motion.p>
 
         <motion.p className="hero-description" variants={itemVariants}>
-          AI-powered development meets battle-tested expertise.
+          Modern development meets battle-tested expertise.
           <br />
           From concept to launch, we build scalable apps that don't break the bank.
         </motion.p>

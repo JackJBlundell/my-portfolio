@@ -4,8 +4,8 @@
       "id": "routebuddies",
       "slug": "routebuddies",
       "name": "RouteBuddies",
-      "description_short": "A multi-platform personal safety ecosystem featuring mobile apps, an Apple Watch companion, community modes, crime mapping and AI-powered content protection.",
-      "description_long": "RouteBuddies is a safety-focused mobile and wearable ecosystem designed to give users a trusted way to buddy up, stay aware, and navigate their environments securely. Originally started as a personal learning project in 2020, the platform has grown into a full suite of applications including a consumer app, an Apple Watch companion app, a web-based admin panel, and enterprise/education-specific versions with custom UI themes and permission models.\n\nThe platform helps users connect with verified local communities, plan and track activities, view crime data from the UK Police API, share live locations, use automated and manual SOS functions, and receive personalised safety reminders. Community-specific modes such as Festival Mode, Education Mode, and Enterprise Mode provide private, branded spaces for organisations to run their own instance of the RouteBuddies experience. AI-powered content moderation ensures user-uploaded images remain safe and appropriate across the entire network.",
+      "description_short": "A multi-platform personal safety ecosystem featuring mobile apps, an Apple Watch companion, community modes, crime mapping and automated content protection.",
+      "description_long": "RouteBuddies is a safety-focused mobile and wearable ecosystem designed to give users a trusted way to buddy up, stay aware, and navigate their environments securely. Originally started as a personal learning project in 2020, the platform has grown into a full suite of applications including a consumer app, an Apple Watch companion app, a web-based admin panel, and enterprise/education-specific versions with custom UI themes and permission models.\n\nThe platform helps users connect with verified local communities, plan and track activities, view crime data from the UK Police API, share live locations, use automated and manual SOS functions, and receive personalised safety reminders. Community-specific modes such as Festival Mode, Education Mode, and Enterprise Mode provide private, branded spaces for organisations to run their own instance of the RouteBuddies experience. Automated content moderation ensures user-uploaded images remain safe and appropriate across the entire network.",
       "tech": [
         "Swift",
         "Kotlin",
@@ -22,7 +22,7 @@
         "Backend Functions",
         "Navigation",
         "Device Notifications",
-        "AI"
+        "Content Moderation"
       ],
       "media": {
         "thumbnail": "/img/routebuddies/screen1.png",
@@ -128,10 +128,10 @@
           ]
         },
         {
-          "title": "AI & Content Moderation",
-          "category": "AI",
+          "title": "Content Moderation",
+          "category": "Content Moderation",
           "features": [
-            "AI-Powered Image Moderation",
+            "Automated Image Moderation",
             "Inappropriate Content Detection",
             "Automated Content Flagging",
             "Safe Community Environment Protection"
@@ -263,13 +263,14 @@
       "id": "betblock",
       "slug": "betblock",
       "name": "BetBlock",
-      "description_short": "A cross-platform wellbeing app supporting gambling recovery through subscriptions, progress tracking, financial awareness tools, and community resources.",
-      "description_long": "BetBlock is a subscription-based wellbeing and support app designed to assist individuals in gambling recovery. The app provides guided onboarding, personalised financial insights, motivational tracking, SOS emergency support, interactive games for healthy cognitive engagement, and community-driven resources.\n\nUsers can authenticate via Apple or Google, subscribe monthly or annually, track their savings, monitor spending risk patterns, access community feeds, and receive financial warnings or behavioural nudges to encourage better habits. The dashboard offers a clean, supportive interface designed to encourage long-term engagement and accountability.",
-      "tech": ["React Native", "Swift", "Kotlin", "Firebase", "RevenueCat"],
+      "description_short": "A cross-platform wellbeing app supporting gambling recovery through subscriptions, progress tracking, financial awareness tools, an AI-powered support chatbot, and community resources.",
+      "description_long": "BetBlock is a subscription-based wellbeing and support app designed to assist individuals in gambling recovery. The app provides guided onboarding, personalised financial insights, motivational tracking, SOS emergency support, an AI-powered chatbot for 24/7 support, interactive games for healthy cognitive engagement, and community-driven resources.\n\nUsers can authenticate via Apple or Google, subscribe monthly or annually, track their savings, monitor spending risk patterns, access community feeds, chat with an OpenAI-powered support assistant, and receive financial warnings or behavioural nudges to encourage better habits. The dashboard offers a clean, supportive interface designed to encourage long-term engagement and accountability.",
+      "tech": ["React Native", "Swift", "Kotlin", "Firebase", "RevenueCat", "OpenAI"],
       "categories": [
         "Cross-Platform App",
         "Subscription Platform",
         "Wellbeing",
+        "AI",
         "Notifications"
       ],
       "media": {
@@ -296,7 +297,9 @@
             "Progress Tracking",
             "Behavioural Nudges",
             "SOS Support Button",
-            "Crisis Guidance"
+            "Crisis Guidance",
+            "AI-Powered Support Chatbot",
+            "OpenAI Integration"
           ]
         },
         {
@@ -342,7 +345,7 @@
       "id": "alzheimers-smart-speaker",
       "slug": "alzheimers-smart-speaker",
       "name": "Alzheimers Smart Speaker",
-      "description_short": "A research-driven smart speaker prototype using Python, voice AI, and a companion mobile app to support dementia and Alzheimer’s patients with reminders, wellbeing checks, and SOS alerts.",
+      "description_short": "A research-driven smart speaker prototype using Python, voice AI, and a companion mobile app to support dementia and Alzheimer's patients with reminders, wellbeing checks, and SOS alerts.",
       "description_long": "The Alzheimer's Smart Speaker project was developed at Cardiff University as part of a research initiative exploring conversational AI for dementia support. As project lead, I developed both the hardware prototype and the cross-platform companion app.\n\nThe physical device, built using a Raspberry Pi, included motion sensors to trigger wellbeing check-ins, natural voice conversations, radio playback, news reading, and medication reminders. Custom Python scripts and Mycroft AI handled voice recognition, conversation flows, and automated behaviours.\n\nThe companion mobile app enables caregivers to configure medical information, schedule events, receive SOS alerts, and send direct messages to the smart speaker. Both systems communicate bi-directionally in real time using Firebase, enabling seamless integration between hardware and mobile.",
       "tech": [
         "Raspberry Pi",

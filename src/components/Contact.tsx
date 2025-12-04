@@ -438,7 +438,7 @@ const Contact: React.FC = () => {
 
       <footer className="footer">
         <p>
-          &copy; 2025 Blundell Labs. Built with React & AI-powered precision.
+          &copy; 2025 Blundell Labs. Built with React.
         </p>
       </footer>
     </section>
