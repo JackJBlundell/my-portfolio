@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Grid } from 'lucide-react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { ChevronLeft, ChevronRight, Grid, Check } from 'lucide-react';
 import projectsData from '../data/projects.json';
-import ImageCarousel from '../components/ImageCarousel';
 import SEO from '../components/SEO';
-import { getFeatureIcon, getTechIcon } from '../utils/iconMapping';
-import './ProjectDetail.css';
+import { getTechIcon } from '../utils/iconMapping';
+import { absoluteUrl, breadcrumbList, ORGANIZATION_ID } from '../utils/seo';
 
 interface FeatureGroup {
   title: string;
@@ -25,6 +23,7 @@ interface Project {
   media: {
     thumbnail: string;
     images: string[];
+    alts?: string[];
   };
   featureGroups: FeatureGroup[];
 }
@@ -33,6 +32,7 @@ const ProjectDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<string>('');
+  const [currentImage, setCurrentImage] = useState(0);
 
   const projects: Project[] = projectsData.projects;
   const project = projects.find((p) => p.slug === slug);
@@ -46,13 +46,14 @@ const ProjectDetail: React.FC = () => {
     if (project && project.categories.length > 0) {
       setActiveTab(project.categories[0]);
     }
+    setCurrentImage(0);
   }, [project]);
 
   if (!project) {
     return (
-      <div className="project-detail-error">
-        <h1>Project Not Found</h1>
-        <button onClick={() => navigate('/projects')}>
+      <div style={{ textAlign: 'center', padding: '10rem 2rem' }}>
+        <h1 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '1rem' }}>Project Not Found</h1>
+        <button className="btn btn-primary" onClick={() => navigate('/projects')}>
           View All Projects
         </button>
       </div>
@@ -62,280 +63,189 @@ const ProjectDetail: React.FC = () => {
   const previousProject = currentIndex > 0 ? projects[currentIndex - 1] : null;
   const nextProject = currentIndex < projects.length - 1 ? projects[currentIndex + 1] : null;
 
-  // Group features by category
   const getFeaturesForCategory = (category: string): FeatureGroup[] => {
-    return project.featureGroups.filter((group) =>
-      group.category === category
+    return project.featureGroups.filter((group) => group.category === category);
+  };
+
+  const nextImage = () => {
+    setCurrentImage((prev) => (prev + 1) % project.media.images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImage((prev) =>
+      prev === 0 ? project.media.images.length - 1 : prev - 1
     );
   };
 
   return (
-    <motion.div
-      className="project-detail"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.4 }}
-    >
+    <div className="project-detail">
       <SEO
         title={project.name}
         description={project.description_short}
-        image={project.media.thumbnail}
+        // Share previews use the original PNG; not every social network renders WebP
+        image={project.media.thumbnail.replace(/\.webp$/, '.png')}
+        imageAlt={project.media.alts?.[0]}
         url={`/projects/${project.slug}`}
         type="article"
+        jsonLd={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'CreativeWork',
+            name: project.name,
+            description: project.description_short,
+            url: absoluteUrl(`/projects/${project.slug}`),
+            image: project.media.images.map(absoluteUrl),
+            creator: { '@id': ORGANIZATION_ID },
+            keywords: [...project.categories, ...project.tech].join(', '),
+          },
+          breadcrumbList([
+            { name: 'Home', path: '/' },
+            { name: 'Projects', path: '/projects' },
+            { name: project.name, path: `/projects/${project.slug}` },
+          ]),
+        ]}
       />
 
-      {/* Corner Navigation */}
-      <div className="corner-nav">
-        {previousProject && (
-          <motion.button
-            className="corner-nav-button corner-nav-prev"
-            onClick={() => navigate(`/projects/${previousProject.slug}`)}
-            initial={{ x: -50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.2, type: 'spring' as const }}
-            whileHover={{ scale: 1.05, x: -5 }}
-          >
-            <ChevronLeft size={20} />
-            <span>Previous</span>
-          </motion.button>
-        )}
-
-        {nextProject && (
-          <motion.button
-            className="corner-nav-button corner-nav-next"
-            onClick={() => navigate(`/projects/${nextProject.slug}`)}
-            initial={{ x: 50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.2, type: 'spring' as const }}
-            whileHover={{ scale: 1.05, x: 5 }}
-          >
-            <span>Next</span>
-            <ChevronRight size={20} />
-          </motion.button>
-        )}
+      <div className="breadcrumb">
+        <Link to="/">Home</Link>
+        <span className="breadcrumb-separator">/</span>
+        <Link to="/projects">Projects</Link>
+        <span className="breadcrumb-separator">/</span>
+        <span>{project.name}</span>
       </div>
 
-      {/* Hero Section */}
-      <motion.div
-        className="project-hero"
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6 }}
-      >
-        <h1 className="project-detail-title">{project.name}</h1>
-
-        <motion.div
-          className="project-categories-hero"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
+      {/* Header */}
+      <div className="project-detail-header">
+        <h1>{project.name}</h1>
+        <div className="project-categories">
           {project.categories.map((category, index) => (
-            <motion.span
-              key={index}
-              className="category-pill-hero"
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{
-                delay: 0.3 + index * 0.05,
-                type: 'spring' as const,
-                stiffness: 200,
-              }}
-            >
-              {category}
-            </motion.span>
+            <span key={index} className="tag">{category}</span>
           ))}
-        </motion.div>
-
-        <motion.p
-          className="project-description-short"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-        >
-          {project.description_short}
-        </motion.p>
-      </motion.div>
+        </div>
+        <p className="project-short-desc">{project.description_short}</p>
+      </div>
 
       {/* Image Carousel */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-      >
-        <ImageCarousel images={project.media.images} projectName={project.name} />
-      </motion.div>
+      {project.media.images.length > 0 && (
+        <div className="project-carousel">
+          <div className="carousel-wrapper">
+            <img
+              src={project.media.images[currentImage]}
+              alt={project.media.alts?.[currentImage] ?? `${project.name} screenshot ${currentImage + 1}`}
+              className="carousel-image"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+            {project.media.images.length > 1 && (
+              <>
+                <button className="carousel-btn carousel-btn-prev" onClick={prevImage}>
+                  <ChevronLeft size={20} />
+                </button>
+                <button className="carousel-btn carousel-btn-next" onClick={nextImage}>
+                  <ChevronRight size={20} />
+                </button>
+              </>
+            )}
+          </div>
+          {project.media.images.length > 1 && (
+            <div className="carousel-dots">
+              {project.media.images.map((_, index) => (
+                <button
+                  key={index}
+                  className={`carousel-dot ${index === currentImage ? 'active' : ''}`}
+                  onClick={() => setCurrentImage(index)}
+                  aria-label={`Go to image ${index + 1}`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Long Description */}
-      <motion.div
-        className="project-description-long"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.6 }}
-      >
+      <div className="project-long-desc">
         {project.description_long.split('\n\n').map((paragraph, index) => (
           <p key={index}>{paragraph}</p>
         ))}
-      </motion.div>
+      </div>
 
       {/* Technology Stack */}
-      <motion.div
-        className="tech-stack-section"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
-        <h2 className="section-heading">Technology Stack</h2>
-        <div className="tech-grid">
-          {project.tech.map((tech, index) => {
+      <div className="project-tech">
+        <h2>Technology Stack</h2>
+        <div className="project-tech-grid">
+          {project.tech.map((tech) => {
             const TechIcon = getTechIcon(tech);
             return (
-              <motion.div
-                key={index}
-                className="tech-item"
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ scale: 1.05 }}
-              >
-                <TechIcon size={28} className="tech-icon" />
-                <span className="tech-name">{tech}</span>
-              </motion.div>
+              <div key={tech} className="tech-tag" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <TechIcon size={16} />
+                {tech}
+              </div>
             );
           })}
         </div>
-      </motion.div>
+      </div>
 
-      {/* Tabs Section */}
-      <motion.div
-        className="tabs-section"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="tabs-header">
+      {/* Feature Tabs */}
+      <div className="project-features">
+        <h2>Features</h2>
+        <div className="feature-tabs">
           {project.categories.map((category) => (
-            <motion.button
+            <button
               key={category}
-              className={`tab-button-detail ${activeTab === category ? 'active' : ''}`}
+              className={`feature-tab ${activeTab === category ? 'active' : ''}`}
               onClick={() => setActiveTab(category)}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
             >
               {category}
-              {activeTab === category && (
-                <motion.div
-                  className="tab-underline"
-                  layoutId="activeTabUnderline"
-                  transition={{ type: 'spring' as const, stiffness: 300, damping: 30 }}
-                />
-              )}
-            </motion.button>
+            </button>
           ))}
         </div>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            className="tab-content"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            {getFeaturesForCategory(activeTab).map((group, groupIndex) => (
-              <motion.div
-                key={groupIndex}
-                className="feature-group"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: groupIndex * 0.1 }}
-              >
-                <h3 className="feature-group-title">{group.title}</h3>
-                <div className="features-list">
-                  {group.features.map((feature, featureIndex) => {
-                    const FeatureIcon = getFeatureIcon(feature);
-                    return (
-                      <motion.div
-                        key={featureIndex}
-                        className="feature-item"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: (groupIndex * 0.1) + (featureIndex * 0.03) }}
-                      >
-                        <motion.div
-                          className="feature-icon-wrapper"
-                          initial={{ scale: 0.8 }}
-                          animate={{ scale: 1 }}
-                          transition={{
-                            delay: (groupIndex * 0.1) + (featureIndex * 0.03) + 0.1,
-                            type: 'spring' as const,
-                          }}
-                        >
-                          <FeatureIcon size={20} className="feature-icon" />
-                        </motion.div>
-                        <span className="feature-text">{feature}</span>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
-      </motion.div>
+        <div>
+          {getFeaturesForCategory(activeTab).map((group, groupIndex) => (
+            <div key={groupIndex} className="feature-group">
+              <h3>{group.title}</h3>
+              <div className="feature-list">
+                {group.features.map((feature, featureIndex) => (
+                  <div key={featureIndex} className="feature-item">
+                    <Check size={16} className="feature-item-icon" />
+                    <span>{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Bottom Navigation */}
-      <motion.div
-        className="bottom-nav"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
-        {previousProject && (
-          <motion.button
-            className="bottom-nav-button"
+      <div className="project-nav">
+        {previousProject ? (
+          <button
+            className="project-nav-btn"
             onClick={() => navigate(`/projects/${previousProject.slug}`)}
-            whileHover={{ scale: 1.02, x: -5 }}
           >
-            <ChevronLeft size={24} />
-            <div className="bottom-nav-content">
-              <span className="bottom-nav-label">Previous Project</span>
-              <span className="bottom-nav-title">{previousProject.name}</span>
-            </div>
-          </motion.button>
-        )}
+            <ChevronLeft size={18} />
+            {previousProject.name}
+          </button>
+        ) : <div />}
 
-        <motion.button
-          className="bottom-nav-button bottom-nav-all"
-          onClick={() => navigate('/projects')}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Grid size={24} />
-          <span>All Projects</span>
-        </motion.button>
+        <Link to="/projects" className="project-nav-btn">
+          <Grid size={18} />
+          All Projects
+        </Link>
 
-        {nextProject && (
-          <motion.button
-            className="bottom-nav-button"
+        {nextProject ? (
+          <button
+            className="project-nav-btn"
             onClick={() => navigate(`/projects/${nextProject.slug}`)}
-            whileHover={{ scale: 1.02, x: 5 }}
           >
-            <div className="bottom-nav-content">
-              <span className="bottom-nav-label">Next Project</span>
-              <span className="bottom-nav-title">{nextProject.name}</span>
-            </div>
-            <ChevronRight size={24} />
-          </motion.button>
-        )}
-      </motion.div>
-    </motion.div>
+            {nextProject.name}
+            <ChevronRight size={18} />
+          </button>
+        ) : <div />}
+      </div>
+    </div>
   );
 };
 

@@ -1,22 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { CurrencyProvider } from './context/CurrencyContext';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+// public/index.html ships a fallback <title> for crawlers that don't run JS; each page renders its own via SEO.tsx
+document.querySelector('title[data-fallback]')?.remove();
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <CurrencyProvider>
-      <App />
-    </CurrencyProvider>
+    <App />
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

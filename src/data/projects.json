@@ -1,6 +1,240 @@
 {
   "projects": [
     {
+      "id": "safentia",
+      "slug": "safentia",
+      "name": "Safentia",
+      "description_short": "A multi-tenant fire risk assessment platform that takes assessments from offline on-site capture, through auditor validation, to branded server-generated PDF reports and live building risk tracking.",
+      "description_long": "Safentia is a fire risk assessment platform built for Firerite (UK) Limited to replace a workflow of paper notes, office software and hand-assembled reports with one evidenced system. Assessors capture findings on site with a native iOS and Android app, auditors validate them question by question, and a formal branded PDF report is generated on the server from the validated record. Assessments follow PAS 79-1:2020 for general premises, BS 9792 for housing, or an organisation's own versioned templates.\n\nThe platform serves four audiences. Assessors work through scheduled jobs fully offline, attaching titled photo evidence, pinning findings on floor plans and recording non-conformities with a severity, responsible party, due date and Life Protection flag. Auditors review submissions in a validation queue and send clarification requests back to the assessor as a single flag basket. Administrators manage customers, buildings, templates and service schedules from a web console with an estate-wide risk overview. Customers are invited into a scoped portal to see their fire safety position, open actions and released reports.\n\nThe mobile app is built in React Native with Firebase, using local persistence and automatic background sync so capture keeps working in basements and plant rooms with no signal. The web console is a React and Vite application, backed by Node.js Cloud Functions that handle PDF generation, AI-assisted narrative drafting through OpenAI, Stripe billing and strict per-organisation data isolation.",
+      "tech": [
+        "React Native",
+        "React.js",
+        "Node.js",
+        "Firebase",
+        "TypeScript",
+        "Vite",
+        "OpenAI",
+        "Stripe.js",
+        "Mapbox",
+        "PDFKit"
+      ],
+      "categories": [
+        "Cross-Platform App",
+        "Web Application",
+        "Customer Portal",
+        "Reporting",
+        "AI",
+        "Backend Functions"
+      ],
+      "media": {
+        "thumbnail": "/img/safentia/1.webp",
+        "images": [
+          "/img/safentia/1.webp",
+          "/img/safentia/2.webp",
+          "/img/safentia/3.webp",
+          "/img/safentia/4.webp",
+          "/img/safentia/5.webp"
+        ],
+        "alts": [
+          "Safentia fire risk assessment app screens alongside the admin risk dashboard",
+          "Safentia assessor app with offline assessments, floor plan flagging and AI-drafted narrative",
+          "Safentia auditor validation queue and flag basket for clarification requests",
+          "Safentia admin console showing estate risk distribution and the customer list",
+          "Safentia customer portal showing fire safety position and building risk status"
+        ]
+      },
+      "featureGroups": [
+        {
+          "title": "Assessor App",
+          "category": "Cross-Platform App",
+          "features": [
+            "Email, Apple & Google Sign-In",
+            "Active, Upcoming & Past Job Lists",
+            "Job Location Map with Directions",
+            "Templated Assessment Sections with Progress Tracking",
+            "Copy Answers from a Past Assessment",
+            "Titled Photo Evidence per Question",
+            "Non-Conformities with Severity, Responsible Party & Due Date",
+            "Life Protection Flagging",
+            "Searchable Assessment History",
+            "Push Notifications"
+          ]
+        },
+        {
+          "title": "Floor Plans & Building Log Book",
+          "category": "Cross-Platform App",
+          "features": [
+            "Upload Floor Plans from Camera, Gallery, PDF or Drawing",
+            "Pin Findings on Floor Plans by Severity",
+            "Append-Only Building Log Book",
+            "Fire Incident, False Alarm & Fire Exit Door Check Entries"
+          ]
+        },
+        {
+          "title": "Offline Capture & Sync",
+          "category": "Cross-Platform App",
+          "features": [
+            "Fully Offline Assessment Capture",
+            "On-Device Storage of Answers & Photos",
+            "Automatic Sync When Coverage Returns",
+            "Image Compression for Faster Uploads"
+          ]
+        },
+        {
+          "title": "Auditor Validation",
+          "category": "Web Application",
+          "features": [
+            "Validation Queue, Oldest Submission First",
+            "Question-by-Question Review",
+            "Flag Basket for Clarification Requests",
+            "Return to Assessor as More Information Required",
+            "Auditable Assessor & Auditor Exchange",
+            "Five-Stage Validation Lifecycle Through to Release"
+          ]
+        },
+        {
+          "title": "Admin Console",
+          "category": "Web Application",
+          "features": [
+            "Estate Risk Distribution Dashboard",
+            "High, Medium, Low & Not Yet Assessed Building Counts",
+            "Overdue & Life Protection Action Tracking",
+            "Upcoming FRA Review Alerts",
+            "Customer, Site & Building Management",
+            "Custom & Versioned Assessment Templates",
+            "Service Schedules for Alarms, Drills, Training, PAT & Extinguishers",
+            "Role-Based Access for Admins, Assessors, Auditors, Finance & Viewers"
+          ]
+        },
+        {
+          "title": "Customer Portal",
+          "category": "Customer Portal",
+          "features": [
+            "Invite-Only Access Scoped to the Customer's Own Premises",
+            "Fire Safety Position Overview",
+            "Buildings Needing Attention",
+            "Building RAG Status, Open & Overdue Actions",
+            "Released Report Access & Acceptance",
+            "Team Management & Multi-Organisation Switching"
+          ]
+        },
+        {
+          "title": "PDF Reports",
+          "category": "Reporting",
+          "features": [
+            "Server-Side PDF Generation from the Validated Record",
+            "Green, Amber & Red Risk Profile",
+            "Transparent Question Tables",
+            "Severity-Ordered Action Plan with Photos & Floor Plan Locations",
+            "Organisation Branding & Sign-Off Fields"
+          ]
+        },
+        {
+          "title": "AI Assistance",
+          "category": "AI",
+          "features": [
+            "AI-Drafted Assessor Narrative from Recorded Findings",
+            "OpenAI Integration",
+            "Editable Drafts That Save Automatically"
+          ]
+        },
+        {
+          "title": "Backend Services",
+          "category": "Backend Functions",
+          "features": [
+            "Multi-Tenant Data Isolation per Organisation",
+            "Firebase Authentication & App Check",
+            "Realtime Database & Cloud Storage",
+            "Node.js Cloud Functions",
+            "Stripe Subscription Billing",
+            "EU Data Hosting (europe-west1)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "betblock",
+      "slug": "betblock",
+      "name": "BetBlock",
+      "description_short": "A cross-platform wellbeing app supporting gambling recovery through subscriptions, progress tracking, financial awareness tools, an AI-powered support chatbot, and community resources.",
+      "description_long": "BetBlock is a subscription-based wellbeing and support app designed to assist individuals in gambling recovery. The app provides guided onboarding, personalised financial insights, motivational tracking, SOS emergency support, an AI-powered chatbot for 24/7 support, interactive games for healthy cognitive engagement, and community-driven resources.\n\nUsers can authenticate via Apple or Google, subscribe monthly or annually, track their savings, monitor spending risk patterns, access community feeds, chat with an OpenAI-powered support assistant, and receive financial warnings or behavioural nudges to encourage better habits. The dashboard offers a clean, supportive interface designed to encourage long-term engagement and accountability.",
+      "tech": ["React Native", "Swift", "Kotlin", "Firebase", "RevenueCat", "OpenAI"],
+      "categories": [
+        "Cross-Platform App",
+        "Subscription Platform",
+        "Wellbeing",
+        "AI",
+        "Notifications"
+      ],
+      "media": {
+        "thumbnail": "/img/betblock/screen1.webp",
+        "images": [
+          "/img/betblock/screen1.webp",
+          "/img/betblock/screen2.webp",
+          "/img/betblock/screen3.webp",
+          "/img/betblock/screen4.webp"
+        ]
+      },
+      "featureGroups": [
+        {
+          "title": "Mobile App Features",
+          "category": "Cross-Platform App",
+          "features": [
+            "Apple & Google Authentication",
+            "Interactive Onboarding Quiz",
+            "Savings Dashboard",
+            "Financial Analytics & Warnings",
+            "Wellbeing Resources",
+            "Supportive Community Feeds",
+            "Interactive Games",
+            "Progress Tracking",
+            "Behavioural Nudges",
+            "SOS Support Button",
+            "Crisis Guidance",
+            "AI-Powered Support Chatbot",
+            "OpenAI Integration"
+          ]
+        },
+        {
+          "title": "Subscription Management",
+          "category": "Subscription Platform",
+          "features": [
+            "RevenueCat Integration",
+            "Monthly Subscription Plans",
+            "Annual Subscription Plans",
+            "Subscription Status Tracking",
+            "Payment Processing",
+            "Auto-Renewal Management"
+          ]
+        },
+        {
+          "title": "Wellbeing Tools",
+          "category": "Wellbeing",
+          "features": [
+            "Savings Progress Tracking",
+            "Financial Risk Analysis",
+            "Spending Pattern Monitoring",
+            "Motivational Milestones",
+            "Recovery Journey Insights",
+            "Community Support Access",
+            "Behavioural Health Resources"
+          ]
+        },
+        {
+          "title": "Push Notifications",
+          "category": "Notifications",
+          "features": [
+            "Daily Motivation Reminders",
+            "Progress Milestone Alerts",
+            "Financial Warning Notifications",
+            "Community Update Alerts",
+            "Wellbeing Check-In Reminders",
+            "Achievement Notifications"
+          ]
+        }
+      ]
+    },
+    {
       "id": "routebuddies",
       "slug": "routebuddies",
       "name": "RouteBuddies",
@@ -25,15 +259,15 @@
         "Content Moderation"
       ],
       "media": {
-        "thumbnail": "/img/routebuddies/screen1.png",
+        "thumbnail": "/img/routebuddies/screen1.webp",
         "images": [
-          "/img/routebuddies/screen1.png",
-          "/img/routebuddies/screen2.png",
-          "/img/routebuddies/screen3.png",
-          "/img/routebuddies/screen4.png",
-          "/img/routebuddies/screen5.png",
-          "/img/routebuddies/screen6.png",
-          "/img/routebuddies/screen7.png"
+          "/img/routebuddies/screen1.webp",
+          "/img/routebuddies/screen2.webp",
+          "/img/routebuddies/screen3.webp",
+          "/img/routebuddies/screen4.webp",
+          "/img/routebuddies/screen5.webp",
+          "/img/routebuddies/screen6.webp",
+          "/img/routebuddies/screen7.webp"
         ]
       },
       "featureGroups": [
@@ -165,12 +399,12 @@
         "Device Notifications"
       ],
       "media": {
-        "thumbnail": "/img/geogo/screen1.png",
+        "thumbnail": "/img/geogo/screen1.webp",
         "images": [
-          "/img/geogo/screen1.png",
-          "/img/geogo/screen2.png",
-          "/img/geogo/screen3.png",
-          "/img/geogo/screen4.png"
+          "/img/geogo/screen1.webp",
+          "/img/geogo/screen2.webp",
+          "/img/geogo/screen3.webp",
+          "/img/geogo/screen4.webp"
         ]
       },
       "featureGroups": [
@@ -260,88 +494,6 @@
       ]
     },
     {
-      "id": "betblock",
-      "slug": "betblock",
-      "name": "BetBlock",
-      "description_short": "A cross-platform wellbeing app supporting gambling recovery through subscriptions, progress tracking, financial awareness tools, an AI-powered support chatbot, and community resources.",
-      "description_long": "BetBlock is a subscription-based wellbeing and support app designed to assist individuals in gambling recovery. The app provides guided onboarding, personalised financial insights, motivational tracking, SOS emergency support, an AI-powered chatbot for 24/7 support, interactive games for healthy cognitive engagement, and community-driven resources.\n\nUsers can authenticate via Apple or Google, subscribe monthly or annually, track their savings, monitor spending risk patterns, access community feeds, chat with an OpenAI-powered support assistant, and receive financial warnings or behavioural nudges to encourage better habits. The dashboard offers a clean, supportive interface designed to encourage long-term engagement and accountability.",
-      "tech": ["React Native", "Swift", "Kotlin", "Firebase", "RevenueCat", "OpenAI"],
-      "categories": [
-        "Cross-Platform App",
-        "Subscription Platform",
-        "Wellbeing",
-        "AI",
-        "Notifications"
-      ],
-      "media": {
-        "thumbnail": "/img/betblock/screen1.png",
-        "images": [
-          "/img/betblock/screen1.png",
-          "/img/betblock/screen2.png",
-          "/img/betblock/screen3.png",
-          "/img/betblock/screen4.png"
-        ]
-      },
-      "featureGroups": [
-        {
-          "title": "Mobile App Features",
-          "category": "Cross-Platform App",
-          "features": [
-            "Apple & Google Authentication",
-            "Interactive Onboarding Quiz",
-            "Savings Dashboard",
-            "Financial Analytics & Warnings",
-            "Wellbeing Resources",
-            "Supportive Community Feeds",
-            "Interactive Games",
-            "Progress Tracking",
-            "Behavioural Nudges",
-            "SOS Support Button",
-            "Crisis Guidance",
-            "AI-Powered Support Chatbot",
-            "OpenAI Integration"
-          ]
-        },
-        {
-          "title": "Subscription Management",
-          "category": "Subscription Platform",
-          "features": [
-            "RevenueCat Integration",
-            "Monthly Subscription Plans",
-            "Annual Subscription Plans",
-            "Subscription Status Tracking",
-            "Payment Processing",
-            "Auto-Renewal Management"
-          ]
-        },
-        {
-          "title": "Wellbeing Tools",
-          "category": "Wellbeing",
-          "features": [
-            "Savings Progress Tracking",
-            "Financial Risk Analysis",
-            "Spending Pattern Monitoring",
-            "Motivational Milestones",
-            "Recovery Journey Insights",
-            "Community Support Access",
-            "Behavioural Health Resources"
-          ]
-        },
-        {
-          "title": "Push Notifications",
-          "category": "Notifications",
-          "features": [
-            "Daily Motivation Reminders",
-            "Progress Milestone Alerts",
-            "Financial Warning Notifications",
-            "Community Update Alerts",
-            "Wellbeing Check-In Reminders",
-            "Achievement Notifications"
-          ]
-        }
-      ]
-    },
-    {
       "id": "alzheimers-smart-speaker",
       "slug": "alzheimers-smart-speaker",
       "name": "Alzheimers Smart Speaker",
@@ -364,8 +516,8 @@
         "Prototype"
       ],
       "media": {
-        "thumbnail": "/img/alzspeaker/screen1.png",
-        "images": ["/img/alzspeaker/screen1.png"]
+        "thumbnail": "/img/alzspeaker/screen1.webp",
+        "images": ["/img/alzspeaker/screen1.webp"]
       },
       "featureGroups": [
         {

@@ -1,145 +1,115 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
-import './About.css';
 
 const About: React.FC = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: 'easeOut' as const,
-      },
-    },
-  };
-
   return (
-    <div className="about-page">
+    <>
       <SEO
         title="About"
-        description="Blundell Labs was born from years of experience building MVPs the hard way. Now we combine modern development practices with battle-tested expertise to deliver enterprise-quality apps at startup speed."
+        description="Blundell Technologies is a Cardiff-based software development consultancy founded by Jack Blundell. We build custom software, web apps, and mobile applications for ambitious businesses."
         url="/about"
       />
 
-      <motion.div
-        className="about-container"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.div className="about-header" variants={itemVariants}>
-          <h1 className="about-title">
-            About <span className="highlight">Blundell Labs</span>
-          </h1>
-          <p className="about-subtitle">
-            Enterprise-quality MVPs at startup speed
-          </p>
-        </motion.div>
+      <div className="page-header">
+        <h1>About Blundell Technologies</h1>
+        <p>
+          Cardiff-based software development consultancy building enterprise-grade
+          solutions for ambitious businesses.
+        </p>
+      </div>
 
-        <motion.div className="about-story" variants={itemVariants}>
-          <div className="story-section">
-            <h2>The Origin Story</h2>
+      <div className="about-content">
+        <h2>Our Story</h2>
+        <p>
+          Blundell Technologies was founded by Jack Blundell after years of experience
+          building software products across mobile, web, and cloud platforms. Having seen
+          first-hand the challenges that businesses face when trying to bring software
+          ideas to life — from spiralling costs and missed deadlines to products that
+          don't meet real user needs — we set out to do things differently.
+        </p>
+        <p>
+          We combine deep engineering expertise with modern development practices
+          to deliver software that works. No unnecessary complexity, no inflated
+          timelines, and no surprises. Just well-architected, production-ready
+          solutions that solve genuine business problems.
+        </p>
+
+        <h2>What We Believe</h2>
+        <p>
+          Great software starts with a clear understanding of the problem it needs
+          to solve. Technology decisions should follow business objectives, not the
+          other way around. And the best results come from genuine partnership between
+          our team and yours.
+        </p>
+
+        <div className="about-values-grid">
+          <div className="about-value-card">
+            <h3>Pragmatism Over Hype</h3>
             <p>
-              Blundell Labs was born from Jack Blundell after learning the hard way
-              just how challenging it can be to create the perfect MVP and scale it up
-              without either ripping your hair out learning to code, or breaking the
-              bank to get somebody to do it for you.
+              We choose proven technologies and practical approaches. Every
+              technical decision is grounded in what actually works at scale,
+              not what's trending on social media.
             </p>
           </div>
-
-          <div className="story-section">
-            <h2>Then Everything Changed</h2>
+          <div className="about-value-card">
+            <h3>Quality Is Non-Negotiable</h3>
             <p>
-              We embraced modern tooling and streamlined workflows. As the development
-              landscape evolved, we adapted—finding smarter ways to build without
-              sacrificing quality.
-            </p>
-            <p>
-              What if we could combine cutting-edge development practices with years
-              of real-world experience building and scaling applications? What if we
-              could use modern tools alongside our battle-tested processes to create
-              high-quality, scalable apps at an incredible pace—and at an even better rate?
+              We write tested, documented, maintainable code. Cutting corners
+              on quality always costs more in the long run, and we build
+              software that teams can confidently work with for years.
             </p>
           </div>
-
-          <div className="story-section">
-            <h2>What We Do Now</h2>
+          <div className="about-value-card">
+            <h3>Transparent Communication</h3>
             <p>
-              Since then, we've helped countless startups build amazing MVPs and
-              enterprise-ready solutions at prices that actually make sense. We bring
-              the expertise of a senior development team with the efficiency that
-              modern tooling provides.
-            </p>
-            <p>
-              The result? You get production-ready applications that are built to
-              scale—without the traditional agency price tag.
+              You will always know where your project stands. We provide regular
+              updates, honest assessments, and clear explanations of trade-offs
+              so you can make informed decisions.
             </p>
           </div>
-        </motion.div>
-
-        <motion.div className="about-values" variants={itemVariants}>
-          <h2>Our Approach</h2>
-          <div className="values-grid">
-            <div className="value-card">
-              <div className="value-icon">⚡</div>
-              <h3>Speed Without Compromise</h3>
-              <p>
-                Streamlined workflows let us move fast, but our engineering
-                background ensures we never cut corners on quality.
-              </p>
-            </div>
-            <div className="value-card">
-              <div className="value-icon">🏗️</div>
-              <h3>Built to Scale</h3>
-              <p>
-                Every project is architected with growth in mind. Your MVP
-                won't need a complete rewrite when you hit product-market fit.
-              </p>
-            </div>
-            <div className="value-card">
-              <div className="value-icon">💰</div>
-              <h3>Fair Pricing</h3>
-              <p>
-                Our efficiency gains get passed on to you. Enterprise-quality
-                development shouldn't require enterprise budgets.
-              </p>
-            </div>
-            <div className="value-card">
-              <div className="value-icon">🤝</div>
-              <h3>Partnership Mindset</h3>
-              <p>
-                We succeed when you succeed. That's why we focus on building
-                products that actually solve problems for your users.
-              </p>
-            </div>
+          <div className="about-value-card">
+            <h3>Long-Term Thinking</h3>
+            <p>
+              We architect solutions with growth in mind. Your software should
+              support your business as it scales, not become a bottleneck that
+              requires a costly rewrite.
+            </p>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div className="about-cta" variants={itemVariants}>
-          <h2>Ready to Build Something Great?</h2>
-          <p>
-            Whether you're a startup with a bold idea or an established business
-            looking to innovate, we'd love to hear from you.
-          </p>
-          <a href="/#contact" className="cta-button">
-            Start Your Project
-          </a>
-        </motion.div>
-      </motion.div>
-    </div>
+        <h2>Our Expertise</h2>
+        <p>
+          Our technical capabilities span the full software development lifecycle.
+          We work with React and TypeScript on the front end, Node.js and Python
+          on the back end, React Native for cross-platform mobile development, and
+          AWS for cloud infrastructure. We also build AI-powered solutions using
+          OpenAI and other leading platforms.
+        </p>
+        <p>
+          But technology is only one part of the equation. We bring experience in
+          product strategy, user experience design, and engineering best practices
+          to every engagement. The result is software that's not just technically
+          sound, but genuinely useful for the people who rely on it.
+        </p>
+      </div>
+
+      <section className="cta-section">
+        <h2>Let's Work Together</h2>
+        <p>
+          Whether you need a new application built from scratch or an existing
+          system improved, we would be glad to discuss how we can help.
+        </p>
+        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+          <Link to="/contact" className="btn btn-primary btn-lg">
+            Get in Touch
+          </Link>
+          <Link to="/services" className="btn btn-outline btn-lg">
+            View Our Services
+          </Link>
+        </div>
+      </section>
+    </>
   );
 };
 

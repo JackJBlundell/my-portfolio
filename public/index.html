@@ -1,58 +1,101 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="%PUBLIC_URL%/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="%PUBLIC_URL%/favicon.svg" />
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="Blundell Labs" />
-    <link rel="manifest" href="%PUBLIC_URL%/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#ff6b35" />
+    <meta name="theme-color" content="#ffffff" />
 
-    <!-- Primary Meta Tags -->
-    <title>Blundell Labs | MVP Development Experts</title>
-    <meta name="title" content="Blundell Labs | MVP Development Experts" />
-    <meta name="description" content="Enterprise-quality MVPs at startup speed. We combine modern development practices with battle-tested expertise to build scalable React and React Native apps that don't break the bank." />
-    <meta name="keywords" content="MVP Development, React Developer, React Native Developer, Mobile App Development, Cross-Platform Development, Startup Development, Firebase, AWS, TypeScript, Node.js" />
-    <meta name="author" content="Blundell Labs" />
+    <!-- Apply the saved (or system) colour theme before first paint to avoid a flash -->
+    <script>
+      (function () {
+        var theme = 'light';
+        try {
+          var stored = localStorage.getItem('theme');
+          if (stored === 'light' || stored === 'dark') {
+            theme = stored;
+          } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            theme = 'dark';
+          }
+        } catch (e) {}
+        document.documentElement.setAttribute('data-theme', theme);
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', theme === 'dark' ? '#0A1120' : '#ffffff');
+      })();
+    </script>
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://blundell-labs.com/" />
-    <meta property="og:title" content="Blundell Labs | MVP Development Experts" />
-    <meta property="og:description" content="Enterprise-quality MVPs at startup speed. Modern development meets battle-tested expertise." />
-    <meta property="og:image" content="%PUBLIC_URL%/og-image.jpg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:site_name" content="Blundell Labs" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" href="%PUBLIC_URL%/favicon-96x96.png" sizes="96x96" />
+    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Blundell Tech" />
+    <link rel="manifest" href="%PUBLIC_URL%/site.webmanifest" />
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://blundell-labs.com/" />
-    <meta property="twitter:title" content="Blundell Labs | MVP Development Experts" />
-    <meta property="twitter:description" content="Enterprise-quality MVPs at startup speed. Modern development meets battle-tested expertise." />
-    <meta property="twitter:image" content="%PUBLIC_URL%/og-image.jpg" />
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-    <!-- Additional SEO -->
-    <meta name="robots" content="index, follow" />
-    <meta name="language" content="English" />
-    <meta name="revisit-after" content="7 days" />
-    <link rel="canonical" href="https://blundell-labs.com/" />
+    <!--
+      Title, description, robots, canonical URL and social tags are rendered per page by src/components/SEO.tsx.
+      Only a fallback title lives here so pages don't all inherit the homepage's canonical and share tags.
+    -->
+    <title data-fallback>Software Development Company UK | Blundell Technologies</title>
+    <meta name="author" content="Blundell Technologies" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://blundell-labs.com/#organization",
+          "name": "Blundell Technologies",
+          "url": "https://blundell-labs.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://blundell-labs.com/img/brand/logo-on-light.png",
+            "width": 440,
+            "height": 222
+          },
+          "image": "https://blundell-labs.com/og-image.jpg",
+          "description": "Cardiff-based software development company building custom software, web applications and iOS & Android apps for businesses across the UK.",
+          "founder": {
+            "@type": "Person",
+            "name": "Jack Blundell"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Cardiff",
+            "addressRegion": "Wales",
+            "addressCountry": "GB"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "United Kingdom"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "jackjblundell@gmail.com",
+            "contactType": "sales",
+            "areaServed": "GB",
+            "availableLanguage": "English"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://blundell-labs.com/#website",
+          "url": "https://blundell-labs.com/",
+          "name": "Blundell Technologies",
+          "inLanguage": "en-GB",
+          "publisher": {
+            "@id": "https://blundell-labs.com/#organization"
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>

@@ -1,7 +1,14 @@
 {
-  "name": "Blundell Labs",
-  "short_name": "Blundell Labs",
+  "name": "Blundell Technologies",
+  "short_name": "Blundell Tech",
+  "description": "Custom software, web and mobile app development for businesses across the UK.",
+  "start_url": "/",
   "icons": [
+    {
+      "src": "/favicon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
     {
       "src": "/web-app-manifest-192x192.png",
       "sizes": "192x192",
@@ -15,7 +22,7 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#000000",
-  "background_color": "#000000",
+  "theme_color": "#0A1120",
+  "background_color": "#0A1120",
   "display": "standalone"
 }
