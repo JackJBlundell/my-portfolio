@@ -5,7 +5,6 @@ import { services } from '../data/services';
 import projectsData from '../data/projects.json';
 import SEO from '../components/SEO';
 import ProjectShowcase from '../components/ProjectShowcase';
-import SunriseMark from '../components/SunriseMark';
 
 const iconMap: Record<string, React.FC<{ size?: number }>> = {
   Code, Globe, Smartphone, Brain, Cloud, Palette,
@@ -21,9 +20,6 @@ const HomePage: React.FC = () => {
 
       {/* Hero */}
       <section className="hero">
-        {/* The logo's sunrise, blown up and tilted as part of the hero backdrop */}
-        <SunriseMark className="hero-backdrop-mark" />
-
         <div className="hero-container">
           <div className="hero-content">
             <div className="hero-eyebrow">

@@ -348,14 +348,33 @@
   overflow: hidden;
 }
 
+/*
+  Two soft brand glows and a grid that fades toward the edges. Both layers are pure CSS
+  pseudo-elements, so the hero carries no extra image weight, and both read correctly in
+  either theme — the grid uses the border token, the glows are the brand gold at low alpha.
+*/
 .hero::before {
   content: '';
   position: absolute;
-  top: -50%;
-  right: -20%;
-  width: 60%;
-  height: 100%;
-  background: radial-gradient(ellipse, rgba(226, 165, 49, 0.12) 0%, transparent 70%);
+  inset: 0;
+  background:
+    radial-gradient(52% 48% at 78% 12%, rgba(226, 165, 49, 0.18), transparent 70%),
+    radial-gradient(44% 44% at 12% 78%, rgba(226, 165, 49, 0.1), transparent 72%);
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--color-border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-border) 1px, transparent 1px);
+  background-size: 68px 68px;
+  opacity: 0.5;
+  /* Fades out above the headline, so no grid line ever runs through the copy */
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.4) 32%, transparent 58%);
+  mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.4) 32%, transparent 58%);
   pointer-events: none;
 }
 
@@ -370,27 +389,6 @@
 
 .hero-content {
   max-width: 600px;
-}
-
-/*
-  The sunrise sits behind the hero as backdrop art: large, tilted and faint enough that the
-  copy stays the thing you read. .hero already clips it (position: relative; overflow: hidden).
-*/
-.hero-backdrop-mark {
-  position: absolute;
-  left: 0;
-  top: 31%;
-  z-index: 0;
-  width: min(500px, 86%);
-  height: auto;
-  opacity: 0.18;
-  transform: rotate(-4deg);
-  pointer-events: none;
-}
-
-/* The gold reads darker against the dark hero, so it takes a little more */
-[data-theme='dark'] .hero-backdrop-mark {
-  opacity: 0.2;
 }
 
 /* Hero copy and imagery ride above the backdrop */
@@ -2293,11 +2291,6 @@
 /* Narrow screens keep the full-screen image, but the panel can't share a row with the
    controls, so it spans the width just above them. */
 @media (max-width: 900px) {
-  .hero-backdrop-mark {
-    top: 26%;
-    width: min(360px, 80%);
-  }
-
   .showcase-info {
     left: 1rem;
     right: 1rem;
