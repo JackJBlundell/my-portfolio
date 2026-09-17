@@ -4,7 +4,7 @@
   <url><loc>https://blundell-labs.com/about</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://blundell-labs.com/services</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://blundell-labs.com/projects</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://blundell-labs.com/blog</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://blundell-labs.com/articles</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://blundell-labs.com/contact</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
 
   <!-- Services -->
@@ -26,7 +26,5 @@
   <url><loc>https://blundell-labs.com/projects/safentia</loc><changefreq>monthly</changefreq><priority>0.7</priority><image:image><image:loc>https://blundell-labs.com/img/safentia/1.webp</image:loc></image:image><image:image><image:loc>https://blundell-labs.com/img/safentia/2.webp</image:loc></image:image><image:image><image:loc>https://blundell-labs.com/img/safentia/3.webp</image:loc></image:image><image:image><image:loc>https://blundell-labs.com/img/safentia/4.webp</image:loc></image:image><image:image><image:loc>https://blundell-labs.com/img/safentia/5.webp</image:loc></image:image></url>
 
   <!-- Blog -->
-  <url><loc>https://blundell-labs.com/blog/custom-software-drives-business-growth</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://blundell-labs.com/blog/choosing-the-right-technology-stack</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://blundell-labs.com/blog/complete-guide-mvp-development-2025</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://blundell-labs.com/articles/making-the-most-of-ai-in-your-app</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 </urlset>

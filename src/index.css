@@ -4,6 +4,15 @@
   box-sizing: border-box;
 }
 
+/*
+  Elise Fill — the brand display face, used for page and article titles (see App.css).
+  Its @font-face lives in public/index.html: the file sits in public/fonts, and webpack's
+  css-loader tries to bundle a url() from here, which would break the build.
+  Caps only: lowercase codepoints map to the capital glyphs, so it always renders ALL CAPS.
+  Single weight, so anything using it sets font-weight: 400 and font-synthesis: none to
+  stop the browser faux-bolding it.
+*/
+
 /* Light theme (default). Brand yellow comes from the Blundell Technologies logo. */
 :root {
   color-scheme: light;
@@ -37,6 +46,9 @@
   --radius-md: 6px;
   --radius-lg: 8px;
   --radius-xl: 12px;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --font-display: 'Elise', var(--font-body);
 }
 
 /* Dark theme, set on <html data-theme="dark"> by public/index.html and the navbar toggle */
@@ -72,9 +84,7 @@ html {
 
 body {
   margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
-    'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--color-bg);

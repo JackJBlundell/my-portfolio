@@ -97,7 +97,7 @@ const ServiceDetail: React.FC = () => {
 
         {/* Other Services */}
         <div style={{ marginTop: '3rem' }}>
-          <h2 style={{ fontSize: '1.75rem', fontWeight: 700, marginBottom: '1.5rem', color: 'var(--color-text)' }}>
+          <h2 style={{ fontSize: '1.625rem', marginBottom: '1.5rem', color: 'var(--color-text)' }}>
             Other Services
           </h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>

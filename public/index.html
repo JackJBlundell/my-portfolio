@@ -5,15 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#ffffff" />
 
-    <!-- Apply the saved (or system) colour theme before first paint to avoid a flash -->
+    <!-- Light is the default; apply a visitor's saved dark mode choice before first paint to avoid a flash -->
     <script>
       (function () {
         var theme = 'light';
         try {
           var stored = localStorage.getItem('theme');
-          if (stored === 'light' || stored === 'dark') {
-            theme = stored;
-          } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          if (stored === 'dark') {
             theme = 'dark';
           }
         } catch (e) {}
@@ -27,6 +25,22 @@
     <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Blundell Tech" />
     <link rel="manifest" href="%PUBLIC_URL%/site.webmanifest" />
+
+    <!--
+      Brand display face for page titles. Preloaded because the hero h1 is above the fold.
+      Declared here rather than in src/index.css because the file lives in public/fonts and
+      webpack's css-loader would try to bundle the url() from there. Usage is in src/App.css.
+    -->
+    <link rel="preload" href="/fonts/Elise-Fill.otf" as="font" type="font/otf" crossorigin />
+    <style>
+      @font-face {
+        font-family: 'Elise';
+        src: url('/fonts/Elise-Fill.otf') format('opentype');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+    </style>
 
     <!-- Google Fonts - Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

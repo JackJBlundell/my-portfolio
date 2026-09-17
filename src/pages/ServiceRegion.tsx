@@ -75,7 +75,7 @@ const ServiceRegion: React.FC = () => {
         </div>
 
         <div className="service-detail-content">
-          <h2 style={{ fontSize: '1.75rem', fontWeight: 700, color: 'var(--color-text)', marginBottom: '1rem' }}>
+          <h2 style={{ fontSize: '1.625rem', color: 'var(--color-text)', marginBottom: '1rem' }}>
             {service.name} for {region.name} Businesses
           </h2>
           {service.longDescription.split('\n\n').map((p, i) => (

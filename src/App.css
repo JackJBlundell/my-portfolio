@@ -155,6 +155,11 @@
   box-shadow: var(--shadow-sm);
 }
 
+/* Slides away going down the page, back on the way up — see AppContent's scroll handler */
+.navbar.hidden {
+  transform: translateY(-100%);
+}
+
 .navbar-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -367,25 +372,44 @@
   max-width: 600px;
 }
 
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.375rem 1rem;
-  background: var(--color-accent-soft);
-  border: 1px solid var(--color-accent-border);
-  border-radius: 100px;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--color-accent-text);
-  margin-bottom: 1.5rem;
+/*
+  The sunrise sits behind the hero as backdrop art: large, tilted and faint enough that the
+  copy stays the thing you read. .hero already clips it (position: relative; overflow: hidden).
+*/
+.hero-backdrop-mark {
+  position: absolute;
+  left: 0;
+  top: 31%;
+  z-index: 0;
+  width: min(500px, 86%);
+  height: auto;
+  opacity: 0.18;
+  transform: rotate(-4deg);
+  pointer-events: none;
 }
 
-.hero-badge-dot {
-  width: 6px;
-  height: 6px;
-  background: var(--color-accent);
-  border-radius: 50%;
+/* The gold reads darker against the dark hero, so it takes a little more */
+[data-theme='dark'] .hero-backdrop-mark {
+  opacity: 0.2;
+}
+
+/* Hero copy and imagery ride above the backdrop */
+.hero-container {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-eyebrow {
+  margin-bottom: 2.25rem;
+}
+
+.hero-eyebrow span {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 400;
+  font-synthesis: none;
+  letter-spacing: 0.16em;
+  color: var(--color-text-muted);
 }
 
 .hero h1 {
@@ -551,6 +575,9 @@
   font-weight: 700;
   margin-bottom: 0.75rem;
   color: var(--color-text);
+  /* Same two-line reservation as .value-item h3 — see the note there */
+  line-height: 1.35;
+  min-height: calc(2 * 1.35em);
 }
 
 .service-card p {
@@ -612,6 +639,10 @@
   font-weight: 700;
   margin-bottom: 0.5rem;
   color: var(--color-text);
+  /* Caps run wide, so some titles take two lines. Reserve both in every card
+     to keep the paragraphs below them on a common baseline across the row. */
+  line-height: 1.35;
+  min-height: calc(2 * 1.35em);
 }
 
 .value-item p {
@@ -1103,7 +1134,8 @@
 /* ---- Blog Index ---- */
 .blog-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* auto-fill keeps the column width steady, so a short list doesn't stretch into slabs */
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
   gap: 2rem;
   max-width: 1200px;
   margin: 0 auto;
@@ -1111,47 +1143,123 @@
 }
 
 .blog-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   background: var(--color-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 2rem;
   text-decoration: none;
   color: inherit;
-  transition: all 0.2s ease;
-  display: flex;
-  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .blog-card:hover {
   color: inherit;
+  border-color: var(--color-accent-border);
   box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+}
+
+.blog-card-media {
+  aspect-ratio: 16 / 9;
+  background: var(--color-surface-dark);
+  overflow: hidden;
+}
+
+.blog-card-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.blog-card:hover .blog-card-media img {
+  transform: scale(1.03);
+}
+
+.blog-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1.5rem;
 }
 
 .blog-card-meta {
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  font-size: 0.8125rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.875rem;
+  font-size: 0.75rem;
   color: var(--color-text-muted);
 }
 
+/* Middots between the meta items, so they read as one line rather than separate chips */
+.blog-card-meta > :not(:first-child)::before,
+.blog-detail-meta > :not(:first-child)::before {
+  content: '·';
+  margin-right: 0.5rem;
+}
+
+/* A quiet tracked eyebrow reads better here than a filled pill, which boxed in long
+   category names like "Artificial Intelligence" and wrapped them mid-pill. */
 .blog-card-category {
-  padding: 0.25rem 0.625rem;
-  background: var(--color-accent-soft);
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-display);
+  font-synthesis: none;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
   color: var(--color-accent-text);
-  border-radius: 100px;
-  font-weight: 600;
-  font-size: 0.75rem;
+}
+
+/* The lead article runs the full width with its image alongside the copy */
+.blog-card.featured {
+  grid-column: 1 / -1;
+  flex-direction: row;
+}
+
+.blog-card.featured .blog-card-media {
+  flex: 0 0 45%;
+  aspect-ratio: auto;
+}
+
+.blog-card.featured .blog-card-body {
+  justify-content: center;
+  padding: 2.5rem;
+}
+
+.blog-card.featured h3 {
+  font-size: 1.5rem;
+}
+
+.blog-card.featured p {
+  flex: 0 1 auto;
+  font-size: 1rem;
+}
+
+@media (max-width: 720px) {
+  .blog-card.featured {
+    flex-direction: column;
+  }
+
+  .blog-card.featured .blog-card-media {
+    flex: none;
+    aspect-ratio: 16 / 9;
+  }
+
+  .blog-card.featured .blog-card-body {
+    padding: 1.5rem;
+  }
 }
 
 .blog-card h3 {
   font-size: 1.1875rem;
-  font-weight: 700;
   color: var(--color-text);
   margin-bottom: 0.75rem;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 .blog-card p {
@@ -1184,11 +1292,44 @@
 
 .blog-detail-meta {
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin-bottom: 1.5rem;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.blog-hero-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  margin-bottom: 2.5rem;
+  background: var(--color-surface-dark);
+}
+
+.blog-content figure {
+  margin: 2.5rem 0;
+}
+
+/* Every article image is a 16:9 screenshot, and the ratio is declared here rather than
+   per-image so a figure reserves its space before the file loads. */
+.blog-content figure img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-dark);
+}
+
+.blog-content figcaption {
+  margin-top: 0.75rem;
   font-size: 0.875rem;
   color: var(--color-text-muted);
+  text-align: center;
 }
 
 .blog-detail-header h1 {
@@ -1223,6 +1364,74 @@
   color: var(--color-text);
   margin-top: 2rem;
   margin-bottom: 0.75rem;
+}
+
+/* Rich text inside articles — see src/utils/markdown.tsx for the supported Markdown subset */
+.blog-content a {
+  color: var(--color-accent-text);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  overflow-wrap: break-word; /* long source URLs shouldn't overflow on mobile */
+  transition: color 0.15s ease;
+}
+
+.blog-content a:hover {
+  color: var(--color-accent-heading);
+}
+
+.blog-content strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.blog-content code {
+  padding: 0.125em 0.375em;
+  background: var(--color-surface-dark);
+  border-radius: var(--radius-sm);
+  font-size: 0.9em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.blog-content ul,
+.blog-content ol {
+  margin: 0 0 1.5rem;
+  padding-left: 1.5rem;
+}
+
+/* Room for two-digit markers, so a long source list doesn't sit flush to the text */
+.blog-content ol {
+  padding-left: 1.75rem;
+}
+
+.blog-content li {
+  margin-bottom: 0.625rem;
+  padding-left: 0.25rem;
+}
+
+.blog-content li::marker {
+  color: var(--color-text-muted);
+}
+
+.blog-content blockquote {
+  margin: 2rem 0;
+  padding: 0.25rem 0 0.25rem 1.25rem;
+  border-left: 3px solid var(--color-accent-border);
+  color: var(--color-text);
+  font-style: italic;
+}
+
+.blog-content hr {
+  margin: 3rem 0 2rem;
+  border: 0;
+  border-top: 1px solid var(--color-border);
+}
+
+/* The sources list at the foot of an article: smaller, quieter, wraps long URLs */
+.blog-content hr ~ ol {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
 }
 
 /* ---- Contact Page ---- */
@@ -1473,6 +1682,65 @@
 }
 
 /* ---- Responsive ---- */
+/* ---- Display Type ---- */
+/*
+  Elise Fill (@font-face is in public/index.html) is the brand face for headings and buttons.
+  Two things drive everything below: it is caps-only, so anything using it renders ALL CAPS
+  whatever the markup says, and it ships a single weight, so font-weight must be 400 and
+  font-synthesis: none or the browser faux-bolds it into mush.
+  Tracking goes back to 0 — the Inter values are negative, and a wide caps face needs room.
+  Sizes are trimmed where caps, which fill the em box and run longer than mixed case,
+  would otherwise overpower the text beneath them.
+*/
+.App h1,
+.App h2,
+.App h3,
+.App .btn,
+.App .nav-link,
+.App .showcase-tab,
+.App .footer-heading {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-synthesis: none;
+}
+
+/* Headings only: Inter's tracking here is negative, and a wide caps face needs room.
+   The small caps labels keep their own positive tracking. */
+.App h1,
+.App h2,
+.App h3 {
+  letter-spacing: 0;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  line-height: 1.15;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+}
+
+.project-detail-header h1,
+.blog-detail-header h1 {
+  font-size: 2.25rem;
+  line-height: 1.25;
+}
+
+.btn {
+  font-size: 0.9375rem;
+}
+
+.nav-link {
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+}
+
+.showcase-tab {
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+}
+
 @media (max-width: 1024px) {
   .hero-container {
     grid-template-columns: 1fr;
@@ -1698,68 +1966,52 @@
 }
 
 /* ---- Project Showcase Slider ---- */
+/*
+  Tabs, slide, indicators and project info fit one screen below the fixed navbar. The slide keeps
+  its 16:9 ratio, so the slide and info row narrow on short, wide screens, but never below 560px;
+  shorter screens scroll rather than shrinking the slider further.
+*/
+/*
+  One slider: the image is the container, and the tabs, playback controls and project
+  panel all sit on top of it. Two scrims keep those controls legible over any screenshot.
+*/
 .showcase {
-  max-width: 1400px;
-  margin: 0 auto;
+  /* Full bleed: break out of the section's padding to the full width of the screen.
+     body has overflow-x: hidden, so 100vw can't introduce a horizontal scrollbar. */
+  --showcase-nav: 76px;
+  position: relative;
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 }
 
-.showcase-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
-}
-
-.showcase-tab {
-  padding: 0.625rem 1.25rem;
-  background: var(--color-card);
-  border: 1px solid var(--color-border);
-  border-radius: 100px;
-  color: var(--color-text-secondary);
-  font-size: 0.9375rem;
-  font-weight: 600;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: all 0.2s ease;
-}
-
-.showcase-tab:hover {
-  color: var(--color-text);
-  border-color: var(--color-accent);
-}
-
-.showcase-tab.active,
-.showcase-tab.active:hover {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  color: var(--color-on-accent);
-}
-
+/* Full height of the screen. The screenshots are 16:9 and get cropped to fit — object-fit
+   below handles that, so the slide no longer holds an aspect ratio of its own. */
 .showcase-stage {
   position: relative;
+  height: calc(100vh - var(--showcase-nav));
+  height: calc(100svh - var(--showcase-nav));
   overflow: hidden;
   background: var(--color-surface-dark);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-xl);
   touch-action: pan-y;
   outline: none;
 }
 
 .showcase-stage:focus-visible {
-  box-shadow: 0 0 0 3px var(--color-accent), var(--shadow-xl);
+  box-shadow: inset 0 0 0 3px var(--color-accent);
 }
 
 .showcase-track {
   display: flex;
+  height: 100%;
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   animation: showcase-fade-in 0.5s ease;
 }
 
 .showcase-slide {
   flex: 0 0 100%;
-  aspect-ratio: 16 / 9;
+  height: 100%;
 }
 
 .showcase-slide img {
@@ -1770,28 +2022,152 @@
   user-select: none;
 }
 
-.showcase-arrow {
+.showcase-scrim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.showcase-scrim-top {
+  top: 0;
+  height: 30%;
+  background: linear-gradient(to bottom, rgba(5, 10, 20, 0.72), rgba(5, 10, 20, 0));
+}
+
+.showcase-scrim-bottom {
+  bottom: 0;
+  height: 38%;
+  background: linear-gradient(to top, rgba(5, 10, 20, 0.78), rgba(5, 10, 20, 0));
+}
+
+/* ---- Tabs, laid over the top of the image ---- */
+.showcase-tabs-wrap {
+  position: absolute;
+  top: calc(var(--showcase-nav) + 1rem); /* clears the navbar while it is showing */
+  left: 1rem;
+  right: 1rem;
+  z-index: 3;
+  transition: top 0.3s ease;
+}
+
+.nav-hidden .showcase-tabs-wrap {
+  top: 1rem;
+}
+
+.showcase-tabs {
+  position: relative; /* a tab's offsetLeft is measured against the strip, not the page */
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* Constant room for the arrows, so a tab never rests underneath one. Kept constant rather
+     than toggled with the arrows, so showing one can't change what overflows. */
+  padding-inline: 2.5rem;
+  scroll-padding-inline: 2.5rem;
+}
+
+.showcase-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+/* Auto margins centre the tabs when they fit, and still scroll from the first tab when they don't */
+.showcase-tab:first-child {
+  margin-left: auto;
+}
+
+.showcase-tab:last-child {
+  margin-right: auto;
+}
+
+.showcase-tab {
+  flex-shrink: 0;
+  padding: 0.5rem 1.125rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 100px;
+  color: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.showcase-tab:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #fff;
+}
+
+.showcase-tab.active,
+.showcase-tab.active:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.showcase-tabs-scroll {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
-  width: 48px;
-  height: 48px;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-nav-bg);
-  backdrop-filter: blur(8px);
-  border: 1px solid var(--color-border);
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  transform: translateY(-50%);
+  background: rgba(5, 10, 20, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 50%;
-  color: var(--color-text);
+  color: #fff;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   cursor: pointer;
-  opacity: 0;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-.showcase-stage:hover .showcase-arrow,
-.showcase-stage:focus-within .showcase-arrow {
-  opacity: 1;
+.showcase-tabs-scroll:hover {
+  background: rgba(5, 10, 20, 0.75);
+  border-color: var(--color-accent);
+}
+
+.showcase-tabs-scroll.prev {
+  left: 0;
+}
+
+.showcase-tabs-scroll.next {
+  right: 0;
+}
+
+/* ---- Playback controls, bottom left of the image ---- */
+.showcase-controls {
+  position: absolute;
+  left: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.showcase-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  color: #fff;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .showcase-arrow:hover {
@@ -1800,25 +2176,16 @@
   color: var(--color-on-accent);
 }
 
-.showcase-arrow-prev {
-  left: 1.25rem;
-}
-
-.showcase-arrow-next {
-  right: 1.25rem;
-}
-
 .showcase-indicators {
   display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 1.5rem;
+  align-items: center;
+  gap: 0.375rem;
 }
 
-/* The button is a 20px-tall hit area; the visible bar is drawn by ::before */
+/* The button is a 20px-tall hit area; the visible line is drawn by ::before */
 .showcase-indicator {
   position: relative;
-  width: 36px;
+  width: 24px;
   height: 20px;
   padding: 0;
   background: transparent;
@@ -1835,59 +2202,73 @@
   right: 0;
   height: 4px;
   transform: translateY(-50%);
-  background: var(--color-border);
+  background: rgba(255, 255, 255, 0.55);
   border-radius: 2px;
   transition: background 0.3s ease;
 }
 
 .showcase-indicator:hover::before {
-  background: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.85);
 }
 
 .showcase-indicator.active {
-  width: 64px;
+  width: 44px;
 }
 
 .showcase-indicator.active::before {
   background: var(--color-accent);
 }
 
+/* ---- Project panel: over the bottom right of the image, beneath it on narrow screens ---- */
 .showcase-info {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 3;
+  width: min(380px, 40%);
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 2rem;
-  margin-top: 2rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  background: rgba(8, 14, 26, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: var(--shadow-lg);
   animation: showcase-fade-in 0.5s ease;
 }
 
 .showcase-info h3 {
-  font-size: 1.75rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: var(--color-text);
-  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  color: #fff;
 }
 
 .showcase-info p {
-  max-width: 640px;
-  color: var(--color-text-secondary);
-  line-height: 1.7;
-}
-
-.showcase-info-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 1rem;
-  flex-shrink: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .showcase-tags {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 0.5rem;
+  gap: 0.375rem;
+}
+
+.showcase-info .tag {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.showcase-info .btn {
+  margin-top: 0.25rem;
 }
 
 @keyframes showcase-fade-in {
@@ -1899,45 +2280,61 @@
   }
 }
 
-@media (hover: none) {
-  .showcase-arrow {
-    display: none;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .showcase-track,
-  .showcase-info {
+  .showcase-info,
+  .showcase-tabs-wrap,
+  .navbar {
     transition: none;
     animation: none;
   }
 }
 
-@media (max-width: 768px) {
-  .showcase-tabs {
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    overflow-x: auto;
-    margin: 0 -1.5rem 1.5rem;
-    padding: 0 1.5rem 0.25rem;
-    scrollbar-width: none;
-  }
-
-  .showcase-tabs::-webkit-scrollbar {
-    display: none;
-  }
-
-  .showcase-indicator {
-    width: 24px;
-  }
-
-  .showcase-indicator.active {
-    width: 44px;
+/* Narrow screens keep the full-screen image, but the panel can't share a row with the
+   controls, so it spans the width just above them. */
+@media (max-width: 900px) {
+  .hero-backdrop-mark {
+    top: 26%;
+    width: min(360px, 80%);
   }
 
   .showcase-info {
-    flex-direction: column;
-    align-items: flex-start;
+    left: 1rem;
+    right: 1rem;
+    bottom: 4.25rem;
+    width: auto;
+    padding: 1.25rem;
+  }
+
+  .showcase-controls {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 768px) {
+  .showcase-tabs-wrap {
+    top: 0.75rem;
+    left: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .showcase-controls {
+    left: 0.75rem;
+    bottom: 0.75rem;
+  }
+
+  .showcase-indicator {
+    width: 18px;
+  }
+
+  .showcase-indicator.active {
+    width: 32px;
+  }
+
+  .showcase-info p {
+    display: block;
+    -webkit-line-clamp: unset;
   }
 
   .showcase-info-actions,

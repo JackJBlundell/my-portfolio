@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+  useParams,
+  Link,
+} from 'react-router-dom';
 import { Moon, Sun } from 'lucide-react';
 import HomePage from './pages/HomePage';
 import ProjectsIndex from './pages/ProjectsIndex';
@@ -19,6 +27,9 @@ import './App.css';
 
 type Theme = 'light' | 'dark';
 
+// Scrolling down past this point starts hiding the navbar
+const NAV_HIDE_AFTER_PX = 120;
+
 const THEME_COLORS: Record<Theme, string> = {
   light: '#ffffff',
   dark: '#0A1120',
@@ -27,6 +38,12 @@ const THEME_COLORS: Record<Theme, string> = {
 // public/index.html sets data-theme before first paint, so start from whatever it chose
 const getInitialTheme = (): Theme =>
   document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+
+// /blog/<slug> -> /articles/<slug>
+function LegacyBlogRedirect() {
+  const { slug } = useParams<{ slug: string }>();
+  return <Navigate to={`/articles/${slug}`} replace />;
+}
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -46,20 +63,39 @@ function ScrollToTop() {
 
 function AppContent() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isNavHidden, setIsNavHidden] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
   const location = useLocation();
 
+  // The navbar gets out of the way going down the page and comes back on the way up,
+  // so a full-height section like the project showcase reads as full screen.
   useEffect(() => {
+    let lastY = window.scrollY;
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      const y = window.scrollY;
+      setIsScrolled(y > 10);
+      if (y > lastY && y > NAV_HIDE_AFTER_PX) {
+        setIsNavHidden(true);
+      } else if (y < lastY) {
+        setIsNavHidden(false);
+      }
+      lastY = y;
     };
-    window.addEventListener('scroll', handleScroll);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Never leave the navbar hidden behind an open menu
+  useEffect(() => {
+    if (mobileMenuOpen) setIsNavHidden(false);
+  }, [mobileMenuOpen]);
+
   useEffect(() => {
     setMobileMenuOpen(false);
+    setIsNavHidden(false);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -78,9 +114,9 @@ function AppContent() {
   };
 
   return (
-    <div className="App">
+    <div className={`App ${isNavHidden ? 'nav-hidden' : ''}`}>
       {/* Navigation */}
-      <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
+      <nav className={`navbar ${isScrolled ? 'scrolled' : ''} ${isNavHidden ? 'hidden' : ''}`}>
         <div className="navbar-container">
           <Link to="/" className="logo">
             <Logo />
@@ -89,7 +125,7 @@ function AppContent() {
           <div className={`nav-links ${mobileMenuOpen ? 'open' : ''}`}>
             <Link to="/services" className="nav-link">Services</Link>
             <Link to="/projects" className="nav-link">Projects</Link>
-            <Link to="/blog" className="nav-link">Blog</Link>
+            <Link to="/articles" className="nav-link">Articles</Link>
             <Link to="/about" className="nav-link">About</Link>
             <Link to="/contact" className="nav-link nav-link-cta">Get in Touch</Link>
           </div>
@@ -123,8 +159,11 @@ function AppContent() {
         <Route path="/services/:serviceSlug/:regionSlug" element={<ServiceRegion />} />
         <Route path="/projects" element={<ProjectsIndex />} />
         <Route path="/projects/:slug" element={<ProjectDetail />} />
-        <Route path="/blog" element={<BlogIndex />} />
-        <Route path="/blog/:slug" element={<BlogDetail />} />
+        <Route path="/articles" element={<BlogIndex />} />
+        <Route path="/articles/:slug" element={<BlogDetail />} />
+        {/* The section used to live at /blog; keep those links working */}
+        <Route path="/blog" element={<Navigate to="/articles" replace />} />
+        <Route path="/blog/:slug" element={<LegacyBlogRedirect />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/app-development-cardiff" element={<AppDevelopmentCardiff />} />
       </Routes>

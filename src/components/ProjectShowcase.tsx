@@ -24,8 +24,11 @@ const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({ projects }) => {
   const [projectIndex, setProjectIndex] = useState(0);
   const [imageIndex, setImageIndex] = useState(0);
   const [isNearViewport, setIsNearViewport] = useState(false);
+  const [tabOverflow, setTabOverflow] = useState({ left: false, right: false });
   const stageRef = useRef<HTMLDivElement>(null);
+  const tabsRef = useRef<HTMLElement>(null);
   const pointerStartX = useRef<number | null>(null);
+  const hasSwitched = useRef(false);
 
   const project = projects[projectIndex];
   const images = project.media.images;
@@ -51,7 +54,56 @@ const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({ projects }) => {
     return () => observer.disconnect();
   }, [isNearViewport]);
 
+  // The tab strip scrolls sideways when the projects don't fit; the arrows only show
+  // in a direction there is actually something to scroll to.
+  useEffect(() => {
+    const tabs = tabsRef.current;
+    if (!tabs) return;
+
+    const update = () => {
+      const max = tabs.scrollWidth - tabs.clientWidth;
+      setTabOverflow({ left: tabs.scrollLeft > 1, right: tabs.scrollLeft < max - 1 });
+    };
+
+    update();
+    tabs.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    const observer = 'ResizeObserver' in window ? new ResizeObserver(update) : null;
+    observer?.observe(tabs);
+
+    return () => {
+      tabs.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+      observer?.disconnect();
+    };
+  }, [projects.length]);
+
+  const prefersReducedMotion = () =>
+    typeof window !== 'undefined' &&
+    window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
+
+  // Centre the selected tab, scrolling the strip only — never the page
+  useEffect(() => {
+    const tabs = tabsRef.current;
+    const tab = tabs?.children[projectIndex] as HTMLElement | undefined;
+    if (!tabs || !tab || !hasSwitched.current) return;
+    tabs.scrollTo({
+      left: tab.offsetLeft - (tabs.clientWidth - tab.offsetWidth) / 2,
+      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+    });
+  }, [projectIndex]);
+
+  const scrollTabs = (direction: 1 | -1) => {
+    const tabs = tabsRef.current;
+    if (!tabs) return;
+    tabs.scrollBy({
+      left: direction * tabs.clientWidth * 0.8,
+      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+    });
+  };
+
   const selectProject = (index: number) => {
+    hasSwitched.current = true;
     setProjectIndex(index);
     setImageIndex(0);
   };
@@ -75,25 +127,6 @@ const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({ projects }) => {
 
   return (
     <div className="showcase">
-      <nav className="showcase-tabs" aria-label="Projects">
-        {projects.map((p, index) => (
-          <Link
-            key={p.id}
-            to={`/projects/${p.slug}`}
-            className={`showcase-tab ${index === projectIndex ? 'active' : ''}`}
-            aria-current={index === projectIndex ? 'true' : undefined}
-            onClick={(e) => {
-              // Plain clicks switch the slider; modified clicks still open the case study
-              if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-              e.preventDefault();
-              selectProject(index);
-            }}
-          >
-            {p.name}
-          </Link>
-        ))}
-      </nav>
-
       <div
         ref={stageRef}
         className="showcase-stage"
@@ -103,7 +136,11 @@ const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({ projects }) => {
         aria-label={`${project.name} screenshots`}
         onKeyDown={handleKeyDown}
         onPointerDown={(e) => {
-          pointerStartX.current = e.clientX;
+          // A drag that starts on the overlaid controls isn't a swipe
+          const onControls = (e.target as HTMLElement).closest(
+            '.showcase-tabs-wrap, .showcase-controls'
+          );
+          pointerStartX.current = onControls ? null : e.clientX;
         }}
         onPointerUp={handlePointerUp}
         onPointerCancel={() => {
@@ -129,55 +166,97 @@ const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({ projects }) => {
           ))}
         </div>
 
-        {images.length > 1 && (
-          <>
+        {/* Gradients beneath the overlaid controls, so they stay legible over any screenshot */}
+        <div className="showcase-scrim showcase-scrim-top" aria-hidden="true" />
+        <div className="showcase-scrim showcase-scrim-bottom" aria-hidden="true" />
+
+        <div className="showcase-tabs-wrap">
+          <nav className="showcase-tabs" ref={tabsRef} aria-label="Projects">
+            {projects.map((p, index) => (
+              <Link
+                key={p.id}
+                to={`/projects/${p.slug}`}
+                className={`showcase-tab ${index === projectIndex ? 'active' : ''}`}
+                aria-current={index === projectIndex ? 'true' : undefined}
+                onClick={(e) => {
+                  // Plain clicks switch the slider; modified clicks still open the case study
+                  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                  e.preventDefault();
+                  selectProject(index);
+                }}
+              >
+                {p.name}
+              </Link>
+            ))}
+          </nav>
+
+          {tabOverflow.left && (
             <button
-              className="showcase-arrow showcase-arrow-prev"
+              type="button"
+              className="showcase-tabs-scroll prev"
+              onClick={() => scrollTabs(-1)}
+              aria-label="Scroll projects left"
+            >
+              <ChevronLeft size={18} />
+            </button>
+          )}
+          {tabOverflow.right && (
+            <button
+              type="button"
+              className="showcase-tabs-scroll next"
+              onClick={() => scrollTabs(1)}
+              aria-label="Scroll projects right"
+            >
+              <ChevronRight size={18} />
+            </button>
+          )}
+        </div>
+
+        {images.length > 1 && (
+          <div className="showcase-controls">
+            <button
+              className="showcase-arrow"
               onClick={() => showImage(imageIndex - 1)}
               aria-label="Previous image"
             >
-              <ChevronLeft size={22} />
+              <ChevronLeft size={18} />
             </button>
+
+            <div className="showcase-indicators">
+              {images.map((src, index) => (
+                <button
+                  key={src}
+                  className={`showcase-indicator ${index === imageIndex ? 'active' : ''}`}
+                  onClick={() => showImage(index)}
+                  aria-label={`Show image ${index + 1} of ${images.length}`}
+                  aria-current={index === imageIndex ? 'true' : undefined}
+                />
+              ))}
+            </div>
+
             <button
-              className="showcase-arrow showcase-arrow-next"
+              className="showcase-arrow"
               onClick={() => showImage(imageIndex + 1)}
               aria-label="Next image"
             >
-              <ChevronRight size={22} />
+              <ChevronRight size={18} />
             </button>
-          </>
+          </div>
         )}
       </div>
 
-      {images.length > 1 && (
-        <div className="showcase-indicators">
-          {images.map((src, index) => (
-            <button
-              key={src}
-              className={`showcase-indicator ${index === imageIndex ? 'active' : ''}`}
-              onClick={() => showImage(index)}
-              aria-label={`Show image ${index + 1} of ${images.length}`}
-              aria-current={index === imageIndex ? 'true' : undefined}
-            />
+      {/* Overlays the bottom-right of the stage on desktop; sits beneath it on mobile */}
+      <div key={project.id} className="showcase-info">
+        <h3>{project.name}</h3>
+        <p>{project.description_short}</p>
+        <div className="showcase-tags">
+          {project.tech.slice(0, 4).map((t) => (
+            <span key={t} className="tag">{t}</span>
           ))}
         </div>
-      )}
-
-      <div key={project.id} className="showcase-info">
-        <div>
-          <h3>{project.name}</h3>
-          <p>{project.description_short}</p>
-        </div>
-        <div className="showcase-info-actions">
-          <div className="showcase-tags">
-            {project.tech.slice(0, 4).map((t) => (
-              <span key={t} className="tag">{t}</span>
-            ))}
-          </div>
-          <Link to={`/projects/${project.slug}`} className="btn btn-primary">
-            View Case Study <ArrowRight size={16} />
-          </Link>
-        </div>
+        <Link to={`/projects/${project.slug}`} className="btn btn-primary">
+          View Case Study <ArrowRight size={16} />
+        </Link>
       </div>
     </div>
   );

@@ -52,7 +52,7 @@ const ProjectDetail: React.FC = () => {
   if (!project) {
     return (
       <div style={{ textAlign: 'center', padding: '10rem 2rem' }}>
-        <h1 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '1rem' }}>Project Not Found</h1>
+        <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Project Not Found</h1>
         <button className="btn btn-primary" onClick={() => navigate('/projects')}>
           View All Projects
         </button>
