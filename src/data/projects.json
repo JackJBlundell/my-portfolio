@@ -38,8 +38,8 @@
         "alts": [
           "Safentia fire risk assessment app screens alongside the admin risk dashboard",
           "Safentia assessor app with offline assessments, floor plan flagging and AI-drafted narrative",
-          "Safentia auditor validation queue and flag basket for clarification requests",
           "Safentia admin console showing estate risk distribution and the customer list",
+          "Safentia auditor validation queue and flag basket for clarification requests",
           "Safentia customer portal showing fire safety position and building risk status"
         ]
       },
@@ -148,6 +148,159 @@
             "Node.js Cloud Functions",
             "Stripe Subscription Billing",
             "EU Data Hosting (europe-west1)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4kmatch",
+      "slug": "4kmatch",
+      "name": "4kMatch",
+      "description_short": "An AI-powered football design platform that turns phone photos into 4K player cards and matchday graphics, with iOS and Android apps, a web admin panel and its own token economy on a recurring subscription.",
+      "description_long": "4kMatch is an AI-powered design platform that turns ordinary phone photos into professional football player cards and matchday graphics. Players, fans, content creators and club marketing teams upload photos of the player, their kit and their club badge, pick a design inspiration, and get back a finished design in up to 4K, ready to post, share or print.\n\nThe iOS and Android app walks users through setting up a player profile, kit and badge, and enhances each upload before it is used. Portraits are relit against a white studio background and upscaled, kits have their backgrounds removed, and badges are placed on a colour of the user's choice. Designs are generated from the player's photos, kit, badge and chosen style, with custom notes to guide the result and fixture details added as a text overlay, in story and post formats. Users follow their teams to see upcoming fixtures, a countdown to the next match and matchday reminders, and can buy one-off event templates for special occasions.\n\nThe platform runs on its own token economy. Users buy token packs or subscribe monthly or yearly, through in-app purchases on mobile and Stripe on the web, and every generation is charged and refunded on the server so balances can't be tampered with. A web admin panel lets the 4kMatch team track revenue and usage, manage token packages, pricing and promo codes, upload new template media, create custom teams and fixtures, schedule in-app campaigns and push notifications, and manage translations for multi-language support. An affiliate programme built on Stripe Connect pays referrers commission on the subscribers they bring in. The backend runs on Firebase and Node.js Cloud Functions, using Google Gemini for image generation and enhancement and Google Cloud Vision to check that each upload contains a person or a kit.",
+      "tech": [
+        "React Native",
+        "React.js",
+        "Node.js",
+        "Firebase",
+        "TypeScript",
+        "Google Gemini",
+        "Google Cloud Vision",
+        "Stripe.js",
+        "RevenueCat"
+      ],
+      "categories": [
+        "Cross-Platform App",
+        "AI",
+        "Web Application",
+        "Subscription Platform",
+        "Payments",
+        "Device Notifications",
+        "Backend Functions"
+      ],
+      "media": {
+        "thumbnail": "/img/4kmatch/1.webp",
+        "images": [
+          "/img/4kmatch/1.webp",
+          "/img/4kmatch/2.webp",
+          "/img/4kmatch/3.webp",
+          "/img/4kmatch/4.webp"
+        ],
+        "alts": [
+          "4kMatch app screens showing AI-generated football player designs, the token wallet and the match schedule alongside the admin user management panel",
+          "4kMatch admin panel showing token packages, affiliate earnings, revenue, promo codes, custom teams and languages",
+          "4kMatch app for football teams with player selection, design creation, a generated player card, the token balance and the match schedule",
+          "4kMatch admin panel showing revenue tracking and token package management"
+        ]
+      },
+      "featureGroups": [
+        {
+          "title": "Mobile App",
+          "category": "Cross-Platform App",
+          "features": [
+            "Email, Apple & Google Sign-In",
+            "Guest Mode with Account Linking",
+            "Player Profile, Kit & Badge Onboarding",
+            "Design Inspirations Gallery",
+            "Step-by-Step Design Builder",
+            "Fixture Details Added to Designs",
+            "Story & Post Formats",
+            "Pack-Opening Reveal Animation",
+            "Save to Camera Roll & Share",
+            "Personal Design Gallery",
+            "One-Off Event Templates",
+            "In-App Language Picker"
+          ]
+        },
+        {
+          "title": "Match Schedule",
+          "category": "Cross-Platform App",
+          "features": [
+            "Follow Your Teams",
+            "Upcoming Fixtures with Team Badges",
+            "Countdown to the Next Match",
+            "Personal Events Alongside Matches",
+            "Filter by Matches or Personal Events"
+          ]
+        },
+        {
+          "title": "AI Image Generation",
+          "category": "AI",
+          "features": [
+            "Google Gemini Design Generation",
+            "Designs from Player Photos, Kit, Badge & Style",
+            "Custom Notes to Guide Each Design",
+            "Up to 4K Output",
+            "Studio Portrait Enhancement & Upscaling",
+            "Kit Background Removal",
+            "Badge Background Replacement",
+            "Google Cloud Vision Upload Checks"
+          ]
+        },
+        {
+          "title": "Admin Panel",
+          "category": "Web Application",
+          "features": [
+            "Revenue & Usage Analytics",
+            "User Management & Bans",
+            "Token Package & Subscription Plan Management",
+            "Per-Action Token Pricing",
+            "Promo Codes & Redemption Tracking",
+            "Template Media Uploads",
+            "Event Template Management",
+            "Custom Teams & Fixtures with CSV Import",
+            "In-App Campaign Popups",
+            "Onboarding & Home Screen Video Management",
+            "Translation Editor for Multi-Language Support",
+            "Test Mode with Separate Data"
+          ]
+        },
+        {
+          "title": "Tokens & Subscriptions",
+          "category": "Subscription Platform",
+          "features": [
+            "In-App Token Economy",
+            "Token Packs",
+            "Monthly & Yearly Subscriptions",
+            "RevenueCat In-App Purchases on iOS & Android",
+            "Stripe Payments on the Web",
+            "Web Wallet & Transaction History",
+            "Server-Side Token Spending",
+            "Automatic Refunds on Failed Generations"
+          ]
+        },
+        {
+          "title": "Affiliate Programme",
+          "category": "Payments",
+          "features": [
+            "Stripe Connect Express Onboarding",
+            "Referral Codes with Copy & Share",
+            "Commission on Referred Subscribers",
+            "Earnings Dashboard on Web & Mobile",
+            "Admin Affiliate Oversight"
+          ]
+        },
+        {
+          "title": "Push Notifications",
+          "category": "Device Notifications",
+          "features": [
+            "Matchday Notifications",
+            "Next-Day Match Reminders",
+            "Scheduled Campaign Notifications",
+            "Failed Generation & Refund Alerts",
+            "Notifications in the User's Language"
+          ]
+        },
+        {
+          "title": "Backend Services",
+          "category": "Backend Functions",
+          "features": [
+            "Node.js Cloud Functions",
+            "Firebase Authentication",
+            "Realtime Database & Cloud Storage",
+            "Stripe & RevenueCat Webhooks",
+            "Duplicate-Safe Purchase Processing",
+            "Full Account & Data Deletion"
           ]
         }
       ]
