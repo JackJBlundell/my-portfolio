@@ -2,6 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Code, Globe, Smartphone, Brain, Cloud, Palette, ArrowRight, Shield, Zap, Users, TrendingUp } from 'lucide-react';
 import { services } from '../data/services';
+import {
+  CLOSING_DATE_LABEL,
+  GIVEAWAY_NAME,
+  GIVEAWAY_PATH,
+  PRIZE_VALUE,
+  isGiveawayOpen,
+} from '../data/giveaway';
 import projectsData from '../data/projects.json';
 import SEO from '../components/SEO';
 import ProjectShowcase from '../components/ProjectShowcase';
@@ -89,6 +96,25 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Giveaway, shown only while entries are open */}
+      {isGiveawayOpen() && (
+        <section className="giveaway-banner">
+          <div className="giveaway-banner-inner">
+            <div>
+              <span className="giveaway-eyebrow">{GIVEAWAY_NAME}</span>
+              <h2>Win an App Worth up to {PRIZE_VALUE}</h2>
+              <p>
+                We are designing and building a free MVP for one startup based in Wales.
+                Free to enter, and entries close on {CLOSING_DATE_LABEL}.
+              </p>
+            </div>
+            <Link to={GIVEAWAY_PATH} className="btn btn-primary btn-lg">
+              Find Out More <ArrowRight size={16} />
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* Services */}
       <section className="section">

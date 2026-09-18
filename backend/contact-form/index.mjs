@@ -1,5 +1,6 @@
-// AWS Lambda (Node.js 20+) behind a Function URL. Receives the website contact form and sends it through Resend:
-// a notification to the team, plus a confirmation email to the visitor.
+// AWS Lambda (Node.js 20+) behind a Function URL. Receives the website contact form and Welsh 25k App Giveaway
+// entries (sent with form: "giveaway") and sends each through Resend: a notification to the team, plus a
+// confirmation email to the visitor.
 //
 // Environment variables:
 //   RESEND_API_KEY   Required. Lives only in the Lambda; never ship it to the browser.
@@ -18,6 +19,30 @@ const LOGO_URL = `${SITE_URL}/img/brand/logo-on-light.png`;
 // Rejects characters that could break out of the mailto: links and HTML attributes below
 const EMAIL_PATTERN = /^[^\s@<>"'()]+@[^\s@<>"'()]+\.[^\s@<>"'()]+$/;
 const MAX_LENGTHS = { name: 100, email: 200, company: 150, phone: 40, service: 100, message: 5000 };
+
+// Giveaway entries close at 23:59 UK time on 30 November 2026 (GMT, so UTC). Keep in step with src/data/giveaway.ts.
+const GIVEAWAY_CLOSES_AT = Date.parse('2026-11-30T23:59:59Z');
+const GIVEAWAY_CLOSING_LABEL = '30 November 2026';
+const GIVEAWAY_WINNER_LABEL = '18 December 2026';
+const GIVEAWAY_MAX_LENGTHS = {
+  name: 100,
+  email: 200,
+  phone: 40,
+  startupName: 120,
+  location: 100,
+  walesConnection: 60,
+  stage: 60,
+  platform: 40,
+  pitch: 200,
+  problem: 3000,
+  features: 3000,
+  team: 3000,
+  links: 500,
+  videoUrl: 500,
+};
+const GIVEAWAY_REQUIRED = ['name', 'startupName', 'location', 'walesConnection', 'stage', 'platform', 'pitch', 'problem', 'features', 'team'];
+// The video link becomes an href in the team email, so only plain http(s) URLs are accepted
+const VIDEO_URL_PATTERN = /^https?:\/\/[^\s<>"']+$/i;
 
 const COLORS = {
   brand: '#E2A531',
@@ -104,23 +129,10 @@ const button = (href, label) => `<table role="presentation" cellpadding="0" cell
   </tr>
 </table>`;
 
-function enquiryEmail(fields) {
-  const firstName = escapeHtml(singleLine(fields.name.split(' ')[0]));
-  const safeEmail = escapeHtml(fields.email);
-  const phoneDigits = fields.phone.replace(/[^\d+]/g, '');
-  const rows = [
-    ['Name', escapeHtml(fields.name)],
-    ['Email', `<a href="mailto:${safeEmail}" style="color:${COLORS.heading};">${safeEmail}</a>`],
-    ['Company', escapeHtml(fields.company) || `<span style="color:${COLORS.muted};">Not provided</span>`],
-    ['Phone', phoneDigits ? `<a href="tel:${phoneDigits}" style="color:${COLORS.heading};">${escapeHtml(fields.phone)}</a>` : `<span style="color:${COLORS.muted};">Not provided</span>`],
-    ['Service', escapeHtml(fields.service) || `<span style="color:${COLORS.muted};">Not specified</span>`],
-  ];
-  const replySubject = encodeURIComponent('Re: Your enquiry with Blundell Technologies');
+const notProvided = (label = 'Not provided') => `<span style="color:${COLORS.muted};">${label}</span>`;
 
-  const content = `${eyebrow('New enquiry')}
-${heading(`${escapeHtml(fields.name)}${fields.company ? ` <span style="color:${COLORS.muted};font-weight:600;">from ${escapeHtml(fields.company)}</span>` : ''}`)}
-<p style="margin:0 0 28px;color:${COLORS.muted};">Sent from the contact form on blundell-labs.com</p>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid ${COLORS.border};">
+// Label/value rows; values must already be escaped
+const detailsTable = (rows) => `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid ${COLORS.border};">
   ${rows
     .map(
       ([label, value]) => `<tr>
@@ -129,9 +141,49 @@ ${heading(`${escapeHtml(fields.name)}${fields.company ? ` <span style="color:${C
   </tr>`
     )
     .join('\n  ')}
-</table>
-<p style="margin:32px 0 10px;font-size:13px;font-weight:700;color:${COLORS.heading};">Project description</p>
-<div style="padding:18px 20px;background:${COLORS.panel};border-left:3px solid ${COLORS.brand};border-radius:8px;color:${COLORS.heading};white-space:pre-wrap;">${escapeHtml(fields.message)}</div>
+</table>`;
+
+// A titled block of the sender's own words, escaped here
+const answerPanel = (title, value) => `<p style="margin:32px 0 10px;font-size:13px;font-weight:700;color:${COLORS.heading};">${title}</p>
+<div style="padding:18px 20px;background:${COLORS.panel};border-left:3px solid ${COLORS.brand};border-radius:8px;color:${COLORS.heading};white-space:pre-wrap;">${escapeHtml(value)}</div>`;
+
+const stepsTable = (steps) => `<p style="margin:0 0 14px;font-size:13px;font-weight:700;color:${COLORS.heading};">What happens next</p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  ${steps
+    .map(
+      ([title, description], index) => `<tr>
+    <td width="44" style="padding:0 0 18px;vertical-align:top;">
+      <div style="width:28px;height:28px;line-height:28px;border-radius:14px;background:${COLORS.brand};color:${COLORS.heading};font-size:13px;font-weight:700;text-align:center;">${index + 1}</div>
+    </td>
+    <td style="padding:2px 0 18px;vertical-align:top;">
+      <p style="margin:0;font-size:15px;font-weight:700;color:${COLORS.heading};">${title}</p>
+      <p style="margin:2px 0 0;font-size:14px;color:${COLORS.muted};">${description}</p>
+    </td>
+  </tr>`
+    )
+    .join('\n  ')}
+</table>`;
+
+const signOff = `<p style="margin:16px 0 0;color:${COLORS.heading};"><strong>Jack Blundell</strong><br><span style="color:${COLORS.muted};">Founder, Blundell Technologies</span></p>`;
+
+function enquiryEmail(fields) {
+  const firstName = escapeHtml(singleLine(fields.name.split(' ')[0]));
+  const safeEmail = escapeHtml(fields.email);
+  const phoneDigits = fields.phone.replace(/[^\d+]/g, '');
+  const rows = [
+    ['Name', escapeHtml(fields.name)],
+    ['Email', `<a href="mailto:${safeEmail}" style="color:${COLORS.heading};">${safeEmail}</a>`],
+    ['Company', escapeHtml(fields.company) || notProvided()],
+    ['Phone', phoneDigits ? `<a href="tel:${phoneDigits}" style="color:${COLORS.heading};">${escapeHtml(fields.phone)}</a>` : notProvided()],
+    ['Service', escapeHtml(fields.service) || notProvided('Not specified')],
+  ];
+  const replySubject = encodeURIComponent('Re: Your enquiry with Blundell Technologies');
+
+  const content = `${eyebrow('New enquiry')}
+${heading(`${escapeHtml(fields.name)}${fields.company ? ` <span style="color:${COLORS.muted};font-weight:600;">from ${escapeHtml(fields.company)}</span>` : ''}`)}
+<p style="margin:0 0 28px;color:${COLORS.muted};">Sent from the contact form on blundell-labs.com</p>
+${detailsTable(rows)}
+${answerPanel('Project description', fields.message)}
 ${button(`mailto:${safeEmail}?subject=${replySubject}`, `Reply to ${firstName}`)}`;
 
   const text = `New enquiry from blundell-labs.com
@@ -164,25 +216,10 @@ function confirmationEmail(fields) {
   const content = `${eyebrow('Message received')}
 ${heading(`Thanks for getting in touch, ${escapeHtml(firstName)}`)}
 <p style="margin:0 0 28px;">We've received your message and will get back to you within 24 hours.</p>
-<p style="margin:0 0 14px;font-size:13px;font-weight:700;color:${COLORS.heading};">What happens next</p>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-  ${steps
-    .map(
-      ([title, description], index) => `<tr>
-    <td width="44" style="padding:0 0 18px;vertical-align:top;">
-      <div style="width:28px;height:28px;line-height:28px;border-radius:14px;background:${COLORS.brand};color:${COLORS.heading};font-size:13px;font-weight:700;text-align:center;">${index + 1}</div>
-    </td>
-    <td style="padding:2px 0 18px;vertical-align:top;">
-      <p style="margin:0;font-size:15px;font-weight:700;color:${COLORS.heading};">${title}</p>
-      <p style="margin:2px 0 0;font-size:14px;color:${COLORS.muted};">${description}</p>
-    </td>
-  </tr>`
-    )
-    .join('\n  ')}
-</table>
+${stepsTable(steps)}
 ${button(`${SITE_URL}/projects`, 'See our recent work')}
 <p style="margin:32px 0 0;padding-top:24px;border-top:1px solid ${COLORS.border};">Anything to add? Just reply to this email.</p>
-<p style="margin:16px 0 0;color:${COLORS.heading};"><strong>Jack Blundell</strong><br><span style="color:${COLORS.muted};">Founder, Blundell Technologies</span></p>`;
+${signOff}`;
 
   const text = `Hi ${firstName},
 
@@ -210,7 +247,166 @@ ${SITE_URL}`;
   };
 }
 
+function giveawayEntryEmail(fields) {
+  const firstName = escapeHtml(singleLine(fields.name.split(' ')[0]));
+  const safeEmail = escapeHtml(fields.email);
+  const phoneDigits = fields.phone.replace(/[^\d+]/g, '');
+  const safeVideoUrl = escapeHtml(fields.videoUrl);
+  const rows = [
+    ['Name', escapeHtml(fields.name)],
+    ['Email', `<a href="mailto:${safeEmail}" style="color:${COLORS.heading};">${safeEmail}</a>`],
+    ['Phone', phoneDigits ? `<a href="tel:${phoneDigits}" style="color:${COLORS.heading};">${escapeHtml(fields.phone)}</a>` : notProvided()],
+    ['Based in', escapeHtml(fields.location)],
+    ['Wales', escapeHtml(fields.walesConnection)],
+    ['Stage', escapeHtml(fields.stage)],
+    ['App type', escapeHtml(fields.platform)],
+    ['Links', fields.links ? `<span style="white-space:pre-wrap;">${escapeHtml(fields.links)}</span>` : notProvided()],
+    ['Video', fields.videoUrl ? `<a href="${safeVideoUrl}" style="color:${COLORS.heading};">${safeVideoUrl}</a>` : notProvided()],
+  ];
+  const replySubject = encodeURIComponent('Re: Your Welsh 25k App Giveaway entry');
+
+  const content = `${eyebrow('Welsh 25k App Giveaway entry')}
+${heading(`${escapeHtml(fields.startupName)} <span style="color:${COLORS.muted};font-weight:600;">from ${escapeHtml(fields.name)}</span>`)}
+<p style="margin:0 0 28px;color:${COLORS.muted};">${escapeHtml(fields.pitch)}</p>
+${detailsTable(rows)}
+${answerPanel('The problem, and who has it', fields.problem)}
+${answerPanel('What the first version needs to do', fields.features)}
+${answerPanel('The team, and the plan after launch', fields.team)}
+${button(`mailto:${safeEmail}?subject=${replySubject}`, `Reply to ${firstName}`)}`;
+
+  const text = `Welsh 25k App Giveaway entry
+
+Startup: ${fields.startupName}
+In one sentence: ${fields.pitch}
+
+Name: ${fields.name}
+Email: ${fields.email}
+Phone: ${fields.phone || 'Not provided'}
+Based in: ${fields.location}
+Connection to Wales: ${fields.walesConnection}
+Stage: ${fields.stage}
+App type: ${fields.platform}
+Links: ${fields.links || 'Not provided'}
+Video: ${fields.videoUrl || 'Not provided'}
+
+The problem, and who has it:
+${fields.problem}
+
+What the first version needs to do:
+${fields.features}
+
+The team, and the plan after launch:
+${fields.team}`;
+
+  return {
+    subject: singleLine(`Giveaway entry: ${fields.startupName} (${fields.name})`),
+    html: emailLayout({ preheader: singleLine(`${fields.startupName}: ${fields.pitch}`), content }),
+    text,
+  };
+}
+
+// Like confirmationEmail, this only uses the entrant's first name, never the rest of what they typed
+function giveawayConfirmationEmail(fields) {
+  const firstName = singleLine(fields.name.split(' ')[0]);
+  const steps = [
+    ['Entries close', `The giveaway closes at 23:59 UK time on ${GIVEAWAY_CLOSING_LABEL}.`],
+    ['We read every entry', 'We invite a shortlist to a video call in early December to talk through their idea.'],
+    ['We announce the winner', `We email the winner by ${GIVEAWAY_WINNER_LABEL}, then announce them on our website.`],
+  ];
+
+  const content = `${eyebrow('Entry received')}
+${heading(`Thanks for entering, ${escapeHtml(firstName)}`)}
+<p style="margin:0 0 28px;">Your entry for the Welsh 25k App Giveaway is in. Good luck!</p>
+${stepsTable(steps)}
+${button(`${SITE_URL}/giveaway`, 'View the giveaway')}
+<p style="margin:32px 0 0;padding-top:24px;border-top:1px solid ${COLORS.border};">Need to change something? Reply to this email before entries close.</p>
+${signOff}`;
+
+  const text = `Hi ${firstName},
+
+Thanks for entering the Welsh 25k App Giveaway. Your entry is in. Good luck!
+
+What happens next:
+${steps.map(([title, description], index) => `${index + 1}. ${title}: ${description}`).join('\n')}
+
+View the giveaway: ${SITE_URL}/giveaway
+
+Need to change something? Reply to this email before entries close.
+
+Jack Blundell
+Founder, Blundell Technologies
+${SITE_URL}`;
+
+  return {
+    subject: 'Your Welsh 25k App Giveaway entry is in',
+    html: emailLayout({
+      preheader: `Your entry is in. Entries close on ${GIVEAWAY_CLOSING_LABEL}.`,
+      content,
+      footerNote: 'You received this because you entered the Welsh 25k App Giveaway on blundell-labs.com.',
+    }),
+    text,
+  };
+}
+
 /* ---------- Handler ---------- */
+
+// Trimmed string values for each allowed key, or an error naming the first field over its limit
+function readFields(data, maxLengths) {
+  const fields = {};
+  for (const [key, maxLength] of Object.entries(maxLengths)) {
+    const value = typeof data[key] === 'string' ? data[key].trim() : '';
+    if (value.length > maxLength) {
+      return { error: `${key} is too long` };
+    }
+    fields[key] = value;
+  }
+  return { fields };
+}
+
+// Sends the team notification, then the visitor's confirmation. Only a failed notification fails the request.
+async function deliver({ fromEmail, toEmail, fields, notification, confirmation }) {
+  try {
+    await sendEmail({ from: fromEmail, to: [toEmail], reply_to: fields.email, ...notification });
+  } catch (error) {
+    console.error('Failed to send notification email', error);
+    return json(502, { error: 'Could not send your message' });
+  }
+
+  if (process.env.SEND_AUTO_REPLY !== 'false') {
+    try {
+      await sendEmail({ from: fromEmail, to: [fields.email], reply_to: toEmail, ...confirmation });
+    } catch (error) {
+      // The notification already reached us, so a failed confirmation shouldn't fail the request
+      console.error('Failed to send confirmation email', error);
+    }
+  }
+
+  return json(200, { ok: true });
+}
+
+function handleGiveawayEntry(data, emails) {
+  if (Date.now() > GIVEAWAY_CLOSES_AT) {
+    return json(403, { error: 'Entries have closed' });
+  }
+
+  const { fields, error } = readFields(data, GIVEAWAY_MAX_LENGTHS);
+  if (error) {
+    return json(400, { error });
+  }
+  if (GIVEAWAY_REQUIRED.some((key) => !fields[key]) || !EMAIL_PATTERN.test(fields.email) || data.agreed !== true) {
+    return json(400, { error: 'Please answer every required question and agree to the terms' });
+  }
+  if (fields.videoUrl && !VIDEO_URL_PATTERN.test(fields.videoUrl)) {
+    return json(400, { error: 'The video link must start with http:// or https://' });
+  }
+
+  return deliver({
+    ...emails,
+    fields,
+    notification: giveawayEntryEmail(fields),
+    confirmation: giveawayConfirmationEmail(fields),
+  });
+}
 
 async function sendEmail(payload) {
   const response = await fetch(RESEND_ENDPOINT, {
@@ -253,33 +449,23 @@ export const handler = async (event) => {
     return json(200, { ok: true });
   }
 
-  const fields = {};
-  for (const [key, maxLength] of Object.entries(MAX_LENGTHS)) {
-    const value = typeof data[key] === 'string' ? data[key].trim() : '';
-    if (value.length > maxLength) {
-      return json(400, { error: `${key} is too long` });
-    }
-    fields[key] = value;
+  if (data.form === 'giveaway') {
+    return handleGiveawayEntry(data, { fromEmail, toEmail });
+  }
+
+  const { fields, error } = readFields(data, MAX_LENGTHS);
+  if (error) {
+    return json(400, { error });
   }
   if (!fields.name || !fields.message || !EMAIL_PATTERN.test(fields.email)) {
     return json(400, { error: 'Please provide your name, a valid email address and a message' });
   }
 
-  try {
-    await sendEmail({ from: fromEmail, to: [toEmail], reply_to: fields.email, ...enquiryEmail(fields) });
-  } catch (error) {
-    console.error('Failed to send enquiry email', error);
-    return json(502, { error: 'Could not send your message' });
-  }
-
-  if (process.env.SEND_AUTO_REPLY !== 'false') {
-    try {
-      await sendEmail({ from: fromEmail, to: [fields.email], reply_to: toEmail, ...confirmationEmail(fields) });
-    } catch (error) {
-      // The enquiry already reached us, so a failed confirmation shouldn't fail the request
-      console.error('Failed to send confirmation email', error);
-    }
-  }
-
-  return json(200, { ok: true });
+  return deliver({
+    fromEmail,
+    toEmail,
+    fields,
+    notification: enquiryEmail(fields),
+    confirmation: confirmationEmail(fields),
+  });
 };

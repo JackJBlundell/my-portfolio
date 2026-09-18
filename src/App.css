@@ -2336,3 +2336,246 @@
     justify-content: flex-start;
   }
 }
+
+/* ---- Welsh 25k App Giveaway ---- */
+.giveaway-eyebrow {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  font-synthesis: none;
+  letter-spacing: 0.12em;
+  color: var(--color-accent-text);
+  margin-bottom: 1rem;
+}
+
+.giveaway-header-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.giveaway-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem 3rem;
+  max-width: 640px;
+  margin: 2.5rem auto 0;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.giveaway-stats strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 400;
+  font-synthesis: none;
+  color: var(--color-text);
+}
+
+.giveaway-stats span {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.giveaway-note {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  background: var(--color-surface);
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius-md);
+}
+
+.giveaway-timeline {
+  list-style: none;
+  padding-left: 2rem;
+  border-left: 2px solid var(--color-border);
+}
+
+.giveaway-timeline li {
+  position: relative;
+  padding-bottom: 1.75rem;
+}
+
+.giveaway-timeline li:last-child {
+  padding-bottom: 0;
+}
+
+/* Centres each dot on the 2px line to the left of the list */
+.giveaway-timeline li::before {
+  content: '';
+  position: absolute;
+  left: calc(-2rem - 7px);
+  top: 0.3rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 0 4px var(--color-bg);
+}
+
+.giveaway-timeline-when {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-accent-text);
+}
+
+.giveaway-timeline h3 {
+  font-size: 1.0625rem;
+  color: var(--color-text);
+  margin: 0.25rem 0;
+}
+
+.giveaway-timeline p {
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+#enter,
+#terms {
+  scroll-margin-top: 80px;
+}
+
+.giveaway-form-heading {
+  font-size: 1.125rem;
+  color: var(--color-text);
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.form-hint {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.form-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.form-checkbox input {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 0.2rem;
+  accent-color: var(--color-accent);
+}
+
+.giveaway-panel {
+  padding: 2rem;
+  background: var(--color-accent-soft);
+  border: 1px solid var(--color-accent-border);
+  border-radius: var(--radius-lg);
+}
+
+.giveaway-panel h3 {
+  font-size: 1.25rem;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+}
+
+.giveaway-panel p {
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+.giveaway-terms {
+  padding-left: 1.25rem;
+}
+
+.giveaway-terms li {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.75rem;
+  padding-left: 0.25rem;
+}
+
+.giveaway-terms li::marker {
+  color: var(--color-text-muted);
+}
+
+/* Homepage band under the hero */
+.giveaway-banner {
+  padding: 3rem 2rem;
+  background: var(--color-accent-soft);
+  border-top: 1px solid var(--color-accent-border);
+  border-bottom: 1px solid var(--color-accent-border);
+}
+
+.giveaway-banner-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.giveaway-banner h2 {
+  font-size: 2rem;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+}
+
+.giveaway-banner p {
+  max-width: 620px;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+
+.giveaway-banner .btn {
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .giveaway-stats {
+    gap: 1.5rem;
+  }
+
+  .giveaway-stats strong {
+    font-size: 1.375rem;
+  }
+
+  .giveaway-banner {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .giveaway-banner-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .giveaway-banner h2 {
+    font-size: 1.625rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* The display face runs wide, so three stats only share a row on a phone at this size */
+  .giveaway-stats {
+    gap: 1rem 1.25rem;
+  }
+
+  .giveaway-stats strong {
+    font-size: 1.125rem;
+  }
+}

@@ -20,6 +20,7 @@ import BlogIndex from './pages/BlogIndex';
 import BlogDetail from './pages/BlogDetail';
 import ContactPage from './pages/ContactPage';
 import AppDevelopmentCardiff from './pages/AppDevelopmentCardiff';
+import GiveawayPage from './pages/GiveawayPage';
 import Footer from './components/Footer';
 import Logo from './components/Logo';
 import { scrollToHash } from './utils/scrollToSection';
@@ -127,6 +128,7 @@ function AppContent() {
             <Link to="/projects" className="nav-link">Projects</Link>
             <Link to="/articles" className="nav-link">Articles</Link>
             <Link to="/about" className="nav-link">About</Link>
+            <Link to="/giveaway" className="nav-link">Giveaway</Link>
             <Link to="/contact" className="nav-link nav-link-cta">Get in Touch</Link>
           </div>
 
@@ -166,6 +168,7 @@ function AppContent() {
         <Route path="/blog/:slug" element={<LegacyBlogRedirect />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/app-development-cardiff" element={<AppDevelopmentCardiff />} />
+        <Route path="/giveaway" element={<GiveawayPage />} />
       </Routes>
 
       <Footer />

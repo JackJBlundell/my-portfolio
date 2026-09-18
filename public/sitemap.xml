@@ -18,6 +18,9 @@
   <!-- Local Landing Pages -->
   <url><loc>https://blundell-labs.com/app-development-cardiff</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
 
+  <!-- Welsh 25k App Giveaway -->
+  <url><loc>https://blundell-labs.com/giveaway</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+
   <!-- Projects -->
   <url><loc>https://blundell-labs.com/projects/routebuddies</loc><changefreq>monthly</changefreq><priority>0.7</priority><image:image><image:loc>https://blundell-labs.com/img/routebuddies/screen1.webp</image:loc></image:image><image:image><image:loc>https://blundell-labs.com/img/routebuddies/screen2.webp</image:loc></image:image><image:image><image:loc>https://blundell-labs.com/img/routebuddies/screen3.webp</image:loc></image:image><image:image><image:loc>https://blundell-labs.com/img/routebuddies/screen4.webp</image:loc></image:image><image:image><image:loc>https://blundell-labs.com/img/routebuddies/screen5.webp</image:loc></image:image><image:image><image:loc>https://blundell-labs.com/img/routebuddies/screen6.webp</image:loc></image:image><image:image><image:loc>https://blundell-labs.com/img/routebuddies/screen7.webp</image:loc></image:image></url>
   <url><loc>https://blundell-labs.com/projects/geo-go</loc><changefreq>monthly</changefreq><priority>0.7</priority><image:image><image:loc>https://blundell-labs.com/img/geogo/screen1.webp</image:loc></image:image><image:image><image:loc>https://blundell-labs.com/img/geogo/screen2.webp</image:loc></image:image><image:image><image:loc>https://blundell-labs.com/img/geogo/screen3.webp</image:loc></image:image><image:image><image:loc>https://blundell-labs.com/img/geogo/screen4.webp</image:loc></image:image></url>
