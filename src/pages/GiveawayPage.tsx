@@ -12,12 +12,17 @@ import {
   GIVEAWAY_FAQS,
   GIVEAWAY_NAME,
   GIVEAWAY_PATH,
+  GIVEAWAY_TAGLINE,
   GIVEAWAY_TERMS,
   JUDGING_CRITERIA,
+  NOT_INCLUDED,
   PLATFORM_OPTIONS,
   PRIZE_INCLUDES,
   PRIZE_VALUE,
+  SCOPE_PROMISE,
+  SCOPE_STEPS,
   STAGE_OPTIONS,
+  TECH_STACK,
   TIMELINE,
   WALES_CONNECTION_OPTIONS,
   WINNER_ANNOUNCED_LABEL,
@@ -91,8 +96,8 @@ const GiveawayPage: React.FC = () => {
   return (
     <>
       <SEO
-        title="Welsh 25k App Giveaway: Free MVP for a Welsh Startup"
-        description={`One startup based in Wales wins an MVP designed and built by Blundell Technologies, worth up to ${PRIZE_VALUE}. Free to enter. Entries close ${CLOSING_DATE_LABEL}.`}
+        title="Welsh 25k Tech Giveaway: Win a Free Build for Your Startup"
+        description={`One startup based in Wales wins its whole tech stack designed and built by Blundell Technologies, worth up to ${PRIZE_VALUE}: apps, web, backend, security, notifications and SEO. Free to enter. Entries close ${CLOSING_DATE_LABEL}.`}
         url={GIVEAWAY_PATH}
         jsonLd={[
           {
@@ -122,11 +127,7 @@ const GiveawayPage: React.FC = () => {
           {entriesOpen ? `Free to enter · Closes ${CLOSING_DATE_LABEL}` : 'Entries are closed'}
         </span>
         <h1>{GIVEAWAY_NAME}</h1>
-        <p>
-          We are giving one startup based in Wales a free app. Blundell Technologies will design
-          and build your MVP, worth up to {PRIZE_VALUE}, so you can put your idea in front of real
-          users.
-        </p>
+        <p>{GIVEAWAY_TAGLINE}</p>
 
         <div className="giveaway-header-cta">
           {entriesOpen && (
@@ -134,6 +135,9 @@ const GiveawayPage: React.FC = () => {
               Enter the Giveaway
             </a>
           )}
+          <a href="#stack" onClick={jumpTo('stack')} className="btn btn-outline btn-lg">
+            What's Covered
+          </a>
           <a href="#terms" onClick={jumpTo('terms')} className="btn btn-outline btn-lg">
             Read the Terms
           </a>
@@ -160,10 +164,12 @@ const GiveawayPage: React.FC = () => {
           <h2>The Prize</h2>
           <div className="service-detail-content">
             <p>
-              The winner gets a minimum viable product (MVP): the first working version of their
-              app, with the features it needs to prove the idea with real users. We design and
-              build it with you, and it is worth up to {PRIZE_VALUE} at our standard rates.
-              It is the same team that built <Link to="/projects/safentia">Safentia</Link> and{' '}
+              The winner gets the technology behind their startup built for them: not just an app
+              or a website, but the whole stack it takes to put a product in front of real users.
+              Mobile, wearables and tablets, web apps, the backend and server functions underneath,
+              authentication and security, notifications, SEO and marketing, AI features and the
+              infrastructure it all runs on. It is worth up to {PRIZE_VALUE} at our standard rates,
+              and it is the same team that built <Link to="/projects/safentia">Safentia</Link> and{' '}
               <Link to="/projects/4kmatch">4kMatch</Link>.
             </p>
           </div>
@@ -178,9 +184,64 @@ const GiveawayPage: React.FC = () => {
             ))}
           </ul>
           <p className="giveaway-note">
-            Running costs such as hosting, domain names, Apple and Google developer accounts
-            and paid third-party services are not included. The winner pays these directly.
+            Running costs such as hosting, domain names, Apple and Google developer accounts and
+            paid third-party services are not included, and the winner pays these directly. The
+            full list of what the prize doesn't stretch to is further down this page.
           </p>
+        </section>
+
+        <section id="stack" className="service-benefits">
+          <h2>What You Can Ask For</h2>
+          <div className="service-detail-content">
+            <p>
+              This is the technology we work with every week, and any of it can go into your build.
+              You don't need to know which parts you need: tell us what your product has to do and
+              we will work that out together.
+            </p>
+          </div>
+          <div className="giveaway-stack-grid">
+            {TECH_STACK.map((group) => (
+              <div key={group.title} className="giveaway-stack-card">
+                <h3>{group.title}</h3>
+                <p>{group.text}</p>
+                <ul>
+                  {group.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="service-benefits">
+          <h2>How Far {PRIZE_VALUE} Goes</h2>
+          <div className="service-detail-content">
+            <p>{SCOPE_PROMISE}</p>
+          </div>
+          <ol className="giveaway-timeline">
+            {SCOPE_STEPS.map((step) => (
+              <li key={step.title}>
+                <h3>{step.title}</h3>
+                <p>{step.text}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section className="service-benefits">
+          <h2>What's Not Included</h2>
+          <div className="service-detail-content">
+            <p>
+              So there are no surprises after the winner is announced, here is what the prize does
+              not stretch to.
+            </p>
+          </div>
+          <ul className="giveaway-exclusions">
+            {NOT_INCLUDED.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
         </section>
 
         <section className="service-benefits">
@@ -198,7 +259,13 @@ const GiveawayPage: React.FC = () => {
         </section>
 
         <section className="service-benefits">
-          <h2>What We're Looking For</h2>
+          <h2>How We Judge Entries</h2>
+          <div className="service-detail-content">
+            <p>
+              We are picking the idea we most want to exist, and that we believe can be made to
+              work. Every entry is read against the same four things.
+            </p>
+          </div>
           <div className="about-values-grid">
             {JUDGING_CRITERIA.map((criterion) => (
               <div key={criterion.title} className="about-value-card">
@@ -249,8 +316,9 @@ const GiveawayPage: React.FC = () => {
             <>
               <div className="service-detail-content">
                 <p>
-                  Tell us about your startup and the app you want to build. You don't need a
-                  pitch deck or a business plan: clear, honest answers are what we are looking for.
+                  Tell us about your startup and what you want built. You don't need a pitch deck
+                  or a business plan, and you don't need to know what technology it takes: clear,
+                  honest answers are what we are looking for.
                 </p>
               </div>
 
@@ -354,7 +422,7 @@ const GiveawayPage: React.FC = () => {
                 <h3 className="giveaway-form-heading">Your App</h3>
 
                 <div className="form-group">
-                  <label className="form-label" htmlFor="pitch">Describe Your App in One Sentence *</label>
+                  <label className="form-label" htmlFor="pitch">Describe It in One Sentence *</label>
                   <input
                     className="form-input"
                     type="text"
@@ -385,7 +453,7 @@ const GiveawayPage: React.FC = () => {
                     </select>
                   </div>
                   <div className="form-group">
-                    <label className="form-label" htmlFor="platform">What Kind of App? *</label>
+                    <label className="form-label" htmlFor="platform">What Do You Want Built? *</label>
                     <select
                       className="form-select"
                       id="platform"
@@ -405,7 +473,7 @@ const GiveawayPage: React.FC = () => {
                 <div className="form-group">
                   <label className="form-label" htmlFor="problem">What Problem Does It Solve, and for Who? *</label>
                   <p className="form-hint" id="problem-hint">
-                    Who has the problem, how they deal with it today, and why your app is better.
+                    Who has the problem, how they deal with it today, and why yours is better.
                   </p>
                   <textarea
                     className="form-textarea"
@@ -423,7 +491,8 @@ const GiveawayPage: React.FC = () => {
                 <div className="form-group">
                   <label className="form-label" htmlFor="features">What Does the First Version Need to Do? *</label>
                   <p className="form-hint" id="features-hint">
-                    The key features your MVP needs to prove the idea with real users.
+                    The features it needs to prove the idea with real users. Include the parts you
+                    assume are out of reach, and we will tell you honestly what fits.
                   </p>
                   <textarea
                     className="form-textarea"

@@ -2337,7 +2337,7 @@
   }
 }
 
-/* ---- Welsh 25k App Giveaway ---- */
+/* ---- Welsh 25k Tech Giveaway ---- */
 .giveaway-eyebrow {
   display: block;
   font-family: var(--font-display);
@@ -2443,6 +2443,7 @@
 }
 
 #enter,
+#stack,
 #terms {
   scroll-margin-top: 80px;
 }
@@ -2496,6 +2497,93 @@
   line-height: 1.7;
 }
 
+/* What the prize can be spent on: a category per card, with the detail listed underneath */
+.giveaway-stack-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin: 2rem 0 0;
+}
+
+.giveaway-stack-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+
+.giveaway-stack-card h3 {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+}
+
+.giveaway-stack-card p {
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.giveaway-stack-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.giveaway-stack-card li {
+  position: relative;
+  padding-left: 1.125rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+.giveaway-stack-card li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.giveaway-exclusions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.giveaway-exclusions li {
+  position: relative;
+  padding: 0.75rem 0 0.75rem 1.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.giveaway-exclusions li:last-child {
+  border-bottom: none;
+}
+
+.giveaway-exclusions li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 1.4rem;
+  width: 10px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--color-text-muted);
+}
+
 .giveaway-terms {
   padding-left: 1.25rem;
 }
@@ -2547,6 +2635,10 @@
 }
 
 @media (max-width: 768px) {
+  .giveaway-stack-grid {
+    grid-template-columns: 1fr;
+  }
+
   .giveaway-stats {
     gap: 1.5rem;
   }

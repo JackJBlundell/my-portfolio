@@ -103,10 +103,10 @@ const HomePage: React.FC = () => {
           <div className="giveaway-banner-inner">
             <div>
               <span className="giveaway-eyebrow">{GIVEAWAY_NAME}</span>
-              <h2>Win an App Worth up to {PRIZE_VALUE}</h2>
+              <h2>Win a Tech Build Worth up to {PRIZE_VALUE}</h2>
               <p>
-                We are designing and building a free MVP for one startup based in Wales.
-                Free to enter, and entries close on {CLOSING_DATE_LABEL}.
+                One startup based in Wales gets its whole stack built for free: app, web,
+                backend, security, notifications and SEO. Entries close on {CLOSING_DATE_LABEL}.
               </p>
             </div>
             <Link to={GIVEAWAY_PATH} className="btn btn-primary btn-lg">

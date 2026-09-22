@@ -1,4 +1,4 @@
-// AWS Lambda (Node.js 20+) behind a Function URL. Receives the website contact form and Welsh 25k App Giveaway
+// AWS Lambda (Node.js 20+) behind a Function URL. Receives the website contact form and Welsh 25k Tech Giveaway
 // entries (sent with form: "giveaway") and sends each through Resend: a notification to the team, plus a
 // confirmation email to the visitor.
 //
@@ -259,13 +259,13 @@ function giveawayEntryEmail(fields) {
     ['Based in', escapeHtml(fields.location)],
     ['Wales', escapeHtml(fields.walesConnection)],
     ['Stage', escapeHtml(fields.stage)],
-    ['App type', escapeHtml(fields.platform)],
+    ['Wants built', escapeHtml(fields.platform)],
     ['Links', fields.links ? `<span style="white-space:pre-wrap;">${escapeHtml(fields.links)}</span>` : notProvided()],
     ['Video', fields.videoUrl ? `<a href="${safeVideoUrl}" style="color:${COLORS.heading};">${safeVideoUrl}</a>` : notProvided()],
   ];
-  const replySubject = encodeURIComponent('Re: Your Welsh 25k App Giveaway entry');
+  const replySubject = encodeURIComponent('Re: Your Welsh 25k Tech Giveaway entry');
 
-  const content = `${eyebrow('Welsh 25k App Giveaway entry')}
+  const content = `${eyebrow('Welsh 25k Tech Giveaway entry')}
 ${heading(`${escapeHtml(fields.startupName)} <span style="color:${COLORS.muted};font-weight:600;">from ${escapeHtml(fields.name)}</span>`)}
 <p style="margin:0 0 28px;color:${COLORS.muted};">${escapeHtml(fields.pitch)}</p>
 ${detailsTable(rows)}
@@ -274,7 +274,7 @@ ${answerPanel('What the first version needs to do', fields.features)}
 ${answerPanel('The team, and the plan after launch', fields.team)}
 ${button(`mailto:${safeEmail}?subject=${replySubject}`, `Reply to ${firstName}`)}`;
 
-  const text = `Welsh 25k App Giveaway entry
+  const text = `Welsh 25k Tech Giveaway entry
 
 Startup: ${fields.startupName}
 In one sentence: ${fields.pitch}
@@ -285,7 +285,7 @@ Phone: ${fields.phone || 'Not provided'}
 Based in: ${fields.location}
 Connection to Wales: ${fields.walesConnection}
 Stage: ${fields.stage}
-App type: ${fields.platform}
+Wants built: ${fields.platform}
 Links: ${fields.links || 'Not provided'}
 Video: ${fields.videoUrl || 'Not provided'}
 
@@ -316,7 +316,7 @@ function giveawayConfirmationEmail(fields) {
 
   const content = `${eyebrow('Entry received')}
 ${heading(`Thanks for entering, ${escapeHtml(firstName)}`)}
-<p style="margin:0 0 28px;">Your entry for the Welsh 25k App Giveaway is in. Good luck!</p>
+<p style="margin:0 0 28px;">Your entry for the Welsh 25k Tech Giveaway is in. Good luck!</p>
 ${stepsTable(steps)}
 ${button(`${SITE_URL}/giveaway`, 'View the giveaway')}
 <p style="margin:32px 0 0;padding-top:24px;border-top:1px solid ${COLORS.border};">Need to change something? Reply to this email before entries close.</p>
@@ -324,7 +324,7 @@ ${signOff}`;
 
   const text = `Hi ${firstName},
 
-Thanks for entering the Welsh 25k App Giveaway. Your entry is in. Good luck!
+Thanks for entering the Welsh 25k Tech Giveaway. Your entry is in. Good luck!
 
 What happens next:
 ${steps.map(([title, description], index) => `${index + 1}. ${title}: ${description}`).join('\n')}
@@ -338,11 +338,11 @@ Founder, Blundell Technologies
 ${SITE_URL}`;
 
   return {
-    subject: 'Your Welsh 25k App Giveaway entry is in',
+    subject: 'Your Welsh 25k Tech Giveaway entry is in',
     html: emailLayout({
       preheader: `Your entry is in. Entries close on ${GIVEAWAY_CLOSING_LABEL}.`,
       content,
-      footerNote: 'You received this because you entered the Welsh 25k App Giveaway on blundell-labs.com.',
+      footerNote: 'You received this because you entered the Welsh 25k Tech Giveaway on blundell-labs.com.',
     }),
     text,
   };
