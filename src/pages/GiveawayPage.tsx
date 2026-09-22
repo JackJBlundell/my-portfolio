@@ -2,7 +2,7 @@ import React, { useState, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { Check } from 'lucide-react';
 import SEO from '../components/SEO';
-import { CONTACT_FORM_URL } from '../utils/formEndpoint';
+import { GIVEAWAY_FORM_URL } from '../utils/formEndpoint';
 import { scrollToSection } from '../utils/scrollToSection';
 import { absoluteUrl, breadcrumbList } from '../utils/seo';
 import {
@@ -65,13 +65,20 @@ const GiveawayPage: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!GIVEAWAY_FORM_URL) {
+      console.error('REACT_APP_GIVEAWAY_FORM_URL is not set, so the entry could not be sent');
+      setStatus('error');
+      return;
+    }
+
     setStatus('sending');
 
     try {
-      const response = await fetch(CONTACT_FORM_URL, {
+      const response = await fetch(GIVEAWAY_FORM_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ form: 'giveaway', ...entry }),
+        body: JSON.stringify(entry),
       });
       if (!response.ok) {
         throw new Error(`Giveaway form responded ${response.status}`);

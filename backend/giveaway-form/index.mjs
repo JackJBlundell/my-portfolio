@@ -1,14 +1,16 @@
-// AWS Lambda (Node.js 20+) behind a Function URL. Receives the website contact form and sends it through
-// Resend: a notification to the team, plus a confirmation email to the visitor. Giveaway entries are a
-// separate function with its own URL (backend/giveaway-form), so deploying one can't break the other.
+// AWS Lambda (Node.js 20+) behind its own Function URL. Handles Welsh 25k Tech Giveaway entries only:
+// the contact form is a separate function (backend/contact-form) with its own URL, so deploying one
+// can never break the other. Entries are sent through Resend: a notification to the team, plus a
+// confirmation email to the entrant.
 //
 // Environment variables:
 //   RESEND_API_KEY   Required. Lives only in the Lambda; never ship it to the browser.
 //   FROM_EMAIL       Optional. Defaults to "Blundell Technologies <noreply@blundell-labs.com>" (Resend-verified domain)
 //   TO_EMAIL         Optional. Defaults to jackjblundell@gmail.com
-//   SEND_AUTO_REPLY  Optional. Set to "false" to stop the visitor confirmation email
+//   SEND_AUTO_REPLY  Optional. Set to "false" to stop the entrant confirmation email
 //
-// CORS (allowed origins, POST, content-type) is configured on the Function URL, not in this code.
+// CORS is handled in this file (see ALLOWED_ORIGINS), not on the Function URL. Leave the Function
+// URL's CORS configuration empty, because when it is set AWS overrides what this function returns.
 
 const RESEND_ENDPOINT = 'https://api.resend.com/emails';
 const DEFAULT_FROM_EMAIL = 'Blundell Technologies <noreply@blundell-labs.com>';
@@ -18,7 +20,30 @@ const LOGO_URL = `${SITE_URL}/img/brand/logo-on-light.png`;
 
 // Rejects characters that could break out of the mailto: links and HTML attributes below
 const EMAIL_PATTERN = /^[^\s@<>"'()]+@[^\s@<>"'()]+\.[^\s@<>"'()]+$/;
-const MAX_LENGTHS = { name: 100, email: 200, company: 150, phone: 40, service: 100, message: 5000 };
+
+// Entries close at 23:59 UK time on 30 November 2026 (GMT, so UTC). Keep in step with src/data/giveaway.ts.
+const GIVEAWAY_CLOSES_AT = Date.parse('2026-11-30T23:59:59Z');
+const GIVEAWAY_CLOSING_LABEL = '30 November 2026';
+const GIVEAWAY_WINNER_LABEL = '18 December 2026';
+const MAX_LENGTHS = {
+  name: 100,
+  email: 200,
+  phone: 40,
+  startupName: 120,
+  location: 100,
+  walesConnection: 60,
+  stage: 60,
+  platform: 40,
+  pitch: 200,
+  problem: 3000,
+  features: 3000,
+  team: 3000,
+  links: 500,
+  videoUrl: 500,
+};
+const REQUIRED_FIELDS = ['name', 'startupName', 'location', 'walesConnection', 'stage', 'platform', 'pitch', 'problem', 'features', 'team'];
+// The video link becomes an href in the team email, so only plain http(s) URLs are accepted
+const VIDEO_URL_PATTERN = /^https?:\/\/[^\s<>"']+$/i;
 
 const COLORS = {
   brand: '#E2A531',
@@ -30,6 +55,30 @@ const COLORS = {
   panel: '#F8FAFC',
 };
 const FONT = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+
+
+/* ---------- CORS ---------- */
+
+const ALLOWED_ORIGINS = [
+  'https://blundell-labs.com',
+  'https://www.blundell-labs.com',
+  'http://localhost:3000',
+];
+// Amplify build previews, e.g. https://main.d1a2b3c4d5e6f7.amplifyapp.com
+const ALLOWED_ORIGIN_PATTERN = /^https:\/\/[a-z0-9-]+\.[a-z0-9]+\.amplifyapp\.com$/;
+
+const corsHeaders = (origin) =>
+  origin && (ALLOWED_ORIGINS.includes(origin) || ALLOWED_ORIGIN_PATTERN.test(origin))
+    ? {
+        'Access-Control-Allow-Origin': origin,
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'content-type',
+        'Access-Control-Max-Age': '86400',
+        // The allowed origin is chosen per request, so caches must key on it
+        Vary: 'Origin',
+      }
+    : {};
+
 
 const json = (statusCode, body) => ({
   statusCode,
@@ -142,82 +191,102 @@ const stepsTable = (steps) => `<p style="margin:0 0 14px;font-size:13px;font-wei
 
 const signOff = `<p style="margin:16px 0 0;color:${COLORS.heading};"><strong>Jack Blundell</strong><br><span style="color:${COLORS.muted};">Founder, Blundell Technologies</span></p>`;
 
-function enquiryEmail(fields) {
+function giveawayEntryEmail(fields) {
   const firstName = escapeHtml(singleLine(fields.name.split(' ')[0]));
   const safeEmail = escapeHtml(fields.email);
   const phoneDigits = fields.phone.replace(/[^\d+]/g, '');
+  const safeVideoUrl = escapeHtml(fields.videoUrl);
   const rows = [
     ['Name', escapeHtml(fields.name)],
     ['Email', `<a href="mailto:${safeEmail}" style="color:${COLORS.heading};">${safeEmail}</a>`],
-    ['Company', escapeHtml(fields.company) || notProvided()],
     ['Phone', phoneDigits ? `<a href="tel:${phoneDigits}" style="color:${COLORS.heading};">${escapeHtml(fields.phone)}</a>` : notProvided()],
-    ['Service', escapeHtml(fields.service) || notProvided('Not specified')],
+    ['Based in', escapeHtml(fields.location)],
+    ['Wales', escapeHtml(fields.walesConnection)],
+    ['Stage', escapeHtml(fields.stage)],
+    ['Wants built', escapeHtml(fields.platform)],
+    ['Links', fields.links ? `<span style="white-space:pre-wrap;">${escapeHtml(fields.links)}</span>` : notProvided()],
+    ['Video', fields.videoUrl ? `<a href="${safeVideoUrl}" style="color:${COLORS.heading};">${safeVideoUrl}</a>` : notProvided()],
   ];
-  const replySubject = encodeURIComponent('Re: Your enquiry with Blundell Technologies');
+  const replySubject = encodeURIComponent('Re: Your Welsh 25k Tech Giveaway entry');
 
-  const content = `${eyebrow('New enquiry')}
-${heading(`${escapeHtml(fields.name)}${fields.company ? ` <span style="color:${COLORS.muted};font-weight:600;">from ${escapeHtml(fields.company)}</span>` : ''}`)}
-<p style="margin:0 0 28px;color:${COLORS.muted};">Sent from the contact form on blundell-labs.com</p>
+  const content = `${eyebrow('Welsh 25k Tech Giveaway entry')}
+${heading(`${escapeHtml(fields.startupName)} <span style="color:${COLORS.muted};font-weight:600;">from ${escapeHtml(fields.name)}</span>`)}
+<p style="margin:0 0 28px;color:${COLORS.muted};">${escapeHtml(fields.pitch)}</p>
 ${detailsTable(rows)}
-${answerPanel('Project description', fields.message)}
+${answerPanel('The problem, and who has it', fields.problem)}
+${answerPanel('What the first version needs to do', fields.features)}
+${answerPanel('The team, and the plan after launch', fields.team)}
 ${button(`mailto:${safeEmail}?subject=${replySubject}`, `Reply to ${firstName}`)}`;
 
-  const text = `New enquiry from blundell-labs.com
+  const text = `Welsh 25k Tech Giveaway entry
+
+Startup: ${fields.startupName}
+In one sentence: ${fields.pitch}
 
 Name: ${fields.name}
 Email: ${fields.email}
-Company: ${fields.company || 'Not provided'}
 Phone: ${fields.phone || 'Not provided'}
-Service: ${fields.service || 'Not specified'}
+Based in: ${fields.location}
+Connection to Wales: ${fields.walesConnection}
+Stage: ${fields.stage}
+Wants built: ${fields.platform}
+Links: ${fields.links || 'Not provided'}
+Video: ${fields.videoUrl || 'Not provided'}
 
-Project description:
-${fields.message}`;
+The problem, and who has it:
+${fields.problem}
+
+What the first version needs to do:
+${fields.features}
+
+The team, and the plan after launch:
+${fields.team}`;
 
   return {
-    subject: singleLine(`New enquiry: ${fields.name}${fields.company ? ` (${fields.company})` : ''}`),
-    html: emailLayout({ preheader: `${fields.name} sent an enquiry about ${fields.service || 'a project'}`, content }),
+    subject: singleLine(`Giveaway entry: ${fields.startupName} (${fields.name})`),
+    html: emailLayout({ preheader: singleLine(`${fields.startupName}: ${fields.pitch}`), content }),
     text,
   };
 }
 
-// Deliberately doesn't echo the visitor's message, so the form can't be used to send arbitrary content to others
-function confirmationEmail(fields) {
+// Like confirmationEmail, this only uses the entrant's first name, never the rest of what they typed
+function giveawayConfirmationEmail(fields) {
   const firstName = singleLine(fields.name.split(' ')[0]);
   const steps = [
-    ['We review your project', "We read through everything you've shared and note any questions."],
-    ['We reply within 24 hours', 'You get a response with next steps, and a clear plan and quote where we have enough detail.'],
-    ['We talk it through', 'A free, no-obligation call to agree scope, timeline and budget.'],
+    ['Entries close', `The giveaway closes at 23:59 UK time on ${GIVEAWAY_CLOSING_LABEL}.`],
+    ['We read every entry', 'We invite a shortlist to a video call in early December to talk through their idea.'],
+    ['We announce the winner', `We email the winner by ${GIVEAWAY_WINNER_LABEL}, then announce them on our website.`],
   ];
 
-  const content = `${eyebrow('Message received')}
-${heading(`Thanks for getting in touch, ${escapeHtml(firstName)}`)}
-<p style="margin:0 0 28px;">We've received your message and will get back to you within 24 hours.</p>
+  const content = `${eyebrow('Entry received')}
+${heading(`Thanks for entering, ${escapeHtml(firstName)}`)}
+<p style="margin:0 0 28px;">Your entry for the Welsh 25k Tech Giveaway is in. Good luck!</p>
 ${stepsTable(steps)}
-${button(`${SITE_URL}/projects`, 'See our recent work')}
-<p style="margin:32px 0 0;padding-top:24px;border-top:1px solid ${COLORS.border};">Anything to add? Just reply to this email.</p>
+${button(`${SITE_URL}/giveaway`, 'View the giveaway')}
+<p style="margin:32px 0 0;padding-top:24px;border-top:1px solid ${COLORS.border};">Need to change something? Reply to this email before entries close.</p>
 ${signOff}`;
 
   const text = `Hi ${firstName},
 
-Thanks for getting in touch with Blundell Technologies. We've received your message and will get back to you within 24 hours.
+Thanks for entering the Welsh 25k Tech Giveaway. Your entry is in. Good luck!
 
 What happens next:
 ${steps.map(([title, description], index) => `${index + 1}. ${title}: ${description}`).join('\n')}
 
-See our recent work: ${SITE_URL}/projects
+View the giveaway: ${SITE_URL}/giveaway
 
-Anything to add? Just reply to this email.
+Need to change something? Reply to this email before entries close.
 
 Jack Blundell
 Founder, Blundell Technologies
 ${SITE_URL}`;
 
   return {
-    subject: 'Thanks for getting in touch with Blundell Technologies',
+    subject: 'Your Welsh 25k Tech Giveaway entry is in',
     html: emailLayout({
-      preheader: "We've received your message and will reply within 24 hours.",
+      preheader: `Your entry is in. Entries close on ${GIVEAWAY_CLOSING_LABEL}.`,
       content,
-      footerNote: 'You received this because you contacted us through blundell-labs.com.',
+      footerNote: 'You received this because you entered the Welsh 25k Tech Giveaway on blundell-labs.com.',
     }),
     text,
   };
@@ -273,14 +342,14 @@ async function sendEmail(payload) {
   }
 }
 
-export const handler = async (event) => {
+async function handleEntry(event) {
   if (event.requestContext?.http?.method !== 'POST') {
     return json(405, { error: 'Method not allowed' });
   }
 
   if (!process.env.RESEND_API_KEY) {
-    console.error('Contact form is missing RESEND_API_KEY');
-    return json(500, { error: 'Contact form is not configured' });
+    console.error('Giveaway form is missing RESEND_API_KEY');
+    return json(500, { error: 'The entry form is not configured' });
   }
   const fromEmail = process.env.FROM_EMAIL || DEFAULT_FROM_EMAIL;
   const toEmail = process.env.TO_EMAIL || DEFAULT_TO_EMAIL;
@@ -300,19 +369,38 @@ export const handler = async (event) => {
     return json(200, { ok: true });
   }
 
+  if (Date.now() > GIVEAWAY_CLOSES_AT) {
+    return json(403, { error: 'Entries have closed' });
+  }
+
   const { fields, error } = readFields(data, MAX_LENGTHS);
   if (error) {
     return json(400, { error });
   }
-  if (!fields.name || !fields.message || !EMAIL_PATTERN.test(fields.email)) {
-    return json(400, { error: 'Please provide your name, a valid email address and a message' });
+  if (REQUIRED_FIELDS.some((key) => !fields[key]) || !EMAIL_PATTERN.test(fields.email) || data.agreed !== true) {
+    return json(400, { error: 'Please answer every required question and agree to the terms' });
+  }
+  if (fields.videoUrl && !VIDEO_URL_PATTERN.test(fields.videoUrl)) {
+    return json(400, { error: 'The video link must start with http:// or https://' });
   }
 
   return deliver({
     fromEmail,
     toEmail,
     fields,
-    notification: enquiryEmail(fields),
-    confirmation: confirmationEmail(fields),
+    notification: giveawayEntryEmail(fields),
+    confirmation: giveawayConfirmationEmail(fields),
   });
+}
+
+export const handler = async (event) => {
+  const cors = corsHeaders(event.headers?.origin || event.headers?.Origin);
+
+  // Preflight reaches the function because CORS isn't configured on the Function URL
+  if (event.requestContext?.http?.method === 'OPTIONS') {
+    return { statusCode: 204, headers: cors };
+  }
+
+  const response = await handleEntry(event);
+  return { ...response, headers: { ...response.headers, ...cors } };
 };
