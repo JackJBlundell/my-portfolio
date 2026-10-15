@@ -21,6 +21,11 @@ import BlogDetail from './pages/BlogDetail';
 import ContactPage from './pages/ContactPage';
 import AppDevelopmentCardiff from './pages/AppDevelopmentCardiff';
 import GiveawayPage from './pages/GiveawayPage';
+import EagleOnlyPage from './pages/eagleonly/EagleOnlyPage';
+import EagleOnlyFeatures from './pages/eagleonly/EagleOnlyFeatures';
+import EagleOnlyOpenTee from './pages/eagleonly/EagleOnlyOpenTee';
+import EagleOnlyPricing from './pages/eagleonly/EagleOnlyPricing';
+import EagleOnlySwitching from './pages/eagleonly/EagleOnlySwitching';
 import Footer from './components/Footer';
 import Logo from './components/Logo';
 import { scrollToHash } from './utils/scrollToSection';
@@ -114,43 +119,48 @@ function AppContent() {
     }
   };
 
+  // EagleOnly has its own branded navbar (in EagleOnlyLayout), with a link back to the main site
+  const isEagleOnly = location.pathname === '/eagleonly' || location.pathname.startsWith('/eagleonly/');
+
   return (
     <div className={`App ${isNavHidden ? 'nav-hidden' : ''}`}>
       {/* Navigation */}
-      <nav className={`navbar ${isScrolled ? 'scrolled' : ''} ${isNavHidden ? 'hidden' : ''}`}>
-        <div className="navbar-container">
-          <Link to="/" className="logo">
-            <Logo />
-          </Link>
+      {!isEagleOnly && (
+        <nav className={`navbar ${isScrolled ? 'scrolled' : ''} ${isNavHidden ? 'hidden' : ''}`}>
+          <div className="navbar-container">
+            <Link to="/" className="logo">
+              <Logo />
+            </Link>
 
-          <div className={`nav-links ${mobileMenuOpen ? 'open' : ''}`}>
-            <Link to="/services" className="nav-link">Services</Link>
-            <Link to="/projects" className="nav-link">Projects</Link>
-            <Link to="/articles" className="nav-link">Articles</Link>
-            <Link to="/about" className="nav-link">About</Link>
-            <Link to="/giveaway" className="nav-link">Giveaway</Link>
-            <Link to="/contact" className="nav-link nav-link-cta">Get in Touch</Link>
+            <div className={`nav-links ${mobileMenuOpen ? 'open' : ''}`}>
+              <Link to="/services" className="nav-link">Services</Link>
+              <Link to="/projects" className="nav-link">Projects</Link>
+              <Link to="/articles" className="nav-link">Articles</Link>
+              <Link to="/about" className="nav-link">About</Link>
+              <Link to="/giveaway" className="nav-link">Giveaway</Link>
+              <Link to="/contact" className="nav-link nav-link-cta">Get in Touch</Link>
+            </div>
+
+            <div className="nav-actions">
+              <button
+                className="theme-toggle"
+                onClick={toggleTheme}
+                aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+              </button>
+
+              <button
+                className="mobile-menu-toggle"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? '✕' : '☰'}
+              </button>
+            </div>
           </div>
-
-          <div className="nav-actions">
-            <button
-              className="theme-toggle"
-              onClick={toggleTheme}
-              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-            >
-              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
-
-            <button
-              className="mobile-menu-toggle"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? '✕' : '☰'}
-            </button>
-          </div>
-        </div>
-      </nav>
+        </nav>
+      )}
 
       {/* Routes */}
       <Routes location={location}>
@@ -169,6 +179,12 @@ function AppContent() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/app-development-cardiff" element={<AppDevelopmentCardiff />} />
         <Route path="/giveaway" element={<GiveawayPage />} />
+        {/* EagleOnly, our own platform for golf clubs */}
+        <Route path="/eagleonly" element={<EagleOnlyPage />} />
+        <Route path="/eagleonly/features" element={<EagleOnlyFeatures />} />
+        <Route path="/eagleonly/opentee" element={<EagleOnlyOpenTee />} />
+        <Route path="/eagleonly/pricing" element={<EagleOnlyPricing />} />
+        <Route path="/eagleonly/switching" element={<EagleOnlySwitching />} />
       </Routes>
 
       <Footer />

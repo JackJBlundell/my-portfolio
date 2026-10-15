@@ -7,6 +7,9 @@ interface SEOProps {
   description?: string;
   image?: string;
   imageAlt?: string;
+  // Pixel size of a custom image, so platforms can lay out the preview before fetching it
+  imageWidth?: number;
+  imageHeight?: number;
   url?: string;
   type?: 'website' | 'article';
   jsonLd?: JsonLd | JsonLd[];
@@ -24,6 +27,8 @@ const SEO: React.FC<SEOProps> = ({
   description = DEFAULT_DESCRIPTION,
   image,
   imageAlt,
+  imageWidth,
+  imageHeight,
   url = '/',
   type = 'website',
   jsonLd,
@@ -51,8 +56,8 @@ const SEO: React.FC<SEOProps> = ({
       <meta property="og:description" content={description} />
       <meta property="og:image" content={fullImage} />
       <meta property="og:image:alt" content={fullImageAlt} />
-      {!image && <meta property="og:image:width" content="1200" />}
-      {!image && <meta property="og:image:height" content="630" />}
+      {(!image || imageWidth) && <meta property="og:image:width" content={String(imageWidth ?? 1200)} />}
+      {(!image || imageHeight) && <meta property="og:image:height" content={String(imageHeight ?? 630)} />}
       <meta property="og:site_name" content="Blundell Technologies" />
 
       <meta name="twitter:card" content="summary_large_image" />

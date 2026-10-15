@@ -12,6 +12,11 @@ import {
 import projectsData from '../data/projects.json';
 import SEO from '../components/SEO';
 import ProjectShowcase from '../components/ProjectShowcase';
+import { EoFonts } from '../components/eagleonly/EagleOnlyLayout';
+import { EoWordmark } from '../components/eagleonly/EoBrand';
+import EoPhoneMockup from '../components/eagleonly/EoPhoneMockup';
+import EoContours from '../components/eagleonly/EoContours';
+import { EO_PATH, EO_PILLARS, EO_TAGLINE } from '../data/eagleonly';
 
 const iconMap: Record<string, React.FC<{ size?: number }>> = {
   Code, Globe, Smartphone, Brain, Cloud, Palette,
@@ -165,6 +170,58 @@ const HomePage: React.FC = () => {
           <Link to="/projects" className="btn btn-outline">
             View All Projects
           </Link>
+        </div>
+      </section>
+
+      {/* Our own technology: work for clients is above, what we build for ourselves is here */}
+      <section className="section own-tech">
+        <div className="section-header">
+          <h2>Our Own Technology</h2>
+          <p>
+            We stay on the front line in two ways: the work we deliver for clients, and the
+            products we design, build and run ourselves for industries we know well.
+          </p>
+        </div>
+
+        <div className="eo eo-home">
+          <EoFonts />
+          <EoContours />
+          <div className="eo-home-inner">
+            <div className="eo-home-text">
+              <span className="eo-home-badge">A Blundell Technologies product</span>
+              <EoWordmark size="lg" />
+              <p className="eo-home-tagline">{EO_TAGLINE}</p>
+              <h3>
+                Your club. Your app. <em>Your revenue.</em>
+              </h3>
+              <p>
+                A suite of software and hardware for UK golf clubs. Each club gets a member app
+                under its own name, colours and crest, plus one system for the tee sheet,
+                competitions, the clubhouse and payments.
+              </p>
+              <ul className="eo-home-pillars">
+                {EO_PILLARS.map((pillar, index) => (
+                  <li key={pillar.title}>
+                    <span>0{index + 1}</span>
+                    <div>
+                      <strong>{pillar.title}.</strong> {pillar.text}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <div className="eo-home-actions">
+                <Link to={EO_PATH} className="eo-btn eo-btn-gold">
+                  Discover EagleOnly <ArrowRight size={17} className="eo-btn-arrow" />
+                </Link>
+                <Link to={`${EO_PATH}/pricing`} className="eo-btn eo-btn-ghost">
+                  Pricing
+                </Link>
+              </div>
+            </div>
+            <div className="eo-home-visual">
+              <EoPhoneMockup withChips />
+            </div>
+          </div>
         </div>
       </section>
 

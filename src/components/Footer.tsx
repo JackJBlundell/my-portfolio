@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { services } from '../data/services';
 import { GIVEAWAY_NAME, GIVEAWAY_PATH } from '../data/giveaway';
+import { EO_NAME, EO_PATH } from '../data/eagleonly';
 import Logo from './Logo';
 
 const Footer: React.FC = () => {
@@ -37,6 +38,7 @@ const Footer: React.FC = () => {
               <li><Link to="/about">About Us</Link></li>
               <li><Link to="/projects">Case Studies</Link></li>
               <li><Link to="/articles">Articles</Link></li>
+              <li><Link to={EO_PATH}>{EO_NAME} for Golf Clubs</Link></li>
               <li><Link to={GIVEAWAY_PATH}>{GIVEAWAY_NAME}</Link></li>
               <li><Link to="/contact">Contact</Link></li>
             </ul>
