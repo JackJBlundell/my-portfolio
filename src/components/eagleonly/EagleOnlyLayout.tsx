@@ -13,6 +13,7 @@ import {
   EO_TAGLINE,
   EO_WEBSITE,
   FOUNDING_CLOSING_LABEL,
+  FOUNDING_LOCK_MONTHS,
   FOUNDING_PLACES,
   FOUNDING_PRICE,
   GO_LIVE_SEASON,
@@ -207,7 +208,7 @@ const EagleOnlyLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
           </h2>
           <p>
             {foundingOpen
-              ? `The first ${FOUNDING_PLACES} clubs pay ${FOUNDING_PRICE} a month for the core platform. Places close on ${FOUNDING_CLOSING_LABEL}. ${EO_CTA_TEXT}`
+              ? `The first ${FOUNDING_PLACES} clubs pay ${FOUNDING_PRICE} a month for the core platform, locked in for ${FOUNDING_LOCK_MONTHS} months after switching. Places close on ${FOUNDING_CLOSING_LABEL}. ${EO_CTA_TEXT}`
               : EO_CTA_TEXT}
           </p>
           <div className="eo-cta-actions">

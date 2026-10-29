@@ -40,7 +40,10 @@ export const EO_CTA_TEXT =
 export const FOUNDING_CLOSES_AT = '2026-12-31T23:59:59Z';
 export const FOUNDING_CLOSING_LABEL = '31 December 2026';
 export const FOUNDING_PLACES = 5;
-export const FOUNDING_PRICE = '£350';
+export const FOUNDING_PRICE = '£129.99';
+// Founding Partners keep their rate for this many months from the day they switch
+export const FOUNDING_LOCK_MONTHS = 36;
+export const FOUNDING_LOCK_LINE = `Locked in for ${FOUNDING_LOCK_MONTHS} months from the day you switch.`;
 export const ALBATROSS_PRICE = '£100';
 export const TRANSACTION_FEE = '10p';
 export const GO_LIVE_SEASON = '2027';
@@ -335,7 +338,7 @@ export const EO_FAQS = [
   },
   {
     question: 'How much does EagleOnly cost?',
-    answer: `Founding Partner clubs pay ${FOUNDING_PRICE} a month for the core platform. The Albatross Package, which adds tills, card terminals and stock control, is ${ALBATROSS_PRICE} a month more. There is a flat ${TRANSACTION_FEE} per transaction plus standard Stripe fees, never a percentage.`,
+    answer: `Founding Partner clubs pay ${FOUNDING_PRICE} a month for the core platform, fixed for ${FOUNDING_LOCK_MONTHS} months from the day they switch. The Albatross Package, which adds tills, card terminals and stock control, is ${ALBATROSS_PRICE} a month more. There is a flat ${TRANSACTION_FEE} per transaction plus standard Stripe fees, never a percentage.`,
   },
   {
     question: 'Who gets the money members pay?',
@@ -358,7 +361,7 @@ export const EO_FAQS = [
   },
   {
     question: 'What is a Founding Partner?',
-    answer: `One of the first ${FOUNDING_PLACES} clubs on EagleOnly, at a reduced rate of ${FOUNDING_PRICE} a month. Places close on ${FOUNDING_CLOSING_LABEL}, ready to go live for the ${GO_LIVE_SEASON} season.`,
+    answer: `One of the first ${FOUNDING_PLACES} clubs on EagleOnly. Founding Partners pay ${FOUNDING_PRICE} a month for the core platform, and that rate is locked in for ${FOUNDING_LOCK_MONTHS} months from the day the club switches, so it will not go up while you settle in. Places close on ${FOUNDING_CLOSING_LABEL}, ready to go live for the ${GO_LIVE_SEASON} season.`,
   },
 ];
 

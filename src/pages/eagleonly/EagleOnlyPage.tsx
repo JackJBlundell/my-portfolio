@@ -23,6 +23,7 @@ import {
   EO_PILLARS,
   EO_PROOF_POINTS,
   FOUNDING_CLOSING_LABEL,
+  FOUNDING_LOCK_MONTHS,
   FOUNDING_PLACES,
   FOUNDING_PRICE,
   OPENTEE_LINE,
@@ -194,7 +195,9 @@ const EagleOnlyPage: React.FC = () => {
               {FOUNDING_PRICE}
               <small>/month</small>
             </strong>
-            <span className="eo-price-sub">Eagle core platform</span>
+            <span className="eo-price-sub">
+              Eagle core platform · Locked in for {FOUNDING_LOCK_MONTHS} months
+            </span>
             <div className="eo-price-addon">
               <span>Albatross Package</span>
               <strong>+{ALBATROSS_PRICE}/month</strong>

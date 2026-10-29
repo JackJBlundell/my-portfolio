@@ -16,6 +16,8 @@ import {
   EO_OG_IMAGE,
   EO_PATH,
   FOUNDING_CLOSING_LABEL,
+  FOUNDING_LOCK_LINE,
+  FOUNDING_LOCK_MONTHS,
   FOUNDING_PLACES,
   FOUNDING_PRICE,
   GO_LIVE_SEASON,
@@ -34,7 +36,7 @@ const EagleOnlyPricing: React.FC = () => {
     <EagleOnlyLayout>
       <SEO
         title={`EagleOnly Pricing: From ${FOUNDING_PRICE} a Month`}
-        description={`EagleOnly Founding Partner clubs pay ${FOUNDING_PRICE} a month. Albatross Package +${ALBATROSS_PRICE} a month. A flat ${TRANSACTION_FEE} per transaction, never a percentage of club revenue.`}
+        description={`EagleOnly Founding Partner clubs pay ${FOUNDING_PRICE} a month, locked in for ${FOUNDING_LOCK_MONTHS} months. Albatross Package +${ALBATROSS_PRICE} a month. A flat ${TRANSACTION_FEE} per transaction, never a percentage of club revenue.`}
         url={PATH}
         image={EO_OG_IMAGE}
         imageAlt={EO_OG_ALT}
@@ -72,7 +74,7 @@ const EagleOnlyPricing: React.FC = () => {
               </strong>
               <p>
                 {foundingOpen
-                  ? `For the first ${FOUNDING_PLACES} clubs, going live for the ${GO_LIVE_SEASON} season.`
+                  ? `For the first ${FOUNDING_PLACES} clubs, going live for the ${GO_LIVE_SEASON} season. ${FOUNDING_LOCK_LINE}`
                   : 'Founding Partner rate. Get in touch for current pricing.'}
               </p>
               <EoFoundingButton variant="gold" />
